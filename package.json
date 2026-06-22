@@ -1,0 +1,10 @@
+{
+  "name": "oldenburg-chatbot-project",
+  "version": "1.0.0",
+  "description": "Public transport chatbot prototype for Oldenburg and Bremen",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js",
+    "test": "node --test route-parser.test.js"
+  }
+}

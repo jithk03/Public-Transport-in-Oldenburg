@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#f2c300" />
+  <title>Ticket Payment</title>
+  <style>
+    :root {
+      --bg: #f7f4e8;
+      --panel: #ffffff;
+      --primary: #f2c300;
+      --ink: #17191c;
+      --text: #202124;
+      --muted: #6b6f76;
+      --border: #e8dfc1;
+      --warn: #7a4b00;
+      --warn-bg: #fff3c4;
+      --success: #166534;
+      --success-bg: #dcfce7;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      min-height: 100dvh;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      background:
+        linear-gradient(135deg, rgba(23, 25, 28, 0.92), rgba(47, 51, 58, 0.86)),
+        var(--bg);
+      color: var(--text);
+      display: grid;
+      place-items: center;
+      padding: 18px;
+    }
+
+    main {
+      width: min(100%, 430px);
+      background: var(--panel);
+      border: 1px solid rgba(255, 255, 255, 0.32);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 24px 70px rgba(23, 25, 28, 0.22);
+    }
+
+    header {
+      background: var(--ink);
+      color: white;
+      padding: 20px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 22px;
+      letter-spacing: 0;
+      line-height: 1.2;
+    }
+
+    .subtitle {
+      margin: 6px 0 0;
+      color: rgba(255, 255, 255, 0.82);
+      font-size: 14px;
+    }
+
+    .content {
+      padding: 18px;
+    }
+
+    .warning,
+    .confirmation {
+      border-radius: 8px;
+      padding: 12px;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .warning {
+      background: var(--warn-bg);
+      color: var(--warn);
+      border: 1px solid #f4d46b;
+      font-weight: 700;
+    }
+
+    .confirmation {
+      display: none;
+      margin-top: 14px;
+      background: var(--success-bg);
+      color: var(--success);
+      border: 1px solid #86efac;
+    }
+
+    .confirmation strong,
+    .confirmation span {
+      display: block;
+    }
+
+    .confirmation strong {
+      font-size: 16px;
+      margin-bottom: 4px;
+    }
+
+    .confirmation span {
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .summary {
+      margin: 16px 0;
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #fffaf0;
+    }
+
+    .row {
+      display: grid;
+      gap: 4px;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(232, 223, 193, 0.75);
+    }
+
+    .row:last-child {
+      border-bottom: 0;
+    }
+
+    .label {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0;
+    }
+
+    .value {
+      font-size: 15px;
+      line-height: 1.35;
+      overflow-wrap: anywhere;
+    }
+
+    form {
+      display: grid;
+      gap: 12px;
+    }
+
+    .field {
+      display: grid;
+      gap: 6px;
+    }
+
+    label {
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    input {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      font: inherit;
+      color: var(--text);
+      background: white;
+    }
+
+    input:focus {
+      outline: 3px solid rgba(242, 195, 0, 0.34);
+      border-color: var(--primary);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    button,
+    .back-link {
+      min-height: 46px;
+      border-radius: 8px;
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    button {
+      margin-top: 2px;
+      border: 0;
+      background: var(--primary);
+      color: var(--ink);
+    }
+
+    .back-link {
+      display: grid;
+      place-items: center;
+      margin-top: 12px;
+      border: 1px solid var(--border);
+      color: var(--ink);
+      text-decoration: none;
+      background: white;
+    }
+
+    @media (max-width: 420px) {
+      body {
+        padding: 0;
+        align-items: stretch;
+      }
+
+      main {
+        min-height: 100dvh;
+        width: 100%;
+        border-radius: 0;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Ticket Payment</h1>
+      <p class="subtitle">Review your trip and complete the purchase</p>
+    </header>
+
+    <section class="content">
+      <div class="warning">Prototype for academic evaluation. No real payment is processed.</div>
+
+      <div class="summary" aria-label="Purchase summary">
+        <div class="row">
+          <span class="label">Route summary</span>
+          <span class="value" id="routeSummary">Route selected in chatbot</span>
+        </div>
+        <div class="row">
+          <span class="label">Selected ticket type</span>
+          <span class="value" id="ticketType">Selected ticket</span>
+        </div>
+        <div class="row">
+          <span class="label">Price</span>
+          <span class="value">Price placeholder</span>
+        </div>
+      </div>
+
+      <form id="paymentForm" autocomplete="off">
+        <div class="field">
+          <label for="name">Name</label>
+          <input id="name" name="name" type="text" placeholder="Passenger name" required />
+        </div>
+
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" placeholder="name@example.com" required />
+        </div>
+
+        <div class="field">
+          <label for="cardNumber">Card number placeholder</label>
+          <input id="cardNumber" name="cardNumber" type="text" inputmode="numeric" placeholder="0000 0000 0000 0000" required />
+        </div>
+
+        <div class="grid">
+          <div class="field">
+            <label for="expiry">Expiry date</label>
+            <input id="expiry" name="expiry" type="text" inputmode="numeric" placeholder="MM/YY" required />
+          </div>
+
+          <div class="field">
+            <label for="cvv">CVV</label>
+            <input id="cvv" name="cvv" type="text" inputmode="numeric" placeholder="000" required />
+          </div>
+        </div>
+
+        <button type="submit">Complete purchase</button>
+      </form>
+
+      <div class="confirmation" id="confirmation">
+        <strong>Ticket confirmed</strong>
+        <span>This is a prototype ticket for academic evaluation and is not valid for real travel.</span>
+      </div>
+      <button type="button" class="back-link" id="backBtn">Back to chatbot</button>
+    </section>
+  </main>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const ticketLabels = {
+      single: "Single ticket",
+      day: "Day ticket",
+      group: "Group ticket",
+      student: "Student/Semester ticket info"
+    };
+    const ticketValue = params.get("ticket") || "";
+    document.getElementById("routeSummary").textContent = params.get("route") || "Route selected in chatbot";
+    document.getElementById("ticketType").textContent = ticketLabels[ticketValue] || ticketValue || "Selected ticket";
+
+    document.getElementById("paymentForm").addEventListener("submit", event => {
+      event.preventDefault();
+      event.currentTarget.reset();
+      localStorage.setItem("oldenburgTicketFlowStatus", "payment_completed");
+      localStorage.setItem("oldenburgPaymentReturnPromptShown", "false");
+      document.getElementById("confirmation").style.display = "block";
+    });
+
+    document.getElementById("backBtn").addEventListener("click", () => {
+      window.close();
+      // Fallback: if window.close() is blocked, navigate to chatbot root
+      setTimeout(() => { window.location.href = "/"; }, 300);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,3170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#f2c300" />
+  <meta name="description" content="A web-based multilingual public transport chatbot for Oldenburg." />
+  <link rel="icon" type="image/png" href="/bus-icon.png?v=2" />
+  <link rel="icon" type="image/svg+xml" href="/bus-icon.svg?v=2" />
+  <link rel="apple-touch-icon" href="/bus-icon-192.png?v=2" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <title>Oldenburg &amp; Bremen Transport Helper</title>
+  <style>
+    :root {
+      --bg: #f7f4e8;
+      --panel: #ffffff;
+      --primary: #f2c300;
+      --primary-dark: #17191c;
+      --primary-soft: #fff3b8;
+      --accent: #1f78d1;
+      --bot: #ffffff;
+      --user: #17191c;
+      --text: #202124;
+      --muted: #6b6f76;
+      --border: #e8dfc1;
+      --surface: #fffaf0;
+      --shadow: 0 24px 70px rgba(23, 25, 28, 0.2);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      background:
+        linear-gradient(135deg, rgba(23, 25, 28, 0.9), rgba(47, 51, 58, 0.82)),
+        radial-gradient(circle at 50% 0%, rgba(242, 195, 0, 0.24), transparent 38%),
+        var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 18px;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 430px;
+      height: min(100dvh - 36px, 860px);
+      min-height: 640px;
+      background: var(--panel);
+      border-radius: 34px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      border: 10px solid #111316;
+    }
+
+    .header {
+      position: relative;
+      padding: 18px 18px 16px;
+      background:
+        linear-gradient(135deg, rgba(23, 25, 28, 0.98), rgba(47, 51, 58, 0.94)),
+        linear-gradient(90deg, rgba(242, 195, 0, 0.88), transparent 58%);
+      color: white;
+      overflow: hidden;
+    }
+
+    .header .brand,
+    .header .language-bar,
+    .header .status,
+    .chat,
+    .input-area {
+      width: 100%;
+    }
+
+    .header .brand,
+    .header .language-bar,
+    .header .status {
+      max-width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .header::after {
+      content: "";
+      position: absolute;
+      inset: auto -36px -54px auto;
+      width: 165px;
+      height: 165px;
+      border-radius: 50%;
+      background: rgba(242, 195, 0, 0.22);
+    }
+
+    .header > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo {
+      width: 46px;
+      height: 46px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.2);
+      border: 1px solid rgba(255,255,255,0.25);
+      display: grid;
+      place-items: center;
+      font-size: 24px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.3);
+    }
+
+    .title {
+      margin: 0;
+      font-size: 19px;
+      font-weight: 800;
+      line-height: 1.2;
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      margin: 3px 0 0;
+      font-size: 13px;
+      opacity: 0.9;
+    }
+
+    .language-bar {
+      margin-top: 13px;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .language-bar label {
+      font-size: 13px;
+      opacity: .95;
+      white-space: nowrap;
+    }
+
+    select {
+      flex: 1;
+      border: 1px solid rgba(255,255,255,.35);
+      background: rgba(255,255,255,.18);
+      color: white;
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-size: 14px;
+      outline: none;
+      cursor: pointer;
+      transition: border-color 0.16s, background 0.16s, box-shadow 0.16s;
+    }
+
+    select:focus {
+      border-color: rgba(255,255,255,.75);
+      box-shadow: 0 0 0 4px rgba(255,255,255,.16);
+    }
+
+    select option {
+      color: #111827;
+      background: white;
+    }
+
+    .status {
+      margin-top: 10px;
+      background: rgba(255,255,255,0.16);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 16px;
+      padding: 9px 12px;
+      font-size: 13px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      backdrop-filter: blur(12px);
+    }
+
+    .clear-chat {
+      border: 1px solid rgba(255,255,255,0.28);
+      background: rgba(255,255,255,0.14);
+      color: white;
+      border-radius: 8px;
+      padding: 6px 8px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .clear-chat:hover {
+      background: rgba(255,255,255,0.22);
+    }
+
+    #statusRight {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 700;
+    }
+
+    #statusRight::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #86efac;
+      box-shadow: 0 0 0 4px rgba(134, 239, 172, 0.16);
+    }
+
+    .chat {
+      flex: 1;
+      padding: 20px 14px 18px;
+      overflow-y: auto;
+      scroll-behavior: smooth;
+      background:
+        linear-gradient(rgba(248, 250, 252, 0.92), rgba(248, 250, 252, 0.92)),
+        repeating-linear-gradient(135deg, transparent 0 12px, rgba(242, 195, 0, 0.05) 12px 13px);
+    }
+
+    .chat > * {
+      max-width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .chat::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .chat::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 999px;
+    }
+
+    .message-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+      margin: 11px auto;
+      max-width: 100%;
+    }
+
+    .message-row.user { justify-content: flex-end; }
+
+    .avatar {
+      width: 30px;
+      height: 30px;
+      flex: 0 0 auto;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: var(--primary-soft);
+      color: #17191c;
+      font-size: 16px;
+      box-shadow: 0 6px 16px rgba(15, 23, 42, 0.08);
+    }
+
+    .user .avatar {
+      order: 2;
+      background: #eaf3ff;
+      color: #1f78d1;
+      font-size: 16px;
+    }
+
+    .message {
+      max-width: min(84%, 720px);
+      padding: 12px 14px;
+      border-radius: 18px;
+      font-size: 14px;
+      line-height: 1.45;
+      white-space: pre-line;
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+    }
+
+    .bot .message {
+      background: var(--bot);
+      border-bottom-left-radius: 6px;
+      border: 1px solid rgba(220, 230, 234, 0.88);
+    }
+
+    .user .message {
+      background: linear-gradient(135deg, #17191c, #333841);
+      color: white;
+      border-bottom-right-radius: 6px;
+      box-shadow: 0 12px 28px rgba(23, 25, 28, 0.24);
+    }
+
+    .chips {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 14px auto 6px;
+      max-width: 100%;
+    }
+
+    .chip {
+      border: 1px solid var(--border);
+      background: white;
+      border-radius: 999px;
+      padding: 9px 12px;
+      font-size: 13px;
+      cursor: pointer;
+      color: var(--text);
+      min-height: 40px;
+      max-width: 100%;
+      overflow-wrap: anywhere;
+      transition: transform 0.16s, border-color 0.16s, color 0.16s, box-shadow 0.16s;
+      box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
+    }
+
+    .chip:hover {
+      border-color: var(--primary);
+      color: #17191c;
+      transform: translateY(-1px);
+      box-shadow: 0 10px 22px rgba(242, 195, 0, 0.22);
+    }
+
+    .chip.external {
+      background: #17191c;
+      color: #ffffff;
+      border-color: #17191c;
+      font-weight: 700;
+    }
+
+    .chip.external:hover {
+      background: #2f333a;
+      color: #ffffff;
+      border-color: #2f333a;
+    }
+
+    .chip.alternative-route {
+      border-radius: 8px;
+      flex: 1 1 260px;
+      text-align: left;
+      line-height: 1.35;
+      font-weight: 650;
+    }
+
+    .chip:focus-visible,
+    button:focus-visible {
+      outline: 3px solid rgba(242, 195, 0, 0.42);
+      outline-offset: 2px;
+    }
+
+    .payment-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      display: none;
+      place-items: center;
+      padding: 18px;
+      background: rgba(23, 25, 28, 0.58);
+    }
+
+    .payment-modal.open {
+      display: grid;
+    }
+
+		/* Route summary and walking map links — minimal, responsive, matches existing card style */
+		.route-summary-container {
+			margin-top: 10px;
+			border-radius: 12px;
+			background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(250,250,250,0.98));
+			border: 1px solid var(--border);
+			padding: 10px;
+			box-shadow: 0 8px 20px rgba(15,23,42,0.04);
+			font-size: 13px;
+			color: var(--text);
+			max-width: 100%;
+		}
+
+		.route-summary-header {
+			font-weight: 700;
+			margin-bottom: 8px;
+			display: flex;
+			gap: 8px;
+			align-items: center;
+			justify-content: space-between;
+		}
+
+		.route-summary-title {
+			font-weight: 800;
+			margin-bottom: 4px;
+		}
+
+		.route-legs-compact { display: flex; flex-direction: column; gap: 6px; margin-bottom: 8px; }
+		.route-leg-compact {
+			opacity: 0.95;
+			display: flex;
+			gap: 8px;
+			align-items: center;
+		}
+
+		.route-leg-transit {
+			display: block;
+			white-space: pre-line;
+			line-height: 1.45;
+			padding: 6px 0;
+		}
+
+		.route-warning,
+		.route-transfer-note,
+		.route-destination-notice {
+			font-size: 12px;
+			font-weight: 700;
+			color: #8a4b00;
+			margin: 4px 0 6px;
+		}
+
+		.segment-alternatives {
+			margin: 2px 0 8px;
+		}
+
+		.segment-alternatives-toggle {
+			border: 0;
+			background: transparent;
+			color: var(--accent);
+			font: inherit;
+			font-size: 12px;
+			font-weight: 800;
+			padding: 4px 0;
+			cursor: pointer;
+			text-align: left;
+		}
+
+		.segment-alternatives-list {
+			display: none;
+			margin: 4px 0 0;
+			padding: 7px 8px;
+			border-radius: 8px;
+			background: rgba(248, 250, 252, 0.95);
+			border: 1px solid rgba(230,230,230,0.95);
+			list-style: none;
+		}
+
+		.segment-alternatives-list.open {
+			display: grid;
+			gap: 5px;
+		}
+
+		.segment-alternative-item {
+			font-size: 12px;
+			line-height: 1.35;
+			color: var(--text);
+		}
+
+		.route-ticket-question {
+			margin-top: 10px;
+			padding-top: 10px;
+			border-top: 1px solid rgba(230,230,230,0.95);
+			font-weight: 800;
+		}
+
+		.alternative-routes {
+			display: flex;
+			flex-direction: column;
+			gap: 8px;
+			margin-top: 10px;
+		}
+
+		.alternative-routes-title {
+			font-weight: 800;
+			color: var(--text);
+			font-size: 13px;
+		}
+
+		.alternative-route-card {
+			border: 1px solid rgba(230,230,230,0.95);
+			border-radius: 10px;
+			background: #ffffff;
+			overflow: hidden;
+		}
+
+		.alternative-route-summary {
+			width: 100%;
+			border: 0;
+			background: transparent;
+			color: var(--text);
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 10px;
+			padding: 9px;
+			text-align: left;
+			cursor: pointer;
+			font: inherit;
+		}
+
+		.alternative-route-summary[aria-expanded="true"] {
+			background: var(--primary-soft);
+		}
+
+		.alternative-route-text {
+			min-width: 0;
+			overflow-wrap: anywhere;
+		}
+
+		.alternative-route-toggle {
+			flex: 0 0 auto;
+			font-weight: 800;
+			font-size: 12px;
+			color: var(--accent);
+			white-space: nowrap;
+		}
+
+		.alternative-route-details {
+			display: none;
+			padding: 0 9px 9px;
+			border-top: 1px solid rgba(230,230,230,0.95);
+		}
+
+		.alternative-route-details.open {
+			display: block;
+		}
+
+		html[dir="rtl"] .alternative-route-summary,
+		.alternative-route-summary[dir="rtl"] {
+			text-align: right;
+		}
+
+		.walking-block {
+			border-radius: 10px;
+			padding: 8px;
+			background: linear-gradient(180deg, #ffffff, #fbfbfb);
+			border: 1px solid rgba(230,230,230,0.9);
+			margin: 6px 0;
+		}
+
+		.walking-title { font-weight: 700; margin-bottom: 6px; }
+		.walking-summary { color: var(--muted); font-size: 13px; margin-bottom: 6px; }
+
+		.walking-map-button {
+			display: inline-block;
+			background: var(--primary-soft);
+			border: 1px solid rgba(0,0,0,0.06);
+			padding: 6px 10px;
+			border-radius: 8px;
+			cursor: pointer;
+			font-weight: 700;
+			font-size: 13px;
+			margin-bottom: 6px;
+			color: var(--text);
+			text-decoration: none;
+		}
+
+		.walking-map-button.disabled,
+		.walking-map-button:disabled {
+			cursor: not-allowed;
+			opacity: 0.65;
+		}
+
+			.maps-button,
+			.open-maps-link {
+				display: inline-block;
+				background: var(--accent);
+				color: white;
+			padding: 8px 10px;
+			border-radius: 10px;
+			text-decoration: none;
+			font-weight: 700;
+			font-size: 13px;
+			margin-top: 6px;
+		}
+
+		@media (max-width: 420px) {
+			.route-summary-container { padding: 8px; font-size: 13px; }
+			.walking-steps li { font-size: 13px; }
+			.maps-button { padding: 8px 10px; font-size: 13px; }
+		}
+
+    .payment-dialog {
+      width: min(100%, 430px);
+      max-height: min(760px, 100dvh - 36px);
+      overflow: auto;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 24px 70px rgba(23, 25, 28, 0.26);
+    }
+
+    .payment-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 18px;
+      background: #17191c;
+      color: white;
+    }
+
+    .payment-header h2 {
+      margin: 0;
+      font-size: 20px;
+      letter-spacing: 0;
+      line-height: 1.2;
+    }
+
+    .payment-header p {
+      margin: 4px 0 0;
+      color: rgba(255, 255, 255, 0.78);
+      font-size: 13px;
+    }
+
+    .modal-close {
+      width: 38px;
+      height: 38px;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.08);
+      color: white;
+      font-size: 22px;
+      cursor: pointer;
+    }
+
+    .payment-content {
+      display: grid;
+      gap: 14px;
+      padding: 18px;
+    }
+
+    .payment-warning,
+    .payment-confirmation {
+      border-radius: 8px;
+      padding: 12px;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .payment-warning {
+      background: #fff3c4;
+      color: #7a4b00;
+      border: 1px solid #f4d46b;
+      font-weight: 700;
+    }
+
+    .payment-confirmation {
+      display: none;
+      background: #dcfce7;
+      color: #166534;
+      border: 1px solid #86efac;
+    }
+
+    .payment-summary {
+      display: grid;
+      gap: 10px;
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #fffaf0;
+    }
+
+    .payment-summary span {
+      display: block;
+    }
+
+    .payment-label {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .payment-value {
+      margin-top: 3px;
+      font-size: 15px;
+      overflow-wrap: anywhere;
+    }
+
+    .payment-form {
+      display: grid;
+      gap: 12px;
+    }
+
+    .payment-form label {
+      display: grid;
+      gap: 6px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .payment-form input {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      font: inherit;
+    }
+
+    .payment-form input:focus {
+      outline: 3px solid rgba(242, 195, 0, 0.34);
+      border-color: var(--primary);
+    }
+
+    .payment-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .complete-purchase {
+      min-height: 46px;
+      border: 0;
+      border-radius: 8px;
+      background: var(--primary);
+      color: #17191c;
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .typing {
+      display: none;
+      align-items: center;
+      gap: 5px;
+      margin: 8px 0 2px;
+      padding-left: 4px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      background: var(--muted);
+      border-radius: 50%;
+      animation: pulse 1.2s infinite ease-in-out;
+    }
+
+    .dot:nth-child(2) { animation-delay: 0.15s; }
+    .dot:nth-child(3) { animation-delay: 0.3s; }
+
+    @keyframes pulse {
+      0%, 80%, 100% { opacity: 0.25; transform: translateY(0); }
+      40% { opacity: 1; transform: translateY(-3px); }
+    }
+
+    .input-area {
+      padding: 12px 12px 14px;
+      border-top: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.96);
+    }
+
+    .input-wrap,
+    .small-note {
+      max-width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .input-wrap {
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 8px;
+      transition: border-color 0.16s, box-shadow 0.16s, background 0.16s;
+    }
+
+    .input-wrap:focus-within {
+      background: #ffffff;
+      border-color: rgba(242, 195, 0, 0.78);
+      box-shadow: 0 0 0 4px rgba(242, 195, 0, 0.18);
+    }
+
+    textarea {
+      flex: 1;
+      border: none;
+      outline: none;
+      resize: none;
+      background: transparent;
+      font-family: inherit;
+      font-size: 14px;
+      min-height: 24px;
+      max-height: 90px;
+      padding: 8px 5px;
+      color: var(--text);
+    }
+
+    textarea::placeholder {
+      color: #94a3b8;
+    }
+
+    button.send {
+      border: none;
+      background: var(--primary);
+      color: #17191c;
+      border-radius: 14px;
+      width: 42px;
+      height: 42px;
+      font-size: 18px;
+      cursor: pointer;
+      flex: 0 0 auto;
+      transition: transform 0.16s, background 0.16s, box-shadow 0.16s;
+      box-shadow: 0 8px 18px rgba(242, 195, 0, 0.34);
+    }
+
+    button.send:hover {
+      background: #e1b400;
+      transform: translateY(-1px);
+    }
+
+    button.mic {
+      border: none;
+      background: #ffffff;
+      color: #17191c;
+      border-radius: 14px;
+      width: 42px;
+      height: 42px;
+      font-size: 18px;
+      cursor: pointer;
+      flex: 0 0 auto;
+      border: 1px solid var(--border);
+      transition: transform 0.16s, border-color 0.16s, color 0.16s, background 0.16s;
+    }
+
+    button.mic:hover {
+      border-color: var(--primary);
+      color: #17191c;
+      transform: translateY(-1px);
+    }
+
+    button.mic.recording {
+      background: #fee2e2;
+      color: #dc2626;
+      border-color: #fca5a5;
+    }
+
+    .small-note {
+      text-align: center;
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 8px;
+    }
+
+    [dir="rtl"] .bot .message {
+      border-bottom-left-radius: 18px;
+      border-bottom-right-radius: 6px;
+    }
+
+    [dir="rtl"] .user .message {
+      border-bottom-right-radius: 18px;
+      border-bottom-left-radius: 6px;
+    }
+
+    @media (max-width: 520px) {
+      body {
+        align-items: stretch;
+        padding: 0;
+      }
+
+      .app {
+        max-width: none;
+        height: 100dvh;
+        min-height: 100dvh;
+        border-radius: 0;
+        border: 0;
+        box-shadow: none;
+      }
+
+      .title {
+        font-size: 17px;
+      }
+
+      .message {
+        max-width: calc(100% - 44px);
+      }
+
+      .chips {
+        display: grid;
+        grid-template-columns: 1fr;
+      }
+
+      .chip {
+        width: 100%;
+        border-radius: 14px;
+        text-align: center;
+      }
+
+      .chip.alternative-route {
+        border-radius: 8px;
+        text-align: left;
+      }
+
+      .payment-modal {
+        padding: 0;
+      }
+
+      .payment-dialog {
+        width: 100%;
+        min-height: 100dvh;
+        max-height: 100dvh;
+        border-radius: 0;
+      }
+
+      .payment-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="app" id="app">
+    <section class="header">
+      <div class="brand">
+        <div class="logo">🚌</div>
+        <div>
+          <h1 class="title" id="title">Oldenburg Transport AI</h1>
+          <p class="subtitle" id="subtitle">Multilingual public transport assistant</p>
+        </div>
+      </div>
+
+      <div class="language-bar">
+        <label for="language" id="languageLabel">Language</label>
+        <select id="language">
+          <option value="en">English</option>
+          <option value="de">Deutsch</option>
+          <option value="ar">العربية</option>
+          <option value="tr">Türkçe</option>
+          <option value="uk">Українська</option>
+          <option value="hi">हिन्दी</option>
+        </select>
+      </div>
+
+      <div class="status">
+        <span id="statusLeft">Oldenburg city assistant</span>
+        <span id="statusRight">Online</span>
+        <button class="clear-chat" id="clearChat" type="button">Clear chat</button>
+      </div>
+    </section>
+
+    <section class="chat" id="chat">
+      <div class="typing" id="typing">
+        <span id="typingText">Oldenburg Transport AI is typing</span>
+        <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      </div>
+    </section>
+
+    <section class="input-area">
+      <div class="input-wrap">
+        <textarea id="input" rows="1" placeholder="Message Oldenburg Transport AI..."></textarea>
+	        <button class="mic" id="mic" type="button" aria-label="Record voice message">🎙</button>
+	        <button class="send" id="send" type="button" aria-label="Send message">➤</button>
+      </div>
+	      <div class="small-note" id="note">Routes use the VBN OTP API when configured on the server.</div>
+    </section>
+  </main>
+
+  <div class="payment-modal" id="paymentModal" aria-hidden="true">
+    <div class="payment-dialog" role="dialog" aria-modal="true" aria-labelledby="paymentModalTitle">
+      <div class="payment-header">
+        <div>
+          <h2 id="paymentModalTitle">Ticket Payment</h2>
+          <p>Review your trip and complete the purchase</p>
+        </div>
+        <button class="modal-close" id="paymentModalClose" type="button" aria-label="Close payment">×</button>
+      </div>
+      <div class="payment-content">
+        <div class="payment-warning">Prototype for academic evaluation. No real payment is processed.</div>
+        <div class="payment-summary" aria-label="Purchase summary">
+          <div>
+            <span class="payment-label">Route summary</span>
+            <span class="payment-value" id="modalRouteSummary">Route selected in chatbot</span>
+          </div>
+          <div>
+            <span class="payment-label">Selected ticket type</span>
+            <span class="payment-value" id="modalTicketType">Selected ticket</span>
+          </div>
+        </div>
+        <form class="payment-form" id="modalPaymentForm" autocomplete="off">
+          <label>
+            Name
+            <input name="name" type="text" placeholder="Passenger name" required />
+          </label>
+          <label>
+            Email
+            <input name="email" type="email" placeholder="name@example.com" required />
+          </label>
+          <label>
+            Card number placeholder
+            <input name="cardNumber" type="text" inputmode="numeric" placeholder="0000 0000 0000 0000" required />
+          </label>
+          <div class="payment-grid">
+            <label>
+              Expiry date
+              <input name="expiry" type="text" inputmode="numeric" placeholder="MM/YY" required />
+            </label>
+            <label>
+              CVV
+              <input name="cvv" type="text" inputmode="numeric" placeholder="000" required />
+            </label>
+          </div>
+          <button class="complete-purchase" type="submit">Complete purchase</button>
+        </form>
+        <div class="payment-confirmation" id="modalPaymentConfirmation">
+          Ticket confirmed. This prototype ticket is not valid for real travel.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const app = document.getElementById("app");
+	    const chat = document.getElementById("chat");
+	    const chatContainer = chat;
+	    const input = document.getElementById("input");
+	    const sendBtn = document.getElementById("send");
+	    const micBtn = document.getElementById("mic");
+	    const clearChatBtn = document.getElementById("clearChat");
+	    const typing = document.getElementById("typing");
+	    const language = document.getElementById("language");
+	    const paymentModal = document.getElementById("paymentModal");
+	    const paymentModalClose = document.getElementById("paymentModalClose");
+	    const modalRouteSummary = document.getElementById("modalRouteSummary");
+	    const modalTicketType = document.getElementById("modalTicketType");
+	    const modalPaymentForm = document.getElementById("modalPaymentForm");
+	    const modalPaymentConfirmation = document.getElementById("modalPaymentConfirmation");
+	    const CHAT_STATE_KEY = "oldenburgChatState";
+	    const LAST_ROUTE_RESULT_KEY = "lastRouteResult";
+	    let pendingResponseCount = 0;
+	    let pendingResponseTimers = [];
+	    let isSendingMessage = false;
+	    let lastUserSend = { text: "", at: 0 };
+	    let recognition = null;
+	    let isRecording = false;
+	    let chatSessionId = localStorage.getItem("oldenburgChatSessionId") || "";
+	    let currentServerMemory = null;
+	    let lastRouteResult = safeJsonParse(localStorage.getItem(LAST_ROUTE_RESULT_KEY), null);
+	    let routeState = {
+	      fromCoords: null,
+	      useCurrentLocation: false
+	    };
+	    let demoTicketState = {
+	      routeSummary: "",
+	      ticketType: ""
+	    };
+	    let ticketFlowStatus = localStorage.getItem("oldenburgTicketFlowStatus") || "none";
+	    let selectedTicket = localStorage.getItem("oldenburgSelectedTicket") || "";
+	    let paymentReturnPromptShown = localStorage.getItem("oldenburgPaymentReturnPromptShown") === "true";
+
+	    function safeJsonParse(value, fallback = null) {
+	      try {
+	        return value ? JSON.parse(value) : fallback;
+	      } catch {
+	        return fallback;
+	      }
+	    }
+
+	    function newMessageId() {
+	      if (window.crypto && typeof window.crypto.randomUUID === "function") {
+	        return window.crypto.randomUUID();
+	      }
+	      return `msg-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+	    }
+
+	    function sanitizeChipItem(item) {
+	      if (!item || !item.label) return null;
+	      const chip = {
+	        label: String(item.label),
+	        value: String(item.value || item.label)
+	      };
+	      if (item.url) chip.url = String(item.url);
+	      if (item.external === true) chip.external = true;
+	      if (item.action) chip.action = String(item.action);
+	      if (item.type) chip.type = String(item.type);
+	      if (Number.isInteger(Number(item.itineraryIndex))) chip.itineraryIndex = Number(item.itineraryIndex);
+	      if (item.locationSelection && typeof item.locationSelection === "object") {
+	        chip.locationSelection = {
+	          placeId: String(item.locationSelection.placeId || ""),
+	          stopId: String(item.locationSelection.stopId || ""),
+	          lat: Number(item.locationSelection.lat),
+	          lon: Number(item.locationSelection.lon),
+	          name: String(item.locationSelection.name || ""),
+	          resolvedName: String(item.locationSelection.resolvedName || item.locationSelection.name || ""),
+	          area: String(item.locationSelection.area || ""),
+	          source: String(item.locationSelection.source || ""),
+	          nearbyStops: Array.isArray(item.locationSelection.nearbyStops)
+	            ? item.locationSelection.nearbyStops.slice(0, 4)
+	            : []
+	        };
+	      }
+	      if (item.routeSelection && typeof item.routeSelection === "object") {
+	        const sanitizePlace = place => {
+	          if (!place || typeof place !== "object") return null;
+	          return {
+	            placeId: String(place.placeId || ""),
+	            stopId: String(place.stopId || ""),
+	            lat: Number(place.lat),
+	            lon: Number(place.lon),
+	            name: String(place.name || ""),
+	            resolvedName: String(place.resolvedName || place.name || ""),
+	            area: String(place.area || ""),
+	            source: String(place.source || ""),
+	            nearbyStops: Array.isArray(place.nearbyStops) ? place.nearbyStops.slice(0, 4) : []
+	          };
+	        };
+	        const origin = sanitizePlace(item.routeSelection.origin);
+	        const destination = sanitizePlace(item.routeSelection.destination);
+	        if (origin && destination) {
+	          chip.routeSelection = {
+	            origin,
+	            destination,
+	            requestedDateTime: String(item.routeSelection.requestedDateTime || "now")
+	          };
+	        }
+	      }
+	      return chip;
+	    }
+
+	    function visibleChatItems() {
+	      return [...chat.children].filter(el => el !== typing).map(el => {
+	        if (el.classList.contains("message-row")) {
+	          const item = {
+	            type: "message",
+	            sender: el.classList.contains("user") ? "user" : "bot",
+	            text: el.__messageText || el.dataset.messageText || el.querySelector(".message")?.textContent || "",
+	            id: el.dataset.messageId || ""
+	          };
+	          if (el.__routeResult) item.route = el.__routeResult;
+	          return item;
+	        }
+	        if (el.classList.contains("chips")) {
+	          let items = [...el.querySelectorAll("button")]
+	            .map(button => safeJsonParse(button.dataset.item, null))
+	            .filter(Boolean);
+	          if (["payment_started", "payment_completed"].includes(ticketFlowStatus)) {
+	            items = items.filter(item => ![
+	              "ticket_has",
+	              "ticket_need",
+	              "ticket_unsure"
+	            ].includes(item.action));
+	          }
+	          if (!items.length) return null;
+	          return { type: "chips", items };
+	        }
+	        return null;
+	      }).filter(Boolean);
+	    }
+
+	    function scrollChatToBottom() {
+	      requestAnimationFrame(() => {
+	        console.log("Restoring chat scroll", chatContainer.scrollHeight);
+	        chatContainer.scrollTop = chatContainer.scrollHeight;
+	        saveChatState({ skipScrollUpdate: true });
+	      });
+	    }
+
+	    function forceScrollChatToBottom() {
+	      scrollChatToBottom();
+	      setTimeout(() => {
+	        console.log("Restoring chat scroll", chatContainer.scrollHeight);
+	        chatContainer.scrollTop = chatContainer.scrollHeight;
+	        saveChatState({ skipScrollUpdate: true });
+	      }, 100);
+	      setTimeout(() => {
+	        console.log("Restoring chat scroll", chatContainer.scrollHeight);
+	        chatContainer.scrollTop = chatContainer.scrollHeight;
+	        sessionStorage.removeItem("chatShouldScrollBottom");
+	        saveChatState({ skipScrollUpdate: true });
+	      }, 500);
+	    }
+
+	    function saveChatScrollBeforeTicketPage() {
+	      sessionStorage.setItem("chatShouldScrollBottom", "true");
+	      sessionStorage.setItem("chatScrollTop", String(chatContainer.scrollTop));
+	      sessionStorage.setItem("chatScrollHeight", String(chatContainer.scrollHeight));
+	    }
+
+	    function saveChatState(options = {}) {
+	      const state = {
+	        version: 1,
+	        sessionId: chatSessionId,
+	        selectedLanguage: currentLang(),
+	        chatScrollTop: chatContainer.scrollTop,
+	        chatScrollHeight: chatContainer.scrollHeight,
+	        scrollSavedAt: Date.now(),
+	        routeState,
+	        demoTicketState,
+	        ticketFlowStatus,
+	        selectedTicket,
+	        paymentReturnPromptShown,
+	        lastRouteResult,
+	        serverMemory: currentServerMemory,
+	        items: visibleChatItems()
+	      };
+	      localStorage.setItem(CHAT_STATE_KEY, JSON.stringify(state));
+	      if (chatSessionId) localStorage.setItem("oldenburgChatSessionId", chatSessionId);
+	      localStorage.setItem("oldenburgTicketFlowStatus", ticketFlowStatus);
+	      localStorage.setItem("oldenburgSelectedTicket", selectedTicket);
+	      localStorage.setItem("oldenburgPaymentReturnPromptShown", paymentReturnPromptShown ? "true" : "false");
+	    }
+
+	    function restoreChatFromLocalStorage() {
+	      const savedState = safeJsonParse(localStorage.getItem(CHAT_STATE_KEY), null);
+	      const savedLanguage = normalizeLanguage(savedState?.selectedLanguage || localStorage.getItem("selectedLanguage"));
+	      if (savedLanguage && ui[savedLanguage]) {
+	        language.value = savedLanguage;
+	        applyLanguage(false);
+	      }
+	      const restored = restoreChatState(savedState);
+	      chatContainer.style.scrollBehavior = "auto";
+	      chatContainer.scrollTop = chatContainer.scrollHeight;
+	      requestAnimationFrame(() => {
+	        chatContainer.scrollTop = chatContainer.scrollHeight;
+	        chatContainer.style.scrollBehavior = "";
+	      });
+	      return restored;
+	    }
+
+	    function restoreChatState(savedState) {
+	      if (!savedState || !Array.isArray(savedState.items) || savedState.items.length === 0) {
+	        return false;
+	      }
+
+	      chatSessionId = String(savedState.sessionId || chatSessionId || "");
+	      if (chatSessionId) localStorage.setItem("oldenburgChatSessionId", chatSessionId);
+	      routeState = savedState.routeState && typeof savedState.routeState === "object"
+	        ? {
+	          fromCoords: savedState.routeState.fromCoords || null,
+	          useCurrentLocation: false
+	        }
+	        : { fromCoords: null, useCurrentLocation: false };
+	      demoTicketState = savedState.demoTicketState && typeof savedState.demoTicketState === "object"
+	        ? {
+	          routeSummary: String(savedState.demoTicketState.routeSummary || ""),
+	          ticketType: String(savedState.demoTicketState.ticketType || "")
+	        }
+	        : { routeSummary: "", ticketType: "" };
+	      currentServerMemory = savedState.serverMemory || null;
+	      lastRouteResult = savedState.lastRouteResult || safeJsonParse(localStorage.getItem(LAST_ROUTE_RESULT_KEY), null);
+	      if (lastRouteResult) localStorage.setItem(LAST_ROUTE_RESULT_KEY, JSON.stringify(lastRouteResult));
+	      ticketFlowStatus = localStorage.getItem("oldenburgTicketFlowStatus") || savedState.ticketFlowStatus || ticketFlowStatus || "none";
+	      selectedTicket = localStorage.getItem("oldenburgSelectedTicket") || savedState.selectedTicket || selectedTicket || "";
+	      paymentReturnPromptShown = localStorage.getItem("oldenburgPaymentReturnPromptShown") === "true"
+	        || savedState.paymentReturnPromptShown === true
+	        || paymentReturnPromptShown;
+
+	      cancelPendingResponses();
+	      [...chat.querySelectorAll(".message-row, .chips")].forEach(el => el.remove());
+	      savedState.items.forEach(item => {
+	        if (item.type === "message") {
+	          const restoredMessage = addMessage(item.text || "", item.sender === "user" ? "user" : "bot", false, {
+	            id: item.id || newMessageId(),
+	            route: item.route || null
+	          });
+	          if (restoredMessage && item.route && item.sender !== "user") {
+	            renderRouteSummary(restoredMessage, item.route);
+	          }
+	        } else if (item.type === "chips") {
+	          let restoredItems = Array.isArray(item.items) ? item.items : [];
+	          if (["payment_started", "payment_completed"].includes(ticketFlowStatus)) {
+	            restoredItems = restoredItems.filter(chip => ![
+	              "ticket_has",
+	              "ticket_need",
+	              "ticket_unsure"
+	            ].includes(chip.action));
+	          }
+	          addChips(restoredItems, null, false);
+	        }
+	      });
+	      scrollChatToBottom();
+	      return true;
+	    }
+
+	    function clearChat() {
+	      localStorage.removeItem(CHAT_STATE_KEY);
+	      localStorage.removeItem("oldenburgChatSessionId");
+	      localStorage.removeItem("oldenburgTicketFlowStatus");
+	      localStorage.removeItem("oldenburgSelectedTicket");
+	      localStorage.removeItem("oldenburgPaymentReturnPromptShown");
+	      localStorage.removeItem(LAST_ROUTE_RESULT_KEY);
+	      if (chatSessionId) {
+	        fetch("/api/clear-session", {
+	          method: "POST",
+	          headers: { "Content-Type": "application/json" },
+	          body: JSON.stringify({ sessionId: chatSessionId })
+	        }).catch(() => {});
+	      }
+	      chatSessionId = "";
+	      currentServerMemory = null;
+	      lastRouteResult = null;
+	      demoTicketState = { routeSummary: "", ticketType: "" };
+	      ticketFlowStatus = "none";
+	      selectedTicket = "";
+	      paymentReturnPromptShown = false;
+	      resetRouteState();
+	      cancelPendingResponses();
+	      applyLanguage(true);
+	    }
+
+    const ui = {
+      en: {
+        dir: "ltr",
+        title: "Oldenburg & Bremen Transport Helper",
+        subtitle: "Friendly guidance for newcomers",
+        language: "Language",
+        statusLeft: "Oldenburg city assistant",
+        statusRight: "Online",
+        placeholder: "Ask in simple words, any language...",
+        typing: "Transport Helper is typing",
+	        note: "Routes use the VBN OTP API when configured on the server.",
+	        micReady: "Voice input ready. Tap the microphone and speak.",
+	        micListening: "Listening...",
+	        micUnsupported: "Voice input is not supported in this browser.",
+	        micError: "Voice input could not start. Please try again or type your message.",
+	        welcome: "👋 Welcome. I can help you use public transport in Oldenburg and Bremen, even if you are new here.\n\nTry asking:\n• I am at a hotel near Oldenburg railway station and need step-by-step guidance.\n• From Postenweg to Universität Oldenburg at 9:00\n• How do I get from Bremen Hauptbahnhof to my hotel?\n• Which ticket information should I check before boarding?",
+        chips: ["Plan a trip", "Tickets", "Accessibility", "Delay help"]
+      },
+      de: {
+        dir: "ltr",
+        title: "Oldenburg Transport KI",
+        subtitle: "Einfache Hilfe für Neuankommende",
+        language: "Sprache",
+        statusLeft: "Assistent für Oldenburg",
+        statusRight: "Online",
+        placeholder: "Nachricht an Oldenburg Transport KI...",
+        typing: "Oldenburg Transport KI schreibt",
+	        note: "Routen nutzen die VBN OTP API, wenn sie auf dem Server eingerichtet ist.",
+	        micReady: "Spracheingabe bereit. Tippe auf das Mikrofon und sprich.",
+	        micListening: "Ich höre zu...",
+	        micUnsupported: "Spracheingabe wird in diesem Browser nicht unterstützt.",
+	        micError: "Spracheingabe konnte nicht gestartet werden. Bitte erneut versuchen oder tippen.",
+	        welcome: "👋 Willkommen. Ich helfe dir mit Bus und Bahn in Oldenburg und Bremen, auch wenn du neu bist.\n\nDu kannst fragen:\n• Ich bin in einem Hotel nahe Oldenburg Bahnhof und brauche Schritt-für-Schritt-Hilfe.\n• Von Postenweg zur Universität Oldenburg um 9:00\n• Wie komme ich vom Bremer Hauptbahnhof zu meinem Hotel?\n• Welche Ticketinformationen muss ich vor dem Einsteigen prüfen?",
+        chips: ["Fahrt planen", "Tickets", "Barrierefreiheit", "Verspätung"]
+      },
+      ar: {
+        dir: "rtl",
+        title: "مساعد النقل في أولدنبورغ",
+        subtitle: "مساعد متعدد اللغات للنقل العام",
+        language: "اللغة",
+        statusLeft: "مساعد مدينة أولدنبورغ",
+        statusRight: "متصل",
+        placeholder: "اكتب رسالة إلى مساعد النقل...",
+        typing: "المساعد يكتب",
+	        note: "تستخدم المسارات VBN OTP API عند إعدادها على الخادم.",
+	        micReady: "الإدخال الصوتي جاهز. اضغط على الميكروفون وتحدث.",
+	        micListening: "أستمع الآن...",
+	        micUnsupported: "الإدخال الصوتي غير مدعوم في هذا المتصفح.",
+	        micError: "تعذر بدء الإدخال الصوتي. حاول مرة أخرى أو اكتب رسالتك.",
+	        welcome: "👋 أهلاً بك. أساعدك في استخدام المواصلات العامة في أولدنبورغ وبريمن حتى لو كنت جديداً هنا.\n\nيمكنك أن تسأل:\n• أنا في فندق قرب محطة أولدنبورغ وأحتاج إرشادات خطوة بخطوة.\n• من Postenweg إلى جامعة أولدنبورغ الساعة 9:00\n• كيف أصل من محطة بريمن الرئيسية إلى الفندق؟\n• ما معلومات التذاكر التي يجب أن أتحقق منها قبل الركوب؟",
+        chips: ["خطط رحلة", "التذاكر", "إتاحة الوصول", "تأخر الحافلة"]
+      },
+      tr: {
+        dir: "ltr",
+        title: "Oldenburg Ulaşım Yapay Zekâsı",
+        subtitle: "Çok dilli toplu taşıma asistanı",
+        language: "Dil",
+        statusLeft: "Oldenburg şehir asistanı",
+        statusRight: "Çevrimiçi",
+        placeholder: "Oldenburg ulaşım asistanına yaz...",
+        typing: "Oldenburg ulaşım asistanı yazıyor",
+	        note: "Rotalar sunucuda yapılandırıldığında VBN OTP API kullanır.",
+	        micReady: "Ses girişi hazır. Mikrofona dokunup konuş.",
+	        micListening: "Dinliyorum...",
+	        micUnsupported: "Ses girişi bu tarayıcıda desteklenmiyor.",
+	        micError: "Ses girişi başlatılamadı. Lütfen tekrar dene veya mesajını yaz.",
+	        welcome: "👋 Hoş geldin. Oldenburg ve Bremen’de toplu taşımayı kullanmana yardımcı olurum; yeniysen de adım adım anlatırım.\n\nŞunları sorabilirsin:\n• Oldenburg tren istasyonu yakınındaki bir oteldeyim ve adım adım yardım istiyorum.\n• Postenweg’den Oldenburg Üniversitesine saat 9:00’da\n• Bremen Hauptbahnhof’tan otelime nasıl giderim?\n• Binmeden önce hangi bilet bilgisini kontrol etmeliyim?",
+        chips: ["Yolculuk planla", "Biletler", "Erişilebilirlik", "Gecikme yardımı"]
+      },
+      uk: {
+        dir: "ltr",
+        title: "Oldenburg Transport AI",
+        subtitle: "Багатомовний помічник громадського транспорту",
+        language: "Мова",
+        statusLeft: "Помічник міста Ольденбург",
+        statusRight: "Онлайн",
+        placeholder: "Напишіть повідомлення помічнику...",
+        typing: "Помічник пише",
+	        note: "Маршрути використовують VBN OTP API, якщо його налаштовано на сервері.",
+	        micReady: "Голосове введення готове. Натисніть мікрофон і говоріть.",
+	        micListening: "Слухаю...",
+	        micUnsupported: "Голосове введення не підтримується в цьому браузері.",
+	        micError: "Не вдалося запустити голосове введення. Спробуйте ще раз або напишіть повідомлення.",
+	        welcome: "👋 Вітаю. Я допоможу користуватися громадським транспортом в Ольденбурзі та Бремені, навіть якщо ви тут уперше.\n\nСпробуйте запитати:\n• Я в готелі біля вокзалу Ольденбурга і хочу покрокові підказки.\n• З Postenweg до Університету Ольденбурга о 9:00\n• Як доїхати від Bremen Hauptbahnhof до мого готелю?\n• Яку інформацію про квиток перевірити перед посадкою?",
+        chips: ["Спланувати поїздку", "Квитки", "Доступність", "Затримка"]
+      },
+      hi: {
+        dir: "ltr",
+        title: "Oldenburg Transport AI",
+        subtitle: "बहुभाषी सार्वजनिक परिवहन सहायक",
+        language: "भाषा",
+        statusLeft: "Oldenburg शहर सहायक",
+        statusRight: "ऑनलाइन",
+        placeholder: "Oldenburg Transport AI को संदेश लिखें...",
+        typing: "Oldenburg Transport AI लिख रहा है",
+	        note: "सर्वर पर सेट होने पर मार्ग VBN OTP API का उपयोग करते हैं।",
+	        micReady: "आवाज़ से लिखना तैयार है। माइक्रोफोन दबाकर बोलें।",
+	        micListening: "सुन रहा हूँ...",
+	        micUnsupported: "इस ब्राउज़र में आवाज़ इनपुट समर्थित नहीं है।",
+	        micError: "आवाज़ इनपुट शुरू नहीं हो सका। फिर से कोशिश करें या संदेश टाइप करें।",
+	        welcome: "👋 नमस्ते। मैं Oldenburg और Bremen में सार्वजनिक परिवहन का उपयोग करने में आपकी मदद कर सकता हूँ, भले ही आप यहाँ नए हों।\n\nआप पूछ सकते हैं:\n• मैं Oldenburg रेलवे स्टेशन के पास एक होटल में हूँ और मुझे चरण-दर-चरण मार्गदर्शन चाहिए।\n• Postenweg से Universität Oldenburg सुबह 9:00 बजे\n• मैं Bremen Hauptbahnhof से अपने होटल कैसे पहुँचूँ?\n• चढ़ने से पहले मुझे कौन-सी टिकट जानकारी जाँचनी चाहिए?",
+	        chips: ["यात्रा योजना", "टिकट", "सुलभता", "देरी सहायता"]
+      }
+    };
+
+	    function normalizeLanguage(value) {
+	      const map = {
+	        English: "en",
+	        Deutsch: "de",
+	        German: "de",
+	        العربية: "ar",
+	        Arabic: "ar",
+	        Türkçe: "tr",
+	        Turkish: "tr",
+	        Українська: "uk",
+	        Ukrainian: "uk",
+	        हिन्दी: "hi",
+	        Hindi: "hi"
+	      };
+	      const normalized = map[String(value || "").trim()] || String(value || "").trim() || "en";
+	      return ui[normalized] ? normalized : "en";
+	    }
+
+	    function currentLang() {
+	      return normalizeLanguage(language.value || localStorage.getItem("selectedLanguage") || "en");
+	    }
+
+	    function activeSelectedLanguage() {
+	      return normalizeLanguage(language.value || localStorage.getItem("selectedLanguage") || "en");
+	    }
+
+	    function resetRouteState() {
+	      routeState = {
+	        fromCoords: null,
+	        useCurrentLocation: false
+	      };
+	    }
+
+	    function cancelPendingResponses() {
+	      pendingResponseTimers.forEach(item => {
+	        const timer = typeof item === "object" ? item.timer : item;
+	        clearTimeout(timer);
+	        if (item && typeof item.cancel === "function") item.cancel();
+	      });
+	      pendingResponseTimers = [];
+	      isSendingMessage = false;
+	      pendingResponseCount = 0;
+	      typing.style.display = "none";
+	    }
+
+    function applyLanguage(resetChat = true) {
+      const lang = currentLang();
+      localStorage.setItem("selectedLanguage", lang);
+      const l = ui[lang];
+      app.dir = l.dir;
+      document.documentElement.lang = lang;
+      document.getElementById("title").textContent = l.title;
+      document.getElementById("subtitle").textContent = l.subtitle;
+      document.getElementById("languageLabel").textContent = l.language;
+      document.getElementById("statusLeft").textContent = l.statusLeft;
+      document.getElementById("statusRight").textContent = l.statusRight;
+	      input.placeholder = l.placeholder;
+	      document.getElementById("typingText").textContent = l.typing;
+	      document.getElementById("note").textContent = l.note;
+	      micBtn.setAttribute("aria-label", l.micReady);
+
+	      if (resetChat) {
+	        resetRouteState();
+	        lastRouteResult = null;
+	        localStorage.removeItem(LAST_ROUTE_RESULT_KEY);
+	        cancelPendingResponses();
+	        [...chat.querySelectorAll(".message-row, .chips")].forEach(el => el.remove());
+	        addMessage(l.welcome, "bot");
+	        addChips(l.chips);
+	        saveChatState();
+	      }
+	    }
+
+    function addChips(labels, afterNode = null, persist = true) {
+      if (!Array.isArray(labels) || labels.length === 0) return null;
+      const box = document.createElement("div");
+      box.className = "chips";
+      labels.forEach(label => {
+        const item = typeof label === "string" ? { label, value: label } : label;
+        const storedItem = sanitizeChipItem(item);
+        if (!storedItem) return;
+        const btn = document.createElement("button");
+        btn.className = storedItem.external && storedItem.url ? "chip external" : "chip";
+        if (storedItem.type === "alternative_route") btn.classList.add("alternative-route");
+        btn.textContent = storedItem.label;
+        btn.dataset.item = JSON.stringify(storedItem);
+        btn.addEventListener("click", () => {
+          if (storedItem.type === "alternative_route") {
+            const matchingSummary = [...chat.querySelectorAll(`.alternative-route-card[data-itinerary-index="${storedItem.itineraryIndex}"] .alternative-route-summary`)].pop();
+            if (matchingSummary) {
+              matchingSummary.click();
+              matchingSummary.scrollIntoView({ behavior: "smooth", block: "nearest" });
+              return;
+            }
+            showAlternativeRoute(storedItem.itineraryIndex);
+            return;
+          }
+          if (storedItem.action) {
+            handleDemoTicketAction(storedItem);
+            return;
+          }
+          if (storedItem.locationSelection) {
+            sendMessage(storedItem.value || storedItem.label, { selectedLocation: storedItem.locationSelection });
+            return;
+          }
+          if (storedItem.routeSelection) {
+            sendMessage(storedItem.value || storedItem.label, { routeSelection: storedItem.routeSelection });
+            return;
+          }
+          if (storedItem.external === true) {
+            if (storedItem.url) window.open(storedItem.url, "_blank", "noopener,noreferrer");
+            return;
+          }
+          if (storedItem.value === "__current_location__") {
+            useCurrentLocation();
+            return;
+          }
+          if (storedItem.value === "__type_location_manually__") {
+            removeChips();
+            addMessage(ct("typeLocationPrompt"), "bot");
+            input.focus();
+            return;
+          }
+          sendMessage(storedItem.value);
+        });
+        box.appendChild(btn);
+      });
+      if (!box.children.length) return null;
+
+      const nextNode = afterNode && afterNode.parentNode === chat ? afterNode.nextSibling : typing;
+      chat.insertBefore(box, nextNode || typing);
+      if (persist) scrollChatToBottom();
+      if (persist) saveChatState();
+      return box;
+    }
+
+	    function removeChips(keepTicketOptions = false) {
+	      [...chat.querySelectorAll(".chips")].forEach(el => {
+	        if (keepTicketOptions) {
+	          const hasTicketOption = [...el.querySelectorAll("button")].some(btn => {
+	            const item = safeJsonParse(btn.dataset.item, {});
+	            return item.action === "ticket_option";
+	          });
+	          if (hasTicketOption) return;
+	        }
+	        el.remove();
+	      });
+	      saveChatState();
+	    }
+
+    const chatStrings = {
+      ticketSingle:      { en: "Single ticket",                         de: "Einzelticket",                    ar: "تذكرة منفردة",           tr: "Tek bilet",                   uk: "Одноразовий квиток",              hi: "एकल टिकट" },
+      ticketDay:         { en: "Day ticket",                            de: "Tageskarte",                      ar: "تذكرة يومية",             tr: "Günlük bilet",                uk: "Денний квиток",                   hi: "दिन टिकट" },
+      ticketGroup:       { en: "Group ticket",                          de: "Gruppenfahrkarte",                ar: "تذكرة جماعية",            tr: "Grup bileti",                 uk: "Груповий квиток",                 hi: "समूह टिकट" },
+      ticketStudentInfo: { en: "Student/Semester ticket info",          de: "Studierenden-/Semesterticket",    ar: "معلومات تذكرة الطلاب",    tr: "Öğrenci/Dönem bileti",        uk: "Студентський/Семестровий квиток", hi: "छात्र/सेमेस्टर टिकट जानकारी" },
+      planAnotherTrip:   { en: "Plan another trip",                     de: "Weitere Fahrt planen",            ar: "تخطيط رحلة أخرى",         tr: "Başka bir yolculuk planla",   uk: "Спланувати ще одну поїздку",      hi: "दूसरी यात्रा की योजना बनाएं" },
+      ticketInfo:        { en: "Ticket information",                    de: "Ticketinformationen",             ar: "معلومات التذاكر",          tr: "Bilet bilgisi",               uk: "Інформація про квитки",           hi: "टिकट जानकारी" },
+      clearChat:         { en: "Clear chat",                            de: "Chat löschen",                   ar: "مسح المحادثة",             tr: "Sohbeti temizle",             uk: "Очистити чат",                    hi: "चैट साफ़ करें" },
+      typeLocationPrompt:{ en: "Enter your starting address, nearby stop, landmark, or building name.", de: "Geben Sie Ihre Startadresse, eine nahe Haltestelle, ein Wahrzeichen oder einen Gebäudenamen ein.", ar: "أدخل عنوان البداية أو محطة قريبة أو معلماً أو اسم مبنى.", tr: "Başlangıç adresinizi, yakın bir durağı, yer işaretini veya bina adını girin.", uk: "Введіть адресу початку, найближчу зупинку, орієнтир або назву будівлі.", hi: "अपना शुरुआती पता, पास का स्टॉप, स्थलचिह्न या इमारत का नाम दर्ज करें।" },
+      routeSelected:     { en: "Route selected in chatbot",             de: "Im Chatbot ausgewählte Route",    ar: "المسار المحدد في المساعد",  tr: "Chatbot'ta seçilen rota",     uk: "Маршрут, вибраний у чатботі",      hi: "चैटबॉट में चुना गया मार्ग" },
+      selectedTicket:    { en: "Selected ticket",                       de: "Ausgewähltes Ticket",            ar: "التذكرة المحددة",          tr: "Seçilen bilet",              uk: "Вибраний квиток",                 hi: "चुना गया टिकट" },
+      missingAltRoute:   { en: "I cannot find that saved alternative route anymore. Please ask for the route again.", de: "Ich finde diese gespeicherte alternative Route nicht mehr. Bitte frage die Route erneut an.", ar: "لم أعد أجد هذا المسار البديل المحفوظ. يرجى طلب المسار مرة أخرى.", tr: "Kaydedilen alternatif rotayı artık bulamıyorum. Lütfen rotayı tekrar isteyin.", uk: "Я більше не можу знайти цей збережений альтернативний маршрут. Запитайте маршрут ще раз.", hi: "मैं वह सहेजा गया वैकल्पिक मार्ग अब नहीं ढूंढ पा रहा हूँ। कृपया मार्ग फिर से पूछें।" },
+      requestFailed:     { en: "Sorry, I could not process that safely right now.", de: "Entschuldigung, ich konnte das gerade nicht sicher verarbeiten.", ar: "عذراً، لم أتمكن من معالجة ذلك بأمان الآن.", tr: "Üzgünüm, bunu şu anda güvenli şekilde işleyemedim.", uk: "Вибачте, я не зміг безпечно обробити це зараз.", hi: "माफ करें, मैं अभी इसे सुरक्षित रूप से संसाधित नहीं कर पाया।" },
+      couldNotProcessRequest: { en: "Sorry, I could not process that request. Please try again with a start and destination.", de: "Entschuldigung, ich konnte diese Anfrage nicht verarbeiten. Bitte versuchen Sie es mit Start und Ziel erneut.", ar: "عذراً، لم أتمكن من معالجة هذا الطلب. يرجى المحاولة مع نقطة بداية ووجهة.", tr: "Üzgünüm, bu isteği işleyemedim. Lütfen başlangıç ve hedef ile tekrar deneyin.", uk: "Вибачте, я не зміг обробити цей запит. Спробуйте ще раз із початком і пунктом призначення.", hi: "माफ करें, मैं यह अनुरोध संसाधित नहीं कर पाया। कृपया शुरुआत और गंतव्य के साथ फिर कोशिश करें।" },
+      routeProcessingError: { en: "Sorry, something went wrong while planning that route. Please try again.", de: "Entschuldigung, bei der Routenplanung ist etwas schiefgelaufen. Bitte versuchen Sie es erneut.", ar: "عذراً، حدث خطأ أثناء تخطيط المسار. يرجى المحاولة مرة أخرى.", tr: "Üzgünüm, rota planlanırken bir şeyler ters gitti. Lütfen tekrar deneyin.", uk: "Вибачте, під час планування маршруту сталася помилка. Спробуйте ще раз.", hi: "माफ करें, मार्ग योजना बनाते समय कुछ गलत हुआ। कृपया फिर कोशिश करें।" },
+      welcomeBack:       { en: "Welcome back. Would you like to plan another trip?", de: "Willkommen zurück. Möchten Sie eine weitere Fahrt planen?", ar: "مرحباً بعودتك. هل تريد تخطيط رحلة أخرى؟", tr: "Tekrar hoş geldiniz. Başka bir yolculuk planlamak ister misiniz?", uk: "Ласкаво просимо назад. Хочете спланувати ще одну поїздку?", hi: "वापस आने पर स्वागत है। क्या आप एक और यात्रा की योजना बनाना चाहते हैं?" },
+      whereStart:        { en: "Where are you starting from and where do you want to go?", de: "Von wo möchten Sie starten und wohin wollen Sie fahren?", ar: "من أين تبدأ وإلى أين تريد الذهاب؟", tr: "Nereden başlıyorsunuz ve nereye gitmek istiyorsunuz?", uk: "Звідки ви хочете їхати і куди?", hi: "आप कहाँ से शुरू करना चाहते हैं और कहाँ जाना चाहते हैं?" },
+      ticketHasMsg:      { en: "Great. Keep your valid ticket ready before boarding. You can continue with the route steps above.", de: "Prima. Halten Sie Ihr gültiges Ticket bereit. Sie können mit den Routenschritten oben fortfahren.", ar: "ممتاز. احتفظ بتذكرتك الصالحة جاهزة قبل الصعود.", tr: "Harika. Biletinizi hazır bulundurun. Yukarıdaki rota adımlarına devam edebilirsiniz.", uk: "Чудово. Тримайте дійсний квиток готовим. Ви можете продовжити за кроками маршруту вище.", hi: "बढ़िया। चढ़ने से पहले वैध टिकट तैयार रखें। आप ऊपर दिए मार्ग के चरण जारी रख सकते हैं।" },
+      ticketUnsureMsg:   { en: "If you are not sure, check your existing ticket or semester ticket rules before boarding. You can also select a ticket type below.", de: "Wenn Sie unsicher sind, prüfen Sie Ihr Ticket vor dem Einsteigen. Sie können auch unten einen Tickettyp auswählen.", ar: "إذا لم تكن متأكداً، تحقق من تذكرتك قبل الصعود. يمكنك أيضاً اختيار نوع تذكرة.", tr: "Emin değilseniz biletinizi kontrol edin. Aşağıdan bir bilet türü de seçebilirsiniz.", uk: "Якщо не впевнені, перевірте квиток. Можна вибрати тип квитка нижче.", hi: "यदि निश्चित नहीं हैं, चढ़ने से पहले टिकट जाँचें। नीचे एक प्रकार भी चुन सकते हैं।" },
+      selectTicket:      { en: "Select ticket",                         de: "Ticket auswählen",                ar: "اختر تذكرة",               tr: "Bilet seçin",                 uk: "Виберіть квиток",                 hi: "टिकट चुनें" },
+      ticketSelected:    { en: "selected. I opened the ticket page for you.", de: "ausgewählt. Ich habe die Ticketseite für Sie geöffnet.", ar: "تم الاختيار. فتحت صفحة التذكرة.", tr: "seçildi. Bilet sayfasını açtım.", uk: "вибрано. Я відкрив сторінку квитка.", hi: "चुना गया। मैंने टिकट पृष्ठ खोला है।" },
+      useCurrentLoc:     { en: "Use my current location",               de: "Meinen Standort nutzen",          ar: "استخدام موقعي الحالي",     tr: "Mevcut konumumu kullan",      uk: "Використати мою локацію",         hi: "मेरा वर्तमान स्थान उपयोग करें" },
+      typeManually:      { en: "Enter starting address",                de: "Startadresse eingeben",           ar: "أدخل عنوان البداية",       tr: "Başlangıç adresini gir",      uk: "Ввести адресу початку",           hi: "शुरुआती पता दर्ज करें" },
+      serverDown:        { en: "The server is not reachable right now. Please check that the app is running and try again.", de: "Der Server ist gerade nicht erreichbar. Bitte prüfe, ob die App läuft, und versuche es erneut.", ar: "الخادم غير متاح الآن. يرجى التأكد من تشغيل التطبيق والمحاولة مجدداً.", tr: "Sunucu şu anda erişilemiyor. Uygulamanın çalıştığını kontrol edin ve tekrar deneyin.", uk: "Сервер зараз недоступний. Перевірте, чи запущений застосунок, і спробуйте знову.", hi: "सर्वर अभी पहुँच योग्य नहीं है। ऐप चल रही है यह जाँचें और फिर कोशिश करें।" }
+      ,findingBestRoute: { en: "Finding the best route...", de: "Beste Route wird gesucht...", ar: "جارٍ البحث عن أفضل مسار...", tr: "En iyi rota aranıyor...", uk: "Шукаю найкращий маршрут...", hi: "सबसे अच्छा रास्ता खोजा जा रहा है..." }
+    };
+
+    function ct(key) {
+      const dict = chatStrings[key];
+      if (!dict) {
+        console.warn("[i18n Missing Key]", { key, selectedLanguage: currentLang() });
+        return key;
+      }
+      return dict[currentLang()] || dict.en;
+    }
+
+	    function ticketOptionButtons() {
+	      return [
+	        { label: ct("ticketSingle"),      value: ct("ticketSingle"),      action: "ticket_option" },
+	        { label: ct("ticketDay"),         value: ct("ticketDay"),         action: "ticket_option" },
+	        { label: ct("ticketGroup"),       value: ct("ticketGroup"),       action: "ticket_option" },
+	        { label: ct("ticketStudentInfo"), value: ct("ticketStudentInfo"), action: "ticket_option" }
+	      ];
+	    }
+
+	    function continuationButtons() {
+	      return [
+	        { label: ct("planAnotherTrip"), value: ct("planAnotherTrip"), action: "plan_another_trip" },
+	        { label: ct("useCurrentLoc"),   value: "__current_location__" },
+	        { label: ct("ticketInfo"),      value: "https://www.vbn.de/tickets/ticketuebersicht", url: "https://www.vbn.de/tickets/ticketuebersicht", external: true },
+	        { label: ct("clearChat"),       value: ct("clearChat"),       action: "clear_chat" }
+	      ];
+	    }
+
+	    function setTicketFlow(status, ticket = selectedTicket) {
+	      ticketFlowStatus = status;
+	      selectedTicket = ticket || "";
+	      paymentReturnPromptShown = status === "payment_started" || status === "payment_completed"
+	        ? paymentReturnPromptShown
+	        : false;
+	      saveChatState();
+	    }
+
+	    function resetTicketFlow() {
+	      ticketFlowStatus = "none";
+	      selectedTicket = "";
+	      demoTicketState.ticketType = "";
+	      paymentReturnPromptShown = false;
+	      saveChatState();
+	    }
+
+	    function looksLikeNewRouteRequest(text) {
+	      return /\b(from|to|go to|want to go|route|trip|plan|directions?|how do i get|i am in|i'm in|im in|i am at|i'm at|salbeistra|lappan|hauptbahnhof|universit|zob)\b/i.test(String(text || ""));
+	    }
+
+	    function showPaymentReturnPrompt(force = false) {
+	      if (!["payment_started", "payment_completed"].includes(ticketFlowStatus)) return;
+	      if (paymentReturnPromptShown && !force) return;
+	      paymentReturnPromptShown = true;
+	      removeChips(true);  // preserve ticket-option rows so user can select a different ticket
+	      addMessage(ct("welcomeBack"), "bot");
+	      addChips(continuationButtons());
+	      saveChatState();
+	    }
+
+	    function startAnotherTrip() {
+	      removeChips();
+	      addMessage(ct("planAnotherTrip"), "user");
+	      if (chatSessionId) {
+	        fetch("/api/clear-session", {
+	          method: "POST",
+	          headers: { "Content-Type": "application/json" },
+	          body: JSON.stringify({ sessionId: chatSessionId })
+	        }).catch(() => {});
+	      }
+	      chatSessionId = "";
+	      localStorage.removeItem("oldenburgChatSessionId");
+	      currentServerMemory = null;
+	      lastRouteResult = null;
+	      localStorage.removeItem(LAST_ROUTE_RESULT_KEY);
+	      resetRouteState();
+	      resetTicketFlow();
+	      addMessage(ct("whereStart"), "bot");
+	      addChips([
+	        { label: ct("useCurrentLoc"), value: "__current_location__" },
+	        { label: ct("typeManually"),  value: "__type_location_manually__" }
+	      ]);
+	    }
+
+	    function ticketParamValue(ticketType) {
+	      const normalized = String(ticketType || "").toLowerCase();
+	      if (normalized.includes("single")) return "single";
+	      if (normalized.includes("day")) return "day";
+	      if (normalized.includes("group")) return "group";
+	      if (normalized.includes("student") || normalized.includes("semester")) return "student";
+	      return normalized.replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "selected";
+	    }
+
+	    function closePaymentModal() {
+	      paymentModal.classList.remove("open");
+	      paymentModal.setAttribute("aria-hidden", "true");
+	      modalPaymentForm.reset();
+	      modalPaymentConfirmation.style.display = "none";
+	      scrollChatToBottom();
+	    }
+
+	    function openPaymentModal(ticketType = demoTicketState.ticketType) {
+	      modalRouteSummary.textContent = demoTicketState.routeSummary || ct("routeSelected");
+	      modalTicketType.textContent = ticketType || ct("selectedTicket");
+	      modalPaymentConfirmation.style.display = "none";
+	      paymentModal.classList.add("open");
+	      paymentModal.setAttribute("aria-hidden", "false");
+	      paymentModalClose.focus();
+	    }
+
+	    function openMockPayment(ticketType = demoTicketState.ticketType) {
+	      const params = new URLSearchParams({
+	        route: demoTicketState.routeSummary || ct("routeSelected"),
+	        ticket: ticketParamValue(ticketType)
+	      });
+	      const ticketUrl = `mock-payment.html?${params.toString()}`;
+	      console.log("Opening ticket page without leaving chatbot", ticketUrl);
+	      ticketFlowStatus = "payment_started";
+	      paymentReturnPromptShown = false;
+	      saveChatState();
+	      const opened = window.open(ticketUrl, "_blank", "noopener,noreferrer");
+	      // noopener makes some browsers return null even on success.
+	      // If focus stayed on this page after 250 ms, the tab was blocked → fall back to modal.
+	      setTimeout(() => {
+	        if (!opened && document.hasFocus()) {
+	          openPaymentModal(ticketType);
+	        }
+	      }, 250);
+	    }
+
+	    function handleDemoTicketAction(item) {
+	      removeChips(item.action === "ticket_option");  // keep ticket-option row so user can pick a different ticket
+	      addMessage(item.label, "user");
+
+	      if (item.action === "ticket_has") {
+	        setTicketFlow("none", "");
+	        addMessage(ct("ticketHasMsg"), "bot");
+	        addChips(continuationButtons());
+	        return;
+	      }
+
+	      if (item.action === "ticket_unsure") {
+	        setTicketFlow("selecting_ticket", selectedTicket);
+	        addMessage(ct("ticketUnsureMsg"), "bot");
+	        addChips(ticketOptionButtons());
+	        return;
+	      }
+
+	      if (item.action === "ticket_need") {
+	        setTicketFlow("selecting_ticket", selectedTicket);
+	        addMessage(ct("selectTicket"), "bot");
+	        addChips(ticketOptionButtons());
+	        return;
+	      }
+
+	      if (item.action === "ticket_option") {
+	        demoTicketState.ticketType = item.value || item.label;
+	        selectedTicket = demoTicketState.ticketType;
+	        setTicketFlow("payment_started", selectedTicket);
+	        addMessage(`${demoTicketState.ticketType} ${ct("ticketSelected")}`, "bot");
+	        openMockPayment(demoTicketState.ticketType);
+	        return;
+	      }
+
+	      if (item.action === "plan_another_trip") {
+	        startAnotherTrip();
+	        return;
+	      }
+
+	      if (item.action === "clear_chat") {
+	        clearChat();
+	      }
+	    }
+
+    function attachRouteToMessage(row, route) {
+      if (!row || !route || typeof route !== "object") return;
+      row.__routeResult = route;
+    }
+
+    function addMessage(text, sender = "bot", persist = true, metadata = {}) {
+      const id = metadata.id || newMessageId();
+      const existing = id
+        ? [...chat.querySelectorAll(".message-row")].find(row => row.dataset.messageId === id)
+        : null;
+      if (existing) return existing;
+      const row = document.createElement("div");
+      row.className = `message-row ${sender}`;
+      row.dataset.messageId = id;
+      row.__messageText = String(text || "");
+      row.dataset.messageText = row.__messageText;
+      const avatar = document.createElement("div");
+      avatar.className = "avatar";
+      avatar.setAttribute("aria-hidden", "true");
+      avatar.textContent = sender === "user" ? "👤" : "🚌";
+      const bubble = document.createElement("div");
+      bubble.className = "message";
+      bubble.textContent = text;
+      row.appendChild(avatar);
+      row.appendChild(bubble);
+      attachRouteToMessage(row, metadata.route);
+      chat.insertBefore(row, typing);
+      if (persist) scrollChatToBottom();
+      if (persist) saveChatState();
+      return row;
+    }
+
+	    function formatRouteClock(value) {
+	      if (!value) return "";
+	      const lang = activeSelectedLanguage();
+	      const localeMap = { de: "de-DE", ar: "ar-SA", tr: "tr-TR", uk: "uk-UA", hi: "hi-IN", en: "en-US" };
+	      const hour12 = lang !== "de" && lang !== "tr" && lang !== "uk" && lang !== "hi";
+	      return new Intl.DateTimeFormat(localeMap[lang] || "en-US", {
+	        hour: "numeric", minute: "2-digit", hour12
+	      }).format(new Date(value));
+	    }
+
+	    function transitModeName(mode) {
+	      if (mode === "TRAM") return "Tram";
+	      if (mode === "BUS") return "Bus";
+	      if (mode === "RAIL" || mode === "TRAIN") return "Train";
+	      return mode || "Transit";
+	    }
+
+	    function legPlaceName(place, fallback) {
+	      const name = place?.name || "";
+	      if (!name || name === "Origin") return fallback;
+	      if (name === "Destination") return "your destination";
+	      return name;
+	    }
+
+	    function stopNameForInstruction(place, fallback) {
+	      const name = legPlaceName(place, fallback);
+	      return name ? `"${name}"` : "the stop";
+	    }
+
+	    function legWalkingMinutes(leg) {
+	      const start = Number(leg.departure);
+	      const end = Number(leg.arrival);
+	      if (Number.isFinite(start) && Number.isFinite(end) && end > start) {
+	        return Math.max(1, Math.round((end - start) / 60000));
+	      }
+	      return Math.max(1, Math.round((Number(leg.distanceMeters) || 0) / 80));
+	    }
+
+	    function distanceText(meters) {
+	      const value = Math.round(Number(meters) || 0);
+	      if (!value) return "";
+	      const lang = currentLang();
+	      const around = { de: "ca.", ar: "حوالي", tr: "yaklaşık", uk: "прибл.", hi: "लगभग", en: "around" }[lang] || "around";
+	      if (value >= 1000) return `, ${around} ${(value / 1000).toFixed(1)} km`;
+	      return `, ${around} ${value} m`;
+	    }
+
+	    function firstTransitLeg(itinerary) {
+	      return itinerary?.legs?.find(leg => leg.mode !== "WALK") || null;
+	    }
+
+	    function lastTransitLeg(itinerary) {
+	      return [...(itinerary?.legs || [])].reverse().find(leg => leg.mode !== "WALK") || null;
+	    }
+
+	    function directionText(leg) {
+	      const lang = currentLang();
+	      const headsign = String(leg.headsign || "").trim();
+	      const towardsMap = { de: "Richtung", ar: "باتجاه", tr: "yönünde", uk: "у напрямку", hi: "की ओर", en: "towards" };
+	      const towards = towardsMap[lang] || "towards";
+	      if (headsign) return lang === "tr" ? `${headsign} ${towards}` : `${towards} ${headsign}`;
+	      const destination = legPlaceName(leg.to, "");
+	      if (destination && destination !== "your destination") {
+	        return lang === "tr" ? `${destination} ${towards}` : `${towards} ${destination}`;
+	      }
+	      return { de: "in der auf dem Display angezeigten Richtung", ar: "في الاتجاه المعروض على لوحة المركبة", tr: "araç ekranındaki yönde", uk: "у напрямку на табло", hi: "वाहन के डिस्प्ले पर दिखाई दिशा में", en: "in the direction shown on the vehicle display" }[lang] || "in the direction shown on the vehicle display";
+	    }
+
+	    function formatWalkStep(leg, routeResult, index, legs) {
+	      const lang = currentLang();
+	      const minutes = legWalkingMinutes(leg);
+	      const minWord = { de: minutes === 1 ? "Minute" : "Minuten", ar: "دقيقة", tr: "dakika", uk: "хвилин", hi: "मिनट", en: minutes === 1 ? "minute" : "minutes" }[lang] || (minutes === 1 ? "minute" : "minutes");
+	      const distance = distanceText(leg.distanceMeters);
+	      const nextTransit = legs.slice(index + 1).find(item => item.mode !== "WALK");
+	      const previousTransit = [...legs.slice(0, index)].reverse().find(item => item.mode !== "WALK");
+	      const from = legPlaceName(leg.from, routeResult?.query?.start || "your location");
+	      const to = legPlaceName(leg.to, routeResult?.query?.destination || "your destination");
+	      const walkWord = { de: "Gehen Sie etwa", ar: "امشِ حوالي", tr: "Yaklaşık", uk: "Пройдіть приблизно", hi: "लगभग", en: "Walk about" }[lang] || "Walk about";
+	      const toStop = { de: "zur Haltestelle", ar: "إلى المحطة", tr: "durağına", uk: "до зупинки", hi: "स्टॉप तक", en: "to the stop" }[lang] || "to the stop";
+	      const toNextStop = { de: "zur nächsten Haltestelle", ar: "إلى المحطة التالية", tr: "sonraki durağa", uk: "до наступної зупинки", hi: "अगले स्टॉप तक", en: "to the next stop" }[lang] || "to the next stop";
+
+	      if (nextTransit && !previousTransit) {
+	        return `${walkWord} ${minutes} ${minWord}${distance} ${toStop} ${stopNameForInstruction(nextTransit.from, to)}.`;
+	      }
+	      if (nextTransit) {
+	        return `${walkWord} ${minutes} ${minWord}${distance} ${toNextStop} ${stopNameForInstruction(nextTransit.from, to)}.`;
+	      }
+	      if (previousTransit) {
+	        return { de: `Nach dem Aussteigen gehen Sie etwa ${minutes} ${minWord}${distance} zu Ihrem Ziel.`, ar: `بعد النزول، امشِ حوالي ${minutes} ${minWord}${distance} إلى وجهتك.`, tr: `İndikten sonra hedefinize yaklaşık ${minutes} ${minWord}${distance} yürüyün.`, uk: `Після виходу пройдіть приблизно ${minutes} ${minWord}${distance} до місця призначення.`, hi: `उतरने के बाद, मंजिल तक लगभग ${minutes} ${minWord}${distance} पैदल चलें।`, en: `After you get off, walk about ${minutes} ${minWord}${distance} to your destination.` }[lang] || `After you get off, walk about ${minutes} ${minWord}${distance} to your destination.`;
+	      }
+	      return { de: `Gehen Sie etwa ${minutes} ${minWord}${distance} von ${from} nach ${to}.`, ar: `امشِ حوالي ${minutes} ${minWord}${distance} من ${from} إلى ${to}.`, tr: `${from}'dan ${to}'ya yaklaşık ${minutes} ${minWord}${distance} yürüyün.`, uk: `Пройдіть приблизно ${minutes} ${minWord}${distance} від ${from} до ${to}.`, hi: `${from} से ${to} तक लगभग ${minutes} ${minWord}${distance} पैदल चलें।`, en: `Walk about ${minutes} ${minWord}${distance} from ${from} to ${to}.` }[lang] || `Walk about ${minutes} ${minWord}${distance} from ${from} to ${to}.`;
+	    }
+
+	    function formatDestinationWalkNotice(notice) {
+	      const lang = currentLang();
+	      const minutes = notice.walkMinutes;
+	      const minWord = { de: minutes === 1 ? "Minute" : "Minuten", ar: "دقيقة", tr: "dakika", uk: "хвилин", hi: "मिनट", en: minutes === 1 ? "minute" : "minutes" }[lang] || (minutes === 1 ? "minute" : "minutes");
+	      const { lastStopName: stop, destinationName: destination } = notice;
+	      return { de: `Die schnellste Route endet an der Haltestelle ${stop}, dann gehen Sie ${minutes} ${minWord} zu Fuß bis ${destination}.`, ar: `أسرع طريق ينزل عند محطة ${stop}، ثم اسر ${minutes} ${minWord} إلى ${destination}.`, tr: `En hızlı rota ${stop} durağında biter, sonra ${destination}'a ${minutes} ${minWord} yürüyün.`, uk: `Найшвидший маршрут закінчується на зупинці ${stop}, потім йдіть ${minutes} ${minWord} до ${destination}.`, hi: `सबसे तेज़ रूट ${stop} स्टॉप पर उतरता है, फिर ${destination} तक ${minutes} ${minWord} पैदल चलें।`, en: `Fastest route gets off at ${stop}, then walk ${minutes} ${minWord} to ${destination}.` }[lang]
+	        || `Fastest route gets off at ${stop}, then walk ${minutes} ${minWord} to ${destination}.`;
+	    }
+
+	    function formatTransitStep(leg) {
+	      const lang = currentLang();
+	      const mode = transitModeName(leg.mode);
+	      const route = leg.route ? ` ${leg.route}` : "";
+	      const from = stopNameForInstruction(leg.from, "the stop");
+	      const to = stopNameForInstruction(leg.to, "your stop");
+	      const dir = directionText(leg);
+	      const dep = formatRouteClock(leg.departure);
+	      const arr = formatRouteClock(leg.arrival);
+	      const takeWord = { de: "Nehmen Sie", ar: "استقل", tr: "Binin:", uk: "Сядьте на", hi: "बोर्ड करें:", en: "Take" }[lang] || "Take";
+	      const atTime = { de: "um", ar: "الساعة", tr: "saat", uk: "о", hi: "पर", en: "at" }[lang] || "at";
+	      const fromWord = { de: "von", ar: "من", tr: "'den", uk: "від", hi: "से", en: "from" }[lang] || "from";
+	      const getOff = { de: `Steigen Sie an ${to} um ${arr} aus.`, ar: `انزل عند ${to} الساعة ${arr}.`, tr: `${to} durağında saat ${arr}'de inin.`, uk: `Вийдіть на ${to} о ${arr}.`, hi: `${to} पर ${arr} पर उतरें।`, en: `Get off at ${to} at ${arr}.` }[lang] || `Get off at ${to} at ${arr}.`;
+	      return `${takeWord} ${mode}${route} ${atTime} ${dep} ${fromWord} ${from} ${dir}. ${getOff}`;
+	    }
+
+	    function formatAlternativeRouteReply(routeResult, itinerary) {
+	      const lang = currentLang();
+	      const firstTransit = firstTransitLeg(itinerary);
+	      const lastTransit = lastTransitLeg(itinerary);
+	      const firstLeg = itinerary.legs?.[0];
+	      const lastLeg = itinerary.legs?.[itinerary.legs.length - 1];
+	      const routeName = firstTransit
+	        ? `${transitModeName(firstTransit.mode)} ${firstTransit.route || ""}`.trim()
+	        : ct("ticketStudentInfo") === "Student/Semester ticket info" ? "Walking route" : { de: "Fußweg", ar: "طريق مشي", tr: "Yürüme rotası", uk: "Пішохідний маршрут", hi: "पैदल मार्ग", en: "Walking route" }[lang] || "Walking route";
+	      const altRouteLabel = { de: `Alternative Route: ${routeName}`, ar: `طريق بديل: ${routeName}`, tr: `Alternatif rota: ${routeName}`, uk: `Альтернативний маршрут: ${routeName}`, hi: `वैकल्पिक मार्ग: ${routeName}`, en: `Alternative route: ${routeName}` }[lang] || `Alternative route: ${routeName}`;
+	      const leaveAt = { de: `Abfahrt um ${formatRouteClock(itinerary.startTime)}.`, ar: `المغادرة الساعة ${formatRouteClock(itinerary.startTime)}.`, tr: `Hareket saati: ${formatRouteClock(itinerary.startTime)}.`, uk: `Відправлення о ${formatRouteClock(itinerary.startTime)}.`, hi: `${formatRouteClock(itinerary.startTime)} पर निकलें।`, en: `Leave at ${formatRouteClock(itinerary.startTime)}.` }[lang] || `Leave at ${formatRouteClock(itinerary.startTime)}.`;
+	      const lines = [altRouteLabel, "", leaveAt];
+
+	      if (firstTransit && firstLeg?.mode !== "WALK") {
+	        const startAtStop = { de: `Beginnen Sie an der Haltestelle ${stopNameForInstruction(firstTransit.from, routeResult?.query?.start || "your location")}.`, ar: `ابدأ عند المحطة ${stopNameForInstruction(firstTransit.from, routeResult?.query?.start || "your location")}.`, tr: `${stopNameForInstruction(firstTransit.from, routeResult?.query?.start || "your location")} durağından başlayın.`, uk: `Починайте на зупинці ${stopNameForInstruction(firstTransit.from, routeResult?.query?.start || "your location")}.`, hi: `स्टॉप ${stopNameForInstruction(firstTransit.from, routeResult?.query?.start || "your location")} से शुरू करें।`, en: `Start at the stop ${stopNameForInstruction(firstTransit.from, routeResult?.query?.start || "your location")}.` }[lang] || `Start at the stop ${stopNameForInstruction(firstTransit.from, routeResult?.query?.start || "your location")}.`;
+	        lines.push(startAtStop);
+	      }
+
+	      (itinerary.legs || []).forEach((leg, index) => {
+	        lines.push(leg.mode === "WALK"
+	          ? formatWalkStep(leg, routeResult, index, itinerary.legs)
+	          : formatTransitStep(leg));
+	      });
+
+	      if (!itinerary.legs?.some(leg => leg.mode === "WALK")) {
+	        lines.push({ de: "Für diese Route wird kein Fußweg ausgewiesen.", ar: "لا يلزم المشي بين المحطات.", tr: "Bu rota için yürüme gerekmez.", uk: "Пішохідних відрізків немає.", hi: "इस मार्ग में पैदल चलना नहीं है।", en: "You should not need any mapped walking between the stops for this route." }[lang] || "You should not need any mapped walking between the stops for this route.");
+	      } else if (lastTransit && lastLeg?.mode !== "WALK") {
+	        lines.push({ de: "Der letzte Fußweg ist sehr kurz.", ar: "المشي الأخير قصير جداً.", tr: "Son yürüyüş çok kısa.", uk: "Остання пішохідна частина дуже коротка.", hi: "अंतिम पैदल मार्ग बहुत छोटा है.", en: "After you get off, the final walk is shown as 0 m or very short." }[lang] || "After you get off, the final walk is shown as 0 m or very short.");
+	      }
+
+	      const arriveAround = { de: `Ankunft gegen ${formatRouteClock(itinerary.endTime)}.`, ar: `الوصول حوالي ${formatRouteClock(itinerary.endTime)}.`, tr: `Tahmini varış: ${formatRouteClock(itinerary.endTime)}.`, uk: `Прибуття приблизно о ${formatRouteClock(itinerary.endTime)}.`, hi: `लगभग ${formatRouteClock(itinerary.endTime)} पर पहुँचें।`, en: `Arrive around ${formatRouteClock(itinerary.endTime)}.` }[lang] || `Arrive around ${formatRouteClock(itinerary.endTime)}.`;
+	      lines.push(arriveAround);
+	      const transfers = Number(itinerary.transfers) || 0;
+	      if (transfers > 0) {
+	        const tStr = transfers === 1 ? { de: "1 Umstieg", ar: "تبديل واحد", tr: "1 aktarma", uk: "1 пересадка", hi: "1 बदलाव", en: "1 transfer" }[lang] : { de: `${transfers} Umstiege`, ar: `${transfers} تبديلات`, tr: `${transfers} aktarma`, uk: `${transfers} пересадки`, hi: `${transfers} बदलाव`, en: `${transfers} transfers` }[lang];
+	        const extraTime = { de: "Etwas extra Zeit am Umstieg einplanen.", ar: "أعطِ نفسك وقتاً إضافياً.", tr: "Aktarmada biraz fazla süre bırakın.", uk: "Залиште трохи більше часу.", hi: "थोड़ा अतिरिक्त समय रखें.", en: "Give yourself a little extra time at the transfer stop." }[lang] || "Give yourself a little extra time at the transfer stop.";
+	        lines.push(`${tStr}. ${extraTime}`);
+	      } else {
+	        lines.push({ de: "Kein Umstieg.", ar: "بدون تبديل.", tr: "Aktarma yok.", uk: "Без пересадки.", hi: "कोई बदलाव नहीं.", en: "No transfer needed." }[lang] || "No transfer needed.");
+	      }
+
+	      return lines.join("\n");
+	    }
+
+	    function showAlternativeRoute(itineraryIndex) {
+	      const stored = lastRouteResult || safeJsonParse(localStorage.getItem(LAST_ROUTE_RESULT_KEY), null);
+	      const index = Number(itineraryIndex);
+	      const itinerary = stored?.itineraries?.[index];
+	      if (!itinerary) {
+	        addMessage(ct("missingAltRoute"), "bot");
+	        return;
+	      }
+	      lastRouteResult = stored;
+	      addMessage(formatAlternativeRouteReply(stored, itinerary), "bot");
+	    }
+
+	    function t(lang, key) {
+	      const labels = {
+	        en: {
+	          currentLocationError: "I could not detect your location. Please type a nearby street, stop, or landmark.",
+	          currentLocationDenied: "Location permission was blocked. Please enable location access or type a nearby street or stop.",
+	          currentLocationPending: "Finding your current location...",
+	          currentLocationFound: "I found your location. I’ll use the nearest suitable stop and guide you from there.",
+	          openWalkingMap: "Open walking map",
+	          walkingMapUnavailable: "Map not available for this walking section.",
+	          openInMaps: "Open in Maps",
+	          routeIntro: "👋 Welcome! I'll keep it simple.",
+	          recommendedRoute: "Recommended route",
+	          recommendedWalk: "Recommended: Walk",
+	          easiestShortTrip: "Walking is the easiest option for this short trip",
+	          walkingIsEasiest: "Walking is the easiest option for this short trip.",
+	          aboutMinutes: "About {minutes} min",
+	          aroundMeters: "around {meters} m",
+	          publicTransportOption: "You can also take public transport",
+	          youCanAlsoTakePublicTransport: "You can also take public transport",
+	          validTicketQ: "Do you already have a valid ticket for this trip?",
+	          allowExtraTime: "allow extra time",
+	          showOtherBusesForThisPart: "Other buses for this part",
+	          hideOtherBusesForThisPart: "Hide other buses",
+	          searchingOtherBuses: "Searching other buses...",
+	          alsoPossibleForThisSection: "Also possible for this section",
+	          otherOptions: "Other options",
+	          showRouteDetails: "Show route details",
+	          hideRouteDetails: "Hide route details",
+	          walkFromStopToDestination: "from {from} to {to}"
+	        },
+	        de: {
+	          currentLocationError: "Ich konnte deinen Standort nicht erkennen. Bitte tippe eine nahe Straße, Haltestelle oder ein Wahrzeichen ein.",
+	          currentLocationDenied: "Der Standortzugriff wurde blockiert. Bitte aktiviere den Standortzugriff oder tippe eine nahe Straße oder Haltestelle ein.",
+	          currentLocationPending: "Ich suche deinen aktuellen Standort...",
+	          currentLocationFound: "Ich habe deinen Standort gefunden. Ich nutze die nächste passende Haltestelle und führe dich von dort weiter.",
+	          openWalkingMap: "Fußweg in Karte öffnen",
+	          walkingMapUnavailable: "Karte für diesen Fußweg nicht verfügbar.",
+	          openInMaps: "In Karten öffnen",
+	          routeIntro: "👋 Willkommen! Ich erkläre es einfach.",
+	          recommendedRoute: "Empfohlene Route",
+	          recommendedWalk: "Empfohlen: Zu Fuß",
+	          easiestShortTrip: "Zu Fuß ist für diese kurze Strecke am einfachsten",
+	          walkingIsEasiest: "Zu Fuß ist für diese kurze Strecke die einfachste Option.",
+	          aboutMinutes: "Etwa {minutes} Min.",
+	          aroundMeters: "ca. {meters} m",
+	          publicTransportOption: "Sie können auch öffentliche Verkehrsmittel nehmen",
+	          youCanAlsoTakePublicTransport: "Sie können auch öffentliche Verkehrsmittel nehmen",
+	          validTicketQ: "Haben Sie bereits ein gültiges Ticket für diese Fahrt?",
+	          allowExtraTime: "etwas extra Zeit einplanen",
+	          showOtherBusesForThisPart: "Weitere Busse für diesen Abschnitt",
+	          hideOtherBusesForThisPart: "Weitere Busse ausblenden",
+	          searchingOtherBuses: "Weitere Busse werden gesucht...",
+	          alsoPossibleForThisSection: "Auch möglich für diesen Abschnitt",
+	          otherOptions: "Weitere Optionen",
+	          showRouteDetails: "Routendetails anzeigen",
+	          hideRouteDetails: "Routendetails ausblenden",
+	          walkFromStopToDestination: "von {from} nach {to}"
+	        },
+	        ar: {
+	          currentLocationError: "تعذر اكتشاف موقعك. يرجى كتابة شارع قريب أو محطة أو معلم.",
+	          currentLocationDenied: "تم حظر إذن الموقع. يرجى تفعيل الوصول إلى الموقع أو كتابة شارع قريب أو محطة.",
+	          currentLocationPending: "جارٍ البحث عن موقعك الحالي...",
+	          currentLocationFound: "وجدت موقعك. سأستخدم أقرب محطة مناسبة وأرشدك من هناك.",
+	          openWalkingMap: "فتح مسار المشي في الخريطة",
+	          walkingMapUnavailable: "الخريطة غير متاحة لهذا الجزء من المشي.",
+	          openInMaps: "افتح في الخرائط",
+	          routeIntro: "👋 أهلاً بك! سأبقي الأمر بسيطاً.",
+	          recommendedRoute: "الطريق المقترح",
+	          recommendedWalk: "الموصى به: المشي",
+	          easiestShortTrip: "المشي هو الخيار الأسهل لهذه الرحلة القصيرة",
+	          walkingIsEasiest: "المشي هو الخيار الأسهل لهذه الرحلة القصيرة.",
+	          aboutMinutes: "حوالي {minutes} دقائق",
+	          aroundMeters: "حوالي {meters} م",
+	          publicTransportOption: "يمكنك أيضاً استخدام النقل العام",
+	          youCanAlsoTakePublicTransport: "يمكنك أيضاً استخدام النقل العام",
+	          validTicketQ: "هل لديك تذكرة صالحة لهذه الرحلة؟",
+	          allowExtraTime: "اترك وقتاً إضافياً",
+	          showOtherBusesForThisPart: "حافلات أخرى لهذا الجزء",
+	          hideOtherBusesForThisPart: "إخفاء الحافلات الأخرى",
+	          searchingOtherBuses: "جارٍ البحث عن حافلات أخرى...",
+	          alsoPossibleForThisSection: "ممكن أيضاً لهذا الجزء",
+	          otherOptions: "خيارات أخرى",
+	          showRouteDetails: "عرض تفاصيل المسار",
+	          hideRouteDetails: "إخفاء تفاصيل المسار",
+	          walkFromStopToDestination: "من {from} إلى {to}"
+	        },
+	        tr: {
+	          currentLocationError: "Konumunu algılayamadım. Lütfen yakındaki bir cadde, durak veya yer işareti yaz.",
+	          currentLocationDenied: "Konum izni engellendi. Lütfen konum erişimini aç veya yakındaki bir cadde ya da durak yaz.",
+	          currentLocationPending: "Mevcut konumun bulunuyor...",
+	          currentLocationFound: "Konumunu buldum. En yakın uygun durağı kullanıp seni oradan yönlendireceğim.",
+	          openWalkingMap: "Yürüyüş haritasını aç",
+	          walkingMapUnavailable: "Bu yürüyüş bölümü için harita kullanılamıyor.",
+	          openInMaps: "Haritalarda aç",
+	          routeIntro: "👋 Hoş geldiniz! Basit tutacağım.",
+	          recommendedRoute: "Önerilen rota",
+	          recommendedWalk: "Önerilen: Yürüyüş",
+	          easiestShortTrip: "Bu kısa yolculuk için en kolay seçenek yürümektir",
+	          walkingIsEasiest: "Bu kısa yolculuk için yürümek en kolay seçenektir.",
+	          aboutMinutes: "Yaklaşık {minutes} dk",
+	          aroundMeters: "yaklaşık {meters} m",
+	          publicTransportOption: "Toplu taşımayı da kullanabilirsiniz",
+	          youCanAlsoTakePublicTransport: "Toplu taşımayı da kullanabilirsiniz",
+	          validTicketQ: "Bu yolculuk için geçerli biletiniz var mı?",
+	          allowExtraTime: "biraz ekstra zaman ayır",
+	          showOtherBusesForThisPart: "Bu bölüm için diğer otobüsler",
+	          hideOtherBusesForThisPart: "Diğer otobüsleri gizle",
+	          searchingOtherBuses: "Diğer otobüsler aranıyor...",
+	          alsoPossibleForThisSection: "Bu bölüm için de mümkün",
+	          otherOptions: "Diğer seçenekler",
+	          showRouteDetails: "Rota ayrıntılarını göster",
+	          hideRouteDetails: "Rota ayrıntılarını gizle",
+	          walkFromStopToDestination: "{from} durağından {to} konumuna"
+	        },
+	        uk: {
+	          currentLocationError: "Не вдалося визначити вашу локацію. Напишіть найближчу вулицю, зупинку або орієнтир.",
+	          currentLocationDenied: "Доступ до локації заблоковано. Увімкніть доступ або напишіть найближчу вулицю чи зупинку.",
+	          currentLocationPending: "Шукаю вашу поточну локацію...",
+	          currentLocationFound: "Я знайшов вашу локацію. Використаю найближчу відповідну зупинку і проведу вас звідти.",
+	          openWalkingMap: "Відкрити піший маршрут на карті",
+	          walkingMapUnavailable: "Карта для цього пішого відрізку недоступна.",
+	          openInMaps: "Відкрити в картах",
+	          routeIntro: "👋 Ласкаво просимо! Пояснюю просто.",
+	          recommendedRoute: "Рекомендований маршрут",
+	          recommendedWalk: "Рекомендовано: пішки",
+	          easiestShortTrip: "Для цієї короткої поїздки найпростіше пройти пішки",
+	          walkingIsEasiest: "Для цієї короткої поїздки пішки — найпростіший варіант.",
+	          aboutMinutes: "Близько {minutes} хв",
+	          aroundMeters: "приблизно {meters} м",
+	          publicTransportOption: "Також можна скористатися громадським транспортом",
+	          youCanAlsoTakePublicTransport: "Також можна скористатися громадським транспортом",
+	          validTicketQ: "У вас уже є дійсний квиток для цієї поїздки?",
+	          allowExtraTime: "залиште трохи більше часу",
+	          showOtherBusesForThisPart: "Інші автобуси для цієї ділянки",
+	          hideOtherBusesForThisPart: "Сховати інші автобуси",
+	          searchingOtherBuses: "Шукаю інші автобуси...",
+	          alsoPossibleForThisSection: "Також можливо для цієї ділянки",
+	          otherOptions: "Інші варіанти",
+	          showRouteDetails: "Показати деталі маршруту",
+	          hideRouteDetails: "Сховати деталі маршруту",
+	          walkFromStopToDestination: "від {from} до {to}"
+	        },
+	        hi: {
+	          currentLocationError: "मैं आपका स्थान पता नहीं लगा पाया। कृपया पास की सड़क, स्टॉप या स्थलचिह्न लिखें।",
+	          currentLocationDenied: "स्थान अनुमति अवरुद्ध है। कृपया स्थान एक्सेस सक्षम करें या पास की सड़क या स्टॉप लिखें।",
+	          currentLocationPending: "आपका वर्तमान स्थान ढूंढ रहा हूँ...",
+	          currentLocationFound: "मुझे आपका स्थान मिल गया। मैं निकटतम उपयुक्त स्टॉप का उपयोग करके वहाँ से मार्गदर्शन करूँगा।",
+	          openWalkingMap: "पैदल मार्ग मैप में खोलें",
+	          walkingMapUnavailable: "इस पैदल सेक्शन के लिए मैप उपलब्ध नहीं है।",
+	          openInMaps: "मैप में खोलें",
+	          routeIntro: "👋 स्वागत है! मैं इसे सरल रखूँगा।",
+	          recommendedRoute: "सुझाया गया मार्ग",
+	          recommendedWalk: "सुझाव: पैदल जाएँ",
+	          easiestShortTrip: "इस छोटी यात्रा के लिए पैदल चलना सबसे आसान विकल्प है",
+	          walkingIsEasiest: "इस छोटी यात्रा के लिए पैदल चलना सबसे आसान विकल्प है।",
+	          aboutMinutes: "लगभग {minutes} मिनट",
+	          aroundMeters: "करीब {meters} मीटर",
+	          publicTransportOption: "आप सार्वजनिक परिवहन भी ले सकते हैं",
+	          youCanAlsoTakePublicTransport: "आप सार्वजनिक परिवहन भी ले सकते हैं",
+	          validTicketQ: "क्या आपके पास इस यात्रा के लिए पहले से वैध टिकट है?",
+	          allowExtraTime: "थोड़ा अतिरिक्त समय रखें",
+	          showOtherBusesForThisPart: "इस हिस्से के लिए अन्य बसें",
+	          hideOtherBusesForThisPart: "अन्य बसें छिपाएं",
+	          searchingOtherBuses: "अन्य बसें खोजी जा रही हैं...",
+	          alsoPossibleForThisSection: "इस सेक्शन के लिए यह भी संभव है",
+	          otherOptions: "अन्य विकल्प",
+	          showRouteDetails: "मार्ग विवरण दिखाएँ",
+	          hideRouteDetails: "मार्ग विवरण छिपाएँ",
+	          walkFromStopToDestination: "{from} से {to} तक"
+	        }
+	      };
+	      return (labels[lang] || labels.en)[key] || labels.en[key];
+	    }
+
+	    async function requestAiChat(text, lang, extra = {}) {
+	      const selectedLanguage = normalizeLanguage(lang || activeSelectedLanguage());
+	      console.log("[Chat] sending payload:", { message: text, selectedLanguage });
+	      const response = await fetch("/api/chat", {
+	        method: "POST",
+	        headers: { "Content-Type": "application/json" },
+	        body: JSON.stringify({
+	          message: text,
+	          lang: selectedLanguage,
+	          selectedLanguage,
+	          sessionId: chatSessionId,
+	          fromCoords: routeState.useCurrentLocation ? routeState.fromCoords : null,
+	          useCurrentLocation: routeState.useCurrentLocation,
+	          ticketFlowStatus,
+	          selectedTicket,
+	          ...extra
+	        })
+	      });
+	      const data = await response.json().catch(() => ({}));
+	      routeState.useCurrentLocation = false;
+
+	      if (data.sessionId) {
+	        chatSessionId = data.sessionId;
+	        localStorage.setItem("oldenburgChatSessionId", chatSessionId);
+	      }
+
+	      if (!response.ok) {
+	        return {
+	          text: data.reply || data.message || ct("requestFailed"),
+	          quickButtons: []
+	        };
+	      }
+
+	      return {
+	        text: data.reply,
+	        quickButtons: data.quickButtons || [],
+	        routeSummary: data.routeSummary || "",
+	        lastRouteResult: data.lastRouteResult || null,
+	        memory: data.memory || null
+	      };
+	    }
+
+	    function lastBotMessageRow() {
+	      const rows = [...chat.querySelectorAll(".message-row.bot")];
+	      return rows.length ? rows[rows.length - 1] : null;
+	    }
+
+	    function renderChatResponse(response) {
+	      if (response.lastRouteResult && Array.isArray(response.lastRouteResult.itineraries)) {
+	        lastRouteResult = response.lastRouteResult;
+	        localStorage.setItem(LAST_ROUTE_RESULT_KEY, JSON.stringify(lastRouteResult));
+	      }
+	      if (response.memory) {
+	        currentServerMemory = response.memory;
+	        if (response.memory.ticketFlowStatus) ticketFlowStatus = response.memory.ticketFlowStatus;
+	        selectedTicket = response.memory.selectedTicket || selectedTicket || "";
+	      }
+	      const lastRow = lastBotMessageRow();
+	      const lastText = lastRow?.querySelector(".message")?.textContent || "";
+	      const isDuplicate = response.text && response.text.trim() === lastText.trim();
+	      const botMessage = isDuplicate ? lastRow : addMessage(response.text, "bot");
+	      const activeLanguage = activeSelectedLanguage();
+	      if (activeLanguage !== "en" && looksEnglish(response.text)) {
+	        console.warn("Bot reply appears to be English despite selected language:", activeLanguage);
+	      }
+			if (response.routeSummary) {
+	        demoTicketState.routeSummary = response.routeSummary;
+	        demoTicketState.ticketType = "";
+	      }
+			// If a route result is present, render a compact route summary and detailed walking blocks
+			if (response.lastRouteResult && botMessage) {
+				attachRouteToMessage(botMessage, response.lastRouteResult);
+				renderRouteSummary(botMessage, response.lastRouteResult);
+				saveChatState();
+			}
+	      if (Array.isArray(response.quickButtons) && response.quickButtons.length) {
+	        addChips(response.quickButtons, botMessage);
+	      }
+	      saveChatState();
+	    }
+
+	    function looksEnglish(text) {
+	      const value = String(text || "").toLowerCase();
+	      if (!value.trim()) return false;
+	      if (/[اأإآء-ي\u0900-\u097F\u0400-\u04FF]/.test(value)) return false;
+	      const words = value.match(/\b[a-z]{2,}\b/g) || [];
+	      const common = words.filter(word => ["the", "and", "you", "your", "from", "to", "route", "ticket", "walk", "take", "arrive", "leave", "stop"].includes(word));
+	      return common.length >= 3;
+	    }
+
+	    function speechLang() {
+	      const speechLocales = {
+	        en: "en-US",
+	        de: "de-DE",
+	        ar: "ar-SA",
+	        tr: "tr-TR",
+	        uk: "uk-UA",
+	        hi: "hi-IN"
+	      };
+	      return speechLocales[currentLang()] || "en-US";
+	    }
+
+	    function updateNote(text) {
+	      document.getElementById("note").textContent = text;
+	    }
+
+	    function setRecording(active) {
+	      isRecording = active;
+	      micBtn.classList.toggle("recording", active);
+	      micBtn.textContent = active ? "■" : "🎙";
+	    }
+
+	    function setupSpeechRecognition() {
+	      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+	      if (!SpeechRecognition) {
+	        micBtn.disabled = true;
+	        micBtn.title = ui[currentLang()].micUnsupported;
+	        return;
+	      }
+
+	      recognition = new SpeechRecognition();
+	      recognition.continuous = false;
+	      recognition.interimResults = true;
+
+	      recognition.addEventListener("result", event => {
+	        let transcript = "";
+	        for (let i = event.resultIndex; i < event.results.length; i += 1) {
+	          transcript += event.results[i][0].transcript;
+	        }
+	        input.value = transcript.trim();
+	        input.style.height = "auto";
+	        input.style.height = input.scrollHeight + "px";
+	      });
+
+	      recognition.addEventListener("end", () => {
+	        setRecording(false);
+	        updateNote(ui[currentLang()].note);
+	      });
+
+	      recognition.addEventListener("error", () => {
+	        setRecording(false);
+	        updateNote(ui[currentLang()].micError);
+	      });
+	    }
+
+	    function toggleVoiceInput() {
+	      const l = ui[currentLang()];
+	      if (!recognition) {
+	        updateNote(l.micUnsupported);
+	        return;
+	      }
+
+	      if (isRecording) {
+	        recognition.stop();
+	        return;
+	      }
+
+	      try {
+	        recognition.lang = speechLang();
+	        recognition.start();
+	        setRecording(true);
+	        updateNote(l.micListening);
+	      } catch {
+	        setRecording(false);
+	        updateNote(l.micError);
+	      }
+	    }
+
+	    function useCurrentLocation() {
+	      const lang = currentLang();
+	      if (!navigator.geolocation) {
+	        addMessage(t(lang, "currentLocationError"), "bot");
+	        return;
+	      }
+
+	      removeChips();
+	      updateNote(t(lang, "currentLocationPending"));
+	      addMessage(t(lang, "currentLocationPending"), "bot");
+	      navigator.geolocation.getCurrentPosition(
+	        async position => {
+	          const coords = {
+	            lat: position.coords.latitude,
+	            lon: position.coords.longitude
+	          };
+	          addMessage(t(lang, "currentLocationFound"), "bot");
+	          pendingResponseCount += 1;
+	          typing.style.display = "flex";
+	          scrollChatToBottom();
+
+	          try {
+	            const response = await requestAiChat("Use my current location", lang, {
+	              useCurrentLocation: true,
+	              fromCoords: coords
+	            });
+	            renderChatResponse(response);
+	          } catch (error) {
+	            console.error("Current location route request failed:", error);
+	            addMessage(ct("serverDown"), "bot");
+	          } finally {
+	            pendingResponseCount = Math.max(0, pendingResponseCount - 1);
+	            typing.style.display = pendingResponseCount > 0 ? "flex" : "none";
+	            updateNote(ui[currentLang()].note);
+	          }
+	        },
+	        error => {
+	          console.error("Geolocation error:", error);
+	          updateNote(ui[currentLang()].note);
+	          addMessage(error && error.code === 1
+	            ? t(lang, "currentLocationDenied")
+	            : t(lang, "currentLocationError"), "bot");
+	          input.focus();
+	        },
+	        { enableHighAccuracy: true, timeout: 8000, maximumAge: 60000 }
+	      );
+	    }
+
+	    async function sendMessage(customText, extra = {}) {
+	      const text = (customText || input.value).trim();
+	      if (!text) return;
+	      const now = Date.now();
+	      if (lastUserSend.text === text && now - lastUserSend.at < 750) {
+	        console.log("[Send Debug]", {
+	          rawText: text,
+	          addedUserMessage: false,
+	          source: "sendMessage",
+	          skippedDuplicate: true
+	        });
+	        return;
+	      }
+	      if (isSendingMessage) return;
+	      isSendingMessage = true;
+	      lastUserSend = { text, at: now };
+	      const lang = currentLang();
+	      console.log("[Send Debug] start", { rawText: text, selectedLanguage: lang });
+	      const outgoingExtra = { ...extra };
+	      try {
+	        if (["payment_started", "payment_completed"].includes(ticketFlowStatus) && looksLikeNewRouteRequest(text)) {
+	          outgoingExtra.ticketFlowStatus = ticketFlowStatus;
+	          outgoingExtra.selectedTicket = selectedTicket;
+	          ticketFlowStatus = "none";
+	          selectedTicket = "";
+	          demoTicketState.ticketType = "";
+	          paymentReturnPromptShown = false;
+	          resetRouteState();
+	        }
+
+	        // IMPORTANT:
+	        // Visible user messages are added only in sendMessage (the single
+	        // send-handler entry point). The raw, as-typed text is shown here.
+	        // Normalized, corrected, or parsed text must never be added as a
+	        // user bubble - requestAiChat/server-side parsing only reads it.
+	        addMessage(text, "user", true, { id: newMessageId() });
+	        const routeLoadingRow = looksLikeNewRouteRequest(text)
+	          ? addMessage(ct("findingBestRoute"), "bot", false, { id: newMessageId() })
+	          : null;
+	        console.log("[Add User Message Debug]", {
+	          text,
+	          stack: new Error().stack
+	        });
+	        console.log("[Send Debug]", {
+	          rawText: text,
+	          addedUserMessage: true,
+	          source: "sendMessage"
+	        });
+	        input.value = "";
+	        input.style.height = "auto";
+	        [...chat.querySelectorAll(".chips")].forEach(el => el.remove());
+
+	        pendingResponseCount += 1;
+	        typing.style.display = "flex";
+	        scrollChatToBottom();
+
+	        let response;
+	        try {
+	          const activeLanguage = activeSelectedLanguage();
+	          console.log("[Send Debug] calling processUserMessage", { rawText: text });
+	          response = await requestAiChat(text, activeLanguage, outgoingExtra);
+	          console.log("[Send Debug] processUserMessage result", response);
+	        } catch (error) {
+	          console.error("[Send Error]", error);
+	          response = {
+	            text: ct("routeProcessingError"),
+	            quickButtons: []
+	          };
+	        } finally {
+	          pendingResponseCount = Math.max(0, pendingResponseCount - 1);
+	          typing.style.display = pendingResponseCount > 0 ? "flex" : "none";
+	          updateNote(ui[currentLang()].note);
+	        }
+
+	        try {
+	          if (routeLoadingRow) routeLoadingRow.remove();
+	          if (response && (response.text || response.lastRouteResult || (Array.isArray(response.quickButtons) && response.quickButtons.length))) {
+	            console.log("[Send Debug] adding bot message", response);
+	            renderChatResponse(response);
+	          } else {
+	            console.warn("[Send Debug] No botMessage returned", response);
+	            addMessage(ct("couldNotProcessRequest"), "bot");
+	          }
+	        } catch (error) {
+	          console.error("[Send Error]", error);
+	          addMessage(ct("routeProcessingError"), "bot");
+	        }
+	      } finally {
+	        isSendingMessage = false;
+	      }
+	    }
+
+	    sendBtn.addEventListener("click", () => sendMessage());
+	    micBtn.addEventListener("click", toggleVoiceInput);
+	    clearChatBtn.addEventListener("click", clearChat);
+	    paymentModalClose.addEventListener("click", closePaymentModal);
+	    paymentModal.addEventListener("click", event => {
+	      if (event.target === paymentModal) closePaymentModal();
+	    });
+	    modalPaymentForm.addEventListener("submit", event => {
+	      event.preventDefault();
+	      modalPaymentForm.reset();
+	      ticketFlowStatus = "payment_completed";
+	      paymentReturnPromptShown = false;
+	      localStorage.setItem("oldenburgTicketFlowStatus", "payment_completed");
+	      localStorage.setItem("oldenburgPaymentReturnPromptShown", "false");
+	      modalPaymentConfirmation.style.display = "block";
+	      saveChatState();
+	      setTimeout(closePaymentModal, 900);
+	    });
+	    window.addEventListener("keydown", event => {
+	      if (event.key === "Escape" && paymentModal.classList.contains("open")) {
+	        closePaymentModal();
+	      }
+	    });
+
+	    window.addEventListener("focus", () => {
+	      // Ticket page opens in a new tab — this page never unloads.
+	      // Only sync ticket status; do NOT re-render or move the scroll position.
+	      const storedStatus = localStorage.getItem("oldenburgTicketFlowStatus");
+	      if (storedStatus === "payment_completed" && ticketFlowStatus !== "payment_completed") {
+	        ticketFlowStatus = "payment_completed";
+	        paymentReturnPromptShown = false;
+	        showPaymentReturnPrompt(false);
+	      }
+	    });
+
+	    window.addEventListener("storage", event => {
+	      if (event.key === "oldenburgTicketFlowStatus" && event.newValue === "payment_completed") {
+	        ticketFlowStatus = "payment_completed";
+	        paymentReturnPromptShown = false;
+	        saveChatState();
+	        showPaymentReturnPrompt(false);
+	      }
+	    });
+
+	    window.addEventListener("pageshow", event => {
+	      if (event.persisted) {
+	        // Restored from bfcache (e.g. browser back button) — re-render needed.
+	        restoreChatFromLocalStorage();
+	        showPaymentReturnPrompt(false);
+	        scrollChatToBottom();
+	      }
+	    });
+
+	    document.addEventListener("visibilitychange", () => {
+	      if (document.hidden) {
+	        saveChatState();
+	        return;
+	      }
+	      const storedStatus = localStorage.getItem("oldenburgTicketFlowStatus");
+	      if (storedStatus === "payment_completed" && ticketFlowStatus !== "payment_completed") {
+	        ticketFlowStatus = "payment_completed";
+	        paymentReturnPromptShown = false;
+	        showPaymentReturnPrompt(false);
+	      }
+	    });
+
+    input.addEventListener("keydown", e => {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+      }
+    });
+
+    input.addEventListener("input", () => {
+      input.style.height = "auto";
+      input.style.height = input.scrollHeight + "px";
+    });
+
+	    language.addEventListener("change", () => {
+	      console.log("[Language] dropdown selected:", language.value);
+	      console.log("[Language] normalized:", activeSelectedLanguage());
+	      applyLanguage(true);
+	    });
+	    setupSpeechRecognition();
+	    applyLanguage(false);
+	    if (!restoreChatFromLocalStorage()) {
+	      applyLanguage(true);
+	    }
+	    showPaymentReturnPrompt(false);
+	    forceScrollChatToBottom();
+
+    if ("serviceWorker" in navigator && location.protocol !== "file:") {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("sw.js").catch(() => {});
+      });
+    }
+
+			function getLatLon(point) {
+				if (!point) return null;
+
+				const lat = point.lat
+					?? point.latitude
+					?? point.vertex?.lat
+					?? point.stop?.lat
+					?? point.coordinate?.lat
+					?? point.coords?.lat;
+
+				const lon = point.lon
+					?? point.lng
+					?? point.longitude
+					?? point.vertex?.lon
+					?? point.vertex?.lng
+					?? point.stop?.lon
+					?? point.stop?.lng
+					?? point.coordinate?.lon
+					?? point.coordinate?.lng
+					?? point.coords?.lon
+					?? point.coords?.lng;
+
+				if (lat == null || lon == null) return null;
+
+				const normalized = {
+					lat: Number(lat),
+					lon: Number(lon)
+				};
+
+				return Number.isFinite(normalized.lat) && Number.isFinite(normalized.lon)
+					? normalized
+					: null;
+			}
+
+			function buildWalkingMapsUrl(leg) {
+				const from = getLatLon(leg?.fromCoords) || getLatLon(leg?.fromCoord) || getLatLon(leg?.from);
+				const to = getLatLon(leg?.toCoords) || getLatLon(leg?.toCoord) || getLatLon(leg?.to);
+
+				if (!from || !to) {
+					console.warn("[Walking Map] Missing coordinates", {
+						from: leg?.from,
+						to: leg?.to,
+						fromCoords: leg?.fromCoords,
+						toCoords: leg?.toCoords,
+						fromCoord: leg?.fromCoord,
+						toCoord: leg?.toCoord
+					});
+					return null;
+				}
+
+				return `https://www.google.com/maps/dir/?api=1&origin=${from.lat},${from.lon}&destination=${to.lat},${to.lon}&travelmode=walking`;
+			}
+
+			function haversineMeters(lat1, lon1, lat2, lon2) {
+				const earthRadiusMeters = 6371000;
+				const phi1 = Number(lat1) * Math.PI / 180;
+				const phi2 = Number(lat2) * Math.PI / 180;
+				const deltaPhi = (Number(lat2) - Number(lat1)) * Math.PI / 180;
+				const deltaLambda = (Number(lon2) - Number(lon1)) * Math.PI / 180;
+				const a = Math.sin(deltaPhi / 2) ** 2
+					+ Math.cos(phi1) * Math.cos(phi2) * Math.sin(deltaLambda / 2) ** 2;
+				return 2 * earthRadiusMeters * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+			}
+
+			function rebuildWalkingMapsUrlFromCoords(from, to) {
+				const fromCoords = getLatLon(from);
+				const toCoords = getLatLon(to);
+				if (!fromCoords || !toCoords) return null;
+				return `https://www.google.com/maps/dir/?api=1&origin=${fromCoords.lat},${fromCoords.lon}&destination=${toCoords.lat},${toCoords.lon}&travelmode=walking`;
+			}
+
+			function logWalkingButtonDebug({ title = "", buttonLabel = "", leg = null, mapsUrl = "" }) {
+				console.log("[WALKING BUTTON DEBUG]", {
+					title,
+					buttonLabel,
+					leg,
+					mapsUrl,
+					fromName: leg?.from?.name || leg?.from?.label,
+					fromCoords: leg?.fromCoords || {
+						lat: leg?.from?.lat,
+						lon: leg?.from?.lon
+					},
+					toName: leg?.to?.name || leg?.to?.label,
+					toCoords: leg?.toCoords || {
+						lat: leg?.to?.lat,
+						lon: leg?.to?.lon
+					}
+				});
+			}
+
+			function routeItineraries(routeResult) {
+				const itineraries = Array.isArray(routeResult?.itineraries)
+					? routeResult.itineraries.filter(Boolean)
+					: [];
+				if (itineraries.length) return itineraries;
+
+				const alternatives = Array.isArray(routeResult?.alternatives)
+					? routeResult.alternatives
+					: Array.isArray(routeResult?.route?.alternatives)
+						? routeResult.route.alternatives
+						: [];
+				return [routeResult?.route, ...alternatives].filter(Boolean);
+			}
+
+			function routeMainRoute(routeResult) {
+				return routeResult?.route || routeItineraries(routeResult)[0] || null;
+			}
+
+			function routeAlternatives(routeResult) {
+				const itineraries = routeItineraries(routeResult);
+				const explicitAlternatives = Array.isArray(routeResult?.alternatives) && routeResult.alternatives.length
+					? routeResult.alternatives
+					: Array.isArray(routeResult?.route?.alternatives) && routeResult.route.alternatives.length
+						? routeResult.route.alternatives
+						: null;
+
+				if (explicitAlternatives) {
+					return explicitAlternatives
+						.map((itinerary, alternativeIndex) => {
+							const storedIndex = itineraries.indexOf(itinerary);
+							return {
+								itinerary,
+								index: storedIndex >= 0 ? storedIndex : alternativeIndex + 1
+							};
+						})
+						.filter(item => item.itinerary)
+						.slice(0, 2);
+				}
+
+				return itineraries
+					.slice(1)
+					.map((itinerary, offset) => ({ itinerary, index: offset + 1 }))
+					.filter(item => item.itinerary)
+					.slice(0, 2);
+			}
+
+			function walkingLegWithRouteFallbacks(leg, index, legs, routeResult) {
+				const patchedLeg = { ...leg };
+				const selectedOrigin = routeResult?.query?.selectedOrigin || routeResult?.query?.originCoords || null;
+				const selectedDestination = routeResult?.query?.selectedDestination || routeResult?.query?.destinationCoords || null;
+				const transitIndexes = (legs || [])
+					.map((item, itemIndex) => ({ leg: item, index: itemIndex }))
+					.filter(item => item.leg.mode !== 'WALK');
+				const previousTransit = [...transitIndexes].reverse().find(item => item.index < index)?.leg;
+				const nextTransit = transitIndexes.find(item => item.index > index)?.leg;
+				const from = previousTransit?.to || selectedOrigin || patchedLeg.from;
+				const to = nextTransit?.from || selectedDestination || patchedLeg.to;
+				const fromCoords = getLatLon(from) || getLatLon(patchedLeg.fromCoords) || getLatLon(patchedLeg.fromCoord);
+				const toCoords = getLatLon(to) || getLatLon(patchedLeg.toCoords) || getLatLon(patchedLeg.toCoord);
+
+				patchedLeg.from = from;
+				patchedLeg.to = to;
+				patchedLeg.fromCoords = fromCoords;
+				patchedLeg.toCoords = toCoords;
+				patchedLeg.mapsUrl = rebuildWalkingMapsUrlFromCoords(fromCoords, toCoords);
+
+				return patchedLeg;
+			}
+
+			function formatDuration(seconds) {
+			const secs = Number(seconds) || 0;
+			const mins = Math.max(1, Math.round(secs > 1000 ? secs / 60 : secs / 60));
+			const lang = currentLang();
+			return { de: `${mins} Min.`, ar: `${mins} دقيقة`, tr: `${mins} dk`, uk: `${mins} хв`, hi: `${mins} मिनट`, en: `${mins} min` }[lang] || `${mins} min`;
+		}
+
+		function formatDistance(meters) {
+			const m = Math.round(Number(meters) || 0);
+			if (m >= 1000) return `${(m/1000).toFixed(1)} km`;
+			return `${m} m`;
+		}
+
+		function routeTransferLabel(transfers) {
+			const lang = activeSelectedLanguage();
+			const count = Number(transfers) || 0;
+			if (count <= 0) {
+				return { de: "Kein Umstieg", ar: "بدون تبديل", tr: "Aktarmasız", uk: "Без пересадки", hi: "कोई बदलाव नहीं", en: "No transfer" }[lang] || "No transfer";
+			}
+			if (count === 1) {
+				return { de: "1 Umstieg", ar: "تبديل واحد", tr: "1 aktarma", uk: "1 пересадка", hi: "1 बदलाव", en: "1 transfer" }[lang] || "1 transfer";
+			}
+			return { de: `${count} Umstiege`, ar: `${count} تبديلات`, tr: `${count} aktarma`, uk: `${count} пересадки`, hi: `${count} बदलाव`, en: `${count} transfers` }[lang] || `${count} transfers`;
+		}
+
+		function itineraryWalkingMinutes(itinerary) {
+			return Math.max(1, Math.round((Number(itinerary?.walkingDistanceMeters) || 0) / 80));
+		}
+
+		function formatAlternativeSummary(itinerary) {
+			const lang = activeSelectedLanguage();
+			const leg = firstTransitLeg(itinerary);
+			const route = leg
+				? `${transitModeName(leg.mode)} ${leg.route || ""}`.trim()
+				: { de: "Fußweg", ar: "طريق مشي", tr: "Yürüme rotası", uk: "Пішохідний маршрут", hi: "पैदल मार्ग", en: "Walking route" }[lang] || "Walking route";
+			const walkText = itinerary?.walkingDistanceMeters
+				? ` · ${{
+					de: `${itineraryWalkingMinutes(itinerary)} Min. Fußweg`,
+					ar: `${itineraryWalkingMinutes(itinerary)} دقيقة مشياً`,
+					tr: `${itineraryWalkingMinutes(itinerary)} dk yürüyüş`,
+					uk: `${itineraryWalkingMinutes(itinerary)} хв пішки`,
+					hi: `${itineraryWalkingMinutes(itinerary)} मिनट पैदल`,
+					en: `${itineraryWalkingMinutes(itinerary)} min walk`
+				}[lang] || `${itineraryWalkingMinutes(itinerary)} min walk`}`
+				: "";
+			return [
+				route,
+				`${formatRouteClock(itinerary?.startTime)} -> ${formatRouteClock(itinerary?.endTime)}`,
+				routeTransferLabel(itinerary?.transfers)
+			].join(" · ") + walkText;
+		}
+
+		function appendCompactLegs(container, itinerary) {
+			const lang = activeSelectedLanguage();
+			const legsList = document.createElement('div');
+			legsList.className = 'route-legs-compact';
+			(itinerary.legs || []).forEach((leg) => {
+				const item = document.createElement('div');
+				item.className = 'route-leg-compact';
+				if (leg.mode === 'WALK') {
+					const minutes = legWalkingMinutes(leg);
+					const dist = distanceText(leg.distanceMeters || leg.distance || 0);
+					const toName = leg.to && leg.to.name ? leg.to.name : '';
+					const minuteLabel = { de: 'Min.', ar: 'دقيقة', tr: 'dk', uk: 'хв', hi: 'मिनट', en: 'min' }[lang] || 'min';
+					const toLabel = { de: 'zu', ar: 'إلى', tr: 'hedef', uk: 'до', hi: 'तक', en: 'to' }[lang] || 'to';
+					item.textContent = `${routeModeIcon('WALK')} ${minutes} ${minuteLabel} · ${dist.replace(/^, /, '')}${toName ? ` ${toLabel} ${toName}` : ''}`;
+				} else {
+					const mode = transitModeName(leg.mode);
+					const route = leg.route ? ` ${leg.route}` : '';
+					const from = leg.from && leg.from.name ? leg.from.name : '';
+					const fromLabel = { de: 'ab', ar: 'من', tr: 'kalkış', uk: 'від', hi: 'से', en: 'from' }[lang] || 'from';
+					item.textContent = `${routeModeIcon(leg.mode)} ${mode}${route}${from ? ` ${fromLabel} ${from}` : ''}`;
+				}
+				legsList.appendChild(item);
+			});
+			container.appendChild(legsList);
+		}
+
+		function routeModeIcon(mode) {
+			if (mode === "WALK") return "🚶";
+			if (mode === "BUS") return "🚌";
+			if (mode === "TRAM") return "🚋";
+			if (mode === "RAIL" || mode === "TRAIN") return "🚆";
+			return "•";
+		}
+
+			function compactDelayText(seconds) {
+			const delaySeconds = Number(seconds) || 0;
+			if (delaySeconds <= 0) return "";
+			const minutes = Math.max(1, Math.round(delaySeconds / 60));
+			const lang = activeSelectedLanguage();
+			const late = { de: "verspätet", ar: "متأخر", tr: "gecikmeli", uk: "із запізненням", hi: "देरी", en: "late" }[lang] || "late";
+			const minuteLabel = { de: "Min.", ar: "دقيقة", tr: "dk", uk: "хв", hi: "मिनट", en: "min" }[lang] || "min";
+			return `${minutes} ${minuteLabel} ${late}`;
+		}
+
+		function formatRouteTemplate(template, values = {}) {
+			return String(template || "").replace(/\{(\w+)\}/g, (_, key) => values[key] ?? "");
+		}
+
+		function walkingSummaryText(walkingLeg, index, legs, lang) {
+			const duration = formatDuration(walkingLeg.duration || (walkingLeg.arrival && walkingLeg.departure ? (Number(walkingLeg.arrival) - Number(walkingLeg.departure)) / 1000 : 0));
+			const distance = formatDistance(walkingLeg.distanceMeters || walkingLeg.distance || 0);
+			const previousTransit = [...(legs || []).slice(0, index)].reverse().find(item => item.mode !== 'WALK');
+			const walkingFromName = walkingLeg.from?.name || walkingLeg.from?.label || '';
+			const walkingToName = walkingLeg.to?.name || walkingLeg.to?.label || '';
+			const hasTransit = (legs || []).some(item => item.mode !== 'WALK');
+
+			if (!hasTransit && walkingFromName && walkingToName) {
+				return `${duration} · ${distance} · ${walkingFromName} → ${walkingToName}`;
+			}
+
+			if (previousTransit && walkingFromName && walkingToName) {
+				return `${duration} · ${distance} · ${formatRouteTemplate(t(lang, 'walkFromStopToDestination'), {
+					from: walkingFromName,
+					to: walkingToName
+				})}`;
+			}
+
+			const walkingToLabel = { de: 'zu', ar: 'إلى', tr: 'hedef', uk: 'до', hi: 'तक', en: 'to' }[lang] || 'to';
+			return `${routeModeIcon('WALK')} ${duration} · ${distance}${walkingToName ? ` ${walkingToLabel} ${walkingToName}` : ''}`;
+		}
+
+		function appendSegmentAlternatives(container, leg) {
+			let alternatives = Array.isArray(leg.segmentAlternatives)
+				? leg.segmentAlternatives.slice(0, 5)
+				: [];
+
+			const lang = activeSelectedLanguage();
+			const wrapper = document.createElement('div');
+			wrapper.className = 'segment-alternatives';
+			if (lang === 'ar') wrapper.dir = 'rtl';
+
+			const button = document.createElement('button');
+			button.type = 'button';
+			button.className = 'segment-alternatives-toggle';
+			button.textContent = t(lang, 'showOtherBusesForThisPart');
+			if (lang === 'ar') button.style.textAlign = 'right';
+
+			const list = document.createElement('ul');
+			list.className = 'segment-alternatives-list';
+			list.hidden = true;
+
+			const renderAlternatives = () => {
+				list.innerHTML = '';
+				alternatives.forEach((alt) => {
+					const item = document.createElement('li');
+					item.className = 'segment-alternative-item';
+					const mode = transitModeName(alt.mode);
+					item.textContent = `${routeModeIcon(alt.mode)} ${mode}${alt.route ? ` ${alt.route}` : ''} · ${formatRouteClock(alt.departure)} → ${formatRouteClock(alt.arrival)}`;
+					list.appendChild(item);
+				});
+			};
+			renderAlternatives();
+
+			let loaded = alternatives.length > 0;
+			let loading = false;
+			button.addEventListener('click', async () => {
+				if (!loaded && !loading) {
+					loading = true;
+					button.disabled = true;
+					button.textContent = t(lang, 'searchingOtherBuses');
+					try {
+						const response = await fetch('/api/segment-alternatives', {
+							method: 'POST',
+							headers: { 'Content-Type': 'application/json' },
+							body: JSON.stringify({ leg })
+						});
+						const data = await response.json().catch(() => ({}));
+						alternatives = Array.isArray(data.alternatives) ? data.alternatives.slice(0, 5) : [];
+						renderAlternatives();
+						loaded = true;
+					} catch (error) {
+						console.warn('Segment alternatives request failed:', error);
+						loaded = true;
+					} finally {
+						button.disabled = false;
+						loading = false;
+					}
+				}
+				const isOpen = list.classList.toggle('open');
+				list.hidden = !isOpen;
+				button.textContent = isOpen
+					? t(lang, 'hideOtherBusesForThisPart')
+					: t(lang, 'showOtherBusesForThisPart');
+			});
+
+			wrapper.appendChild(button);
+			wrapper.appendChild(list);
+			container.appendChild(wrapper);
+		}
+
+		function appendTransitLeg(container, leg) {
+			const lang = activeSelectedLanguage();
+			const item = document.createElement('div');
+			item.className = 'route-leg-compact route-leg-transit';
+			if (lang === 'ar') item.dir = 'rtl';
+
+			const mode = transitModeName(leg.mode);
+			const route = leg.route ? ` ${leg.route}` : '';
+			const from = leg.from && leg.from.name ? leg.from.name : '';
+			const to = leg.to && leg.to.name ? leg.to.name : '';
+			const time = `${formatRouteClock(leg.departure)} → ${formatRouteClock(leg.arrival)}`;
+			item.textContent = `${routeModeIcon(leg.mode)} ${mode}${route} · ${time}${from || to ? `\n${from} → ${to}` : ''}`;
+			container.appendChild(item);
+
+			const delay = compactDelayText(leg.arrivalDelay || leg.departureDelay);
+			if (delay) {
+				const warning = document.createElement('div');
+				warning.className = 'route-warning';
+				warning.textContent = `⚠️ ${mode}${route} ${delay}`;
+				container.appendChild(warning);
+			}
+			appendSegmentAlternatives(container, leg);
+		}
+
+		function appendWalkingBlock(container, itinerary, routeResult, leg, index) {
+			const lang = activeSelectedLanguage();
+			const walkingLeg = walkingLegWithRouteFallbacks(leg, index, itinerary.legs || [], routeResult);
+			const block = document.createElement('div');
+			block.className = 'walking-block';
+			if (lang === 'ar') block.style.direction = 'rtl';
+
+			const summary = document.createElement('div');
+			summary.className = 'walking-summary';
+			summary.textContent = walkingSummaryText(walkingLeg, index, itinerary.legs || [], lang);
+			block.appendChild(summary);
+
+			const mapsUrl = walkingLeg.mapsUrl || buildWalkingMapsUrl(walkingLeg);
+			if (mapsUrl) {
+				const mapLink = document.createElement('a');
+				const buttonLabel = t(lang, 'openWalkingMap');
+				const title = summary.textContent;
+				logWalkingButtonDebug({
+					title,
+					buttonLabel,
+					leg: walkingLeg,
+					mapsUrl
+				});
+				mapLink.className = 'walking-map-button';
+				mapLink.href = mapsUrl;
+				mapLink.target = '_blank';
+				mapLink.rel = 'noopener noreferrer';
+				mapLink.textContent = buttonLabel;
+				block.appendChild(mapLink);
+			} else {
+				const unavailableButton = document.createElement('button');
+				unavailableButton.type = 'button';
+				unavailableButton.className = 'walking-map-button disabled';
+				unavailableButton.disabled = true;
+				unavailableButton.textContent = t(lang, 'walkingMapUnavailable');
+				block.appendChild(unavailableButton);
+			}
+			container.appendChild(block);
+		}
+
+		function appendWalkingBlocks(container, itinerary, routeResult) {
+			const lang = activeSelectedLanguage();
+			(itinerary.legs || []).forEach((leg, index) => {
+				if (leg.mode !== 'WALK') return;
+				const walkingLeg = walkingLegWithRouteFallbacks(leg, index, itinerary.legs || [], routeResult);
+				const block = document.createElement('div');
+				block.className = 'walking-block';
+				if (lang === 'ar') block.style.direction = 'rtl';
+
+				const purpose = (() => {
+					const prevTransit = [...(itinerary.legs || []).slice(0, index)].reverse().find(l => l.mode !== 'WALK');
+					return prevTransit ? 'to_destination' : 'to_stop';
+				})();
+
+				const title = document.createElement('div');
+				title.className = 'walking-title';
+				title.textContent = purpose === 'to_stop'
+					? { en: '🚶 Walking directions to stop', ar: '🚶 إرشادات المشي إلى المحطة', de: '🚶 Geh-Anleitung zur Haltestelle', tr: '🚶 Durağa yürüyüş tarifi', uk: '🚶 Піший маршрут до зупинки', hi: '🚶 स्टॉप तक पैदल दिशा-निर्देश' }[lang] || '🚶 Walking directions to stop'
+					: { en: '🚶 Walking directions to destination', ar: '🚶 إرشادات المشي إلى الوجهة', de: '🚶 Geh-Anleitung zum Ziel', tr: '🚶 Hedefe yürüyüş tarifi', uk: '🚶 Піший маршрут до місця призначення', hi: '🚶 मंज़िल तक पैदल दिशा-निर्देश' }[lang] || '🚶 Walking directions to destination';
+				block.appendChild(title);
+
+				const summary = document.createElement('div');
+				summary.className = 'walking-summary';
+				summary.textContent = walkingSummaryText(walkingLeg, index, itinerary.legs || [], lang);
+				block.appendChild(summary);
+
+				const mapsUrl = walkingLeg.mapsUrl || buildWalkingMapsUrl(walkingLeg);
+				if (mapsUrl) {
+					const mapLink = document.createElement('a');
+					const buttonLabel = t(lang, 'openWalkingMap');
+					const titleText = title.textContent;
+					logWalkingButtonDebug({
+						title: titleText,
+						buttonLabel,
+						leg: walkingLeg,
+						mapsUrl
+					});
+					mapLink.className = 'walking-map-button';
+					mapLink.href = mapsUrl;
+					mapLink.target = '_blank';
+					mapLink.rel = 'noopener noreferrer';
+					mapLink.textContent = buttonLabel;
+					block.appendChild(mapLink);
+				} else {
+					const unavailableButton = document.createElement('button');
+					unavailableButton.type = 'button';
+					unavailableButton.className = 'walking-map-button disabled';
+					unavailableButton.disabled = true;
+					unavailableButton.textContent = t(lang, 'walkingMapUnavailable');
+					block.appendChild(unavailableButton);
+				}
+				container.appendChild(block);
+			});
+		}
+
+		function appendItineraryDetails(container, itinerary, routeResult) {
+			(itinerary.legs || []).forEach((leg, index) => {
+				if (leg.mode === 'WALK') {
+					appendWalkingBlock(container, itinerary, routeResult, leg, index);
+				} else {
+					appendTransitLeg(container, leg);
+				}
+			});
+			if (Number(itinerary.transfers) > 0) {
+				const note = document.createElement('div');
+				note.className = 'route-transfer-note';
+				note.textContent = `${routeTransferLabel(itinerary.transfers)} · ${t(activeSelectedLanguage(), 'allowExtraTime')}`;
+				container.appendChild(note);
+			}
+		}
+
+		function appendTicketQuestion(container) {
+			const lang = activeSelectedLanguage();
+			const question = document.createElement('div');
+			question.className = 'route-ticket-question';
+			if (lang === 'ar') question.dir = 'rtl';
+			question.textContent = t(lang, 'validTicketQ');
+			container.appendChild(question);
+		}
+
+		function appendAlternativeRoutes(container, routeResult, alternativeItems = routeAlternatives(routeResult)) {
+			const alternatives = alternativeItems;
+			if (!alternatives.length) return;
+
+			const lang = activeSelectedLanguage();
+			let expandedAlternativeId = null;
+			const wrapper = document.createElement('div');
+			wrapper.className = 'alternative-routes';
+			if (lang === 'ar') wrapper.dir = 'rtl';
+
+			const title = document.createElement('div');
+			title.className = 'alternative-routes-title';
+			title.textContent = routeResult?.walkRecommended
+				? t(lang, 'youCanAlsoTakePublicTransport')
+				: t(lang, 'otherOptions');
+			wrapper.appendChild(title);
+
+			const setExpanded = (nextId) => {
+				expandedAlternativeId = expandedAlternativeId === nextId ? null : nextId;
+				[...wrapper.querySelectorAll('.alternative-route-card')].forEach((card) => {
+					const isExpanded = card.dataset.alternativeId === expandedAlternativeId;
+					const button = card.querySelector('.alternative-route-summary');
+					const toggle = card.querySelector('.alternative-route-toggle');
+					const details = card.querySelector('.alternative-route-details');
+					button.setAttribute('aria-expanded', String(isExpanded));
+					toggle.textContent = isExpanded ? t(lang, 'hideRouteDetails') : t(lang, 'showRouteDetails');
+					details.classList.toggle('open', isExpanded);
+					details.hidden = !isExpanded;
+				});
+			};
+
+			alternatives.forEach(({ itinerary, index }) => {
+				const id = `alt-${index}`;
+				const card = document.createElement('div');
+				card.className = 'alternative-route-card';
+				card.dataset.alternativeId = id;
+				card.dataset.itineraryIndex = String(index);
+
+				const button = document.createElement('button');
+				button.type = 'button';
+				button.className = 'alternative-route-summary';
+				button.setAttribute('aria-expanded', 'false');
+				button.setAttribute('aria-controls', `${id}-details`);
+				if (lang === 'ar') button.dir = 'rtl';
+
+				const text = document.createElement('span');
+				text.className = 'alternative-route-text';
+				text.textContent = formatAlternativeSummary(itinerary);
+				button.appendChild(text);
+
+				const toggle = document.createElement('span');
+				toggle.className = 'alternative-route-toggle';
+				toggle.textContent = t(lang, 'showRouteDetails');
+				button.appendChild(toggle);
+
+				const details = document.createElement('div');
+				details.id = `${id}-details`;
+				details.className = 'alternative-route-details';
+				details.hidden = true;
+				appendItineraryDetails(details, itinerary, routeResult);
+
+				button.addEventListener('click', () => setExpanded(id));
+				card.appendChild(button);
+				card.appendChild(details);
+				wrapper.appendChild(card);
+			});
+
+			container.appendChild(wrapper);
+		}
+
+		function renderRouteSummary(botRow, routeResult) {
+			try {
+				const lang = activeSelectedLanguage();
+				const bubble = botRow.querySelector('.message');
+				if (bubble) {
+					const existingText = botRow.__messageText || botRow.dataset.messageText || bubble.textContent || "";
+					const shouldReplaceLongRouteText = existingText.includes("\n") || existingText.length > 140;
+					if (shouldReplaceLongRouteText) {
+						botRow.__messageText = t(lang, 'routeIntro');
+						botRow.dataset.messageText = botRow.__messageText;
+					}
+					bubble.textContent = botRow.__messageText || t(lang, 'routeIntro');
+				}
+				const container = document.createElement('div');
+				container.className = 'route-summary-container';
+				if (lang === 'ar') container.dir = 'rtl';
+				// compact summary header
+				const selected = routeMainRoute(routeResult);
+				if (!selected) return;
+				const alternativeItems = routeAlternatives(routeResult);
+				const header = document.createElement('div');
+				header.className = 'route-summary-header';
+				const title = document.createElement('div');
+				title.className = 'route-summary-title';
+				title.textContent = routeResult?.walkRecommended
+					? t(lang, 'recommendedWalk')
+					: t(lang, 'recommendedRoute');
+				container.appendChild(title);
+				const leaveLabel = { de: 'Abfahrt', ar: 'المغادرة', tr: 'Hareket', uk: 'Відправлення', hi: 'प्रस्थान', en: 'Leave' }[lang] || 'Leave';
+				const arriveLabel = { de: 'Ankunft', ar: 'الوصول', tr: 'Varış', uk: 'Прибуття', hi: 'आगमन', en: 'Arrive' }[lang] || 'Arrive';
+				const arriveByLabel = { de: 'Ankunft bis', ar: 'الوصول قبل', tr: 'En geç varış', uk: 'Прибути до', hi: 'इस समय तक पहुँचें', en: 'Arrive by' }[lang] || 'Arrive by';
+				const plannedArrivalLabel = { de: 'Geplante Ankunft', ar: 'الوصول المخطط', tr: 'Planlanan varış', uk: 'Заплановане прибуття', hi: 'योजनाबद्ध आगमन', en: 'Planned arrival' }[lang] || 'Planned arrival';
+				if (routeResult?.walkRecommended) {
+					const walk = routeResult.walkRecommendation || {};
+					const minutes = Math.max(1, Number(walk.estimatedWalkMinutes) || itineraryWalkingMinutes(selected));
+					const meters = Math.round(Number(walk.distanceMeters || selected.walkingDistanceMeters) || 0);
+					header.textContent = `${t(lang, 'walkingIsEasiest')} ${formatRouteTemplate(t(lang, 'aboutMinutes'), { minutes })} · ${formatRouteTemplate(t(lang, 'aroundMeters'), { meters })}`;
+				} else if (routeResult?.query?.arriveBy) {
+					const deadline = routeResult.query.deadlineDate && routeResult.query.deadlineTime
+						? new Date(`${routeResult.query.deadlineDate.replace(/^(\d{2})-(\d{2})-(\d{4})$/, '$3-$1-$2')}T${routeResult.query.deadlineTime}`)
+						: null;
+					header.textContent = `${leaveLabel} ${formatRouteClock(selected.startTime)} · ${plannedArrivalLabel} ${formatRouteClock(selected.endTime)} · ${arriveByLabel} ${deadline ? formatRouteClock(deadline) : formatRouteClock(selected.endTime)}`;
+				} else {
+					header.textContent = `${leaveLabel} ${formatRouteClock(selected.startTime)} · ${arriveLabel} ${formatRouteClock(selected.endTime)}`;
+				}
+				container.appendChild(header);
+
+				appendItineraryDetails(container, selected, routeResult);
+
+				if (routeResult?.destinationWalkNotice) {
+					const notice = document.createElement('div');
+					notice.className = 'route-destination-notice';
+					if (lang === 'ar') notice.dir = 'rtl';
+					notice.textContent = formatDestinationWalkNotice(routeResult.destinationWalkNotice);
+					container.appendChild(notice);
+				}
+
+				appendAlternativeRoutes(container, routeResult, alternativeItems);
+				if (!routeResult?.walkRecommended) appendTicketQuestion(container);
+
+				bubble.appendChild(container);
+			} catch (err) {
+				console.error('renderRouteSummary error', err);
+			}
+		}
+  </script>
+</body>
+</html>

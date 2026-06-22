@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Public transport bus icon">
+  <rect width="512" height="512" rx="112" fill="#f2c300"/>
+  <rect x="108" y="114" width="296" height="272" rx="42" fill="#17191c"/>
+  <rect x="137" y="151" width="238" height="104" rx="18" fill="#ffffff"/>
+  <rect x="152" y="276" width="64" height="42" rx="12" fill="#f2c300"/>
+  <rect x="296" y="276" width="64" height="42" rx="12" fill="#f2c300"/>
+  <rect x="166" y="342" width="180" height="18" rx="9" fill="#ffffff"/>
+  <circle cx="174" cy="392" r="34" fill="#17191c"/>
+  <circle cx="338" cy="392" r="34" fill="#17191c"/>
+  <circle cx="174" cy="392" r="14" fill="#ffffff"/>
+  <circle cx="338" cy="392" r="14" fill="#ffffff"/>
+  <path d="M170 92h172c18 0 34 10 42 26H128c8-16 24-26 42-26z" fill="#17191c"/>
+</svg>
