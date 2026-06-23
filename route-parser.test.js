@@ -3,6 +3,7 @@ const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const path = require("node:path");
 const http = require("node:http");
+const { Readable, Writable } = require("node:stream");
 const {
   TIME_MODE,
   extractTripDetails,
@@ -30,6 +31,42 @@ const {
 } = require("./server");
 
 const fixedBerlinNow = new Date("2026-06-22T16:14:00.000Z"); // 18:14 Europe/Berlin
+
+async function sendChatMessage(payload) {
+  const req = Readable.from([JSON.stringify(payload)]);
+  req.method = "POST";
+  const chunks = [];
+  const res = new Writable({
+    write(chunk, encoding, callback) {
+      chunks.push(Buffer.from(chunk));
+      callback();
+    }
+  });
+  res.writeHead = (status, headers) => {
+    res.statusCode = status;
+    res.headers = headers;
+  };
+  res.end = chunk => {
+    if (chunk) chunks.push(Buffer.from(chunk));
+    res.emit("finish");
+  };
+
+  await new Promise(resolve => {
+    res.on("finish", resolve);
+    handleChatRequest(req, res);
+  });
+
+  return {
+    status: res.statusCode,
+    body: JSON.parse(Buffer.concat(chunks).toString("utf8"))
+  };
+}
+
+function deadlineMsFromRouteResult(routeResult) {
+  const [month, day, year] = String(routeResult.query.deadlineDate || routeResult.query.otpDate || "").split("-");
+  const time = String(routeResult.query.deadlineTime || routeResult.query.otpTime || "00:00:00");
+  return Date.parse(`${year}-${month}-${day}T${time}+02:00`);
+}
 
 test("explicit tomorrow arrival request keeps its date and arrival deadline", () => {
   const parsed = extractTripDetails("tomorrow i have to be there in lappan at 8 am from postenweg 20", "en");
@@ -78,6 +115,71 @@ test("explicit tomorrow departure request remains DEPART_AT", () => {
   assert.equal(parsed.requestedDateTime, "tomorrow 8:00 AM");
   assert.equal(parsed.explicitDate, "tomorrow");
   assert.equal(parsed.timeMode, TIME_MODE.DEPART_AT);
+});
+
+test("destination and tomorrow time without origin asks for origin before time validation", async () => {
+  const response = await sendChatMessage({
+    sessionId: "missing-origin-before-time-validation",
+    selectedLanguage: "en",
+    message: "I want to go to Stadt Oldenburg tomorrow at 8 am"
+  });
+
+  assert.equal(response.status, 200);
+  assert.equal(response.body.reply, "Where are you starting from?");
+  assert.doesNotMatch(response.body.reply, /already passed/i);
+  assert.equal(response.body.memory.route.destination, "Stadt Oldenburg");
+  assert.equal(response.body.memory.route.time, "8:00 AM");
+  assert.equal(response.body.memory.route.explicitDate, "tomorrow");
+  assert.equal(response.body.memory.pendingRoute.mode, "awaiting_origin");
+});
+
+test("pending destination route merges a from-origin follow-up without losing tomorrow time", async () => {
+  const sessionId = "pending-origin-follow-up";
+  await sendChatMessage({
+    sessionId,
+    selectedLanguage: "en",
+    message: "I want to go to Stadt Oldenburg tomorrow at 8 am"
+  });
+
+  const response = await sendChatMessage({
+    sessionId,
+    selectedLanguage: "en",
+    message: "from Schützenweg"
+  });
+
+  assert.equal(response.status, 200);
+  assert.doesNotMatch(response.body.reply, /Where are you starting from\?/);
+  assert.doesNotMatch(response.body.reply, /already passed/i);
+  assert.equal(response.body.memory.route.start, "Schützenweg");
+  assert.equal(response.body.memory.route.destination, "Stadt Oldenburg");
+  assert.equal(response.body.memory.route.time, "8:00 AM");
+  assert.equal(response.body.memory.route.explicitDate, "tomorrow");
+});
+
+test("complete Stadt Oldenburg tomorrow request keeps origin, destination, and tomorrow time", () => {
+  const parsed = extractTripDetails("I want to go to Stadt Oldenburg tomorrow at 8 am from Schützenweg", "en");
+
+  assert.equal(parsed.originText, "Schützenweg");
+  assert.equal(parsed.destinationText, "Stadt Oldenburg");
+  assert.equal(parsed.requestedDateTime, "tomorrow 8:00 AM");
+  assert.equal(parsed.explicitDate, "tomorrow");
+  assert.equal(parsed.timeMode, TIME_MODE.DEPART_AT);
+});
+
+test("common tomorrow typo is normalized in complete route requests", () => {
+  const parsed = extractTripDetails("I want to go to Stadt Oldenburg tomorow at 8 am from Schützenweg", "en");
+
+  assert.equal(parsed.originText, "Schützenweg");
+  assert.equal(parsed.destinationText, "Stadt Oldenburg");
+  assert.equal(parsed.requestedDateTime, "tomorrow 8:00 AM");
+  assert.equal(parsed.explicitDate, "tomorrow");
+  assert.equal(validateRequestedTime({
+    requestedDateTime: parsed.requestedDateTime,
+    explicitDate: parsed.explicitDate,
+    timeMode: parsed.timeMode,
+    selectedLanguage: "en",
+    now: new Date("2026-06-22T17:24:00.000Z")
+  }).status, "ok");
 });
 
 test("12pm and 12am preserve noon, midnight, destination-only state, and ARRIVE_BY", () => {
@@ -1013,7 +1115,7 @@ test("end-to-end: ambiguous noon destination selection preserves ARRIVE_BY and s
     assert.equal(third.memory.route.timeMode, TIME_MODE.ARRIVE_BY);
     if (third.lastRouteResult) {
       assert.equal(third.lastRouteResult.query.arriveBy, true);
-      assert.ok(third.lastRouteResult.route.endTime <= Date.parse("2026-06-23T10:00:00.000Z"));
+      assert.ok(third.lastRouteResult.route.endTime <= deadlineMsFromRouteResult(third.lastRouteResult));
       assert.doesNotMatch(third.routeSummary, /12:09 AM|12:29 AM/i);
     }
   } finally {
@@ -1047,7 +1149,7 @@ test("end-to-end: pending origin preserves tomorrow ARRIVE_BY deadline", async (
     assert.equal(second.memory.route.timeMode, TIME_MODE.ARRIVE_BY);
     if (second.lastRouteResult) {
       assert.equal(second.lastRouteResult.query.arriveBy, true);
-      assert.ok(second.lastRouteResult.route.endTime <= Date.parse("2026-06-23T06:30:00.000Z"));
+      assert.ok(second.lastRouteResult.route.endTime <= deadlineMsFromRouteResult(second.lastRouteResult));
       assert.doesNotMatch(second.reply, /Leave 8:30 AM\s*·\s*Arrive after 8:30 AM/i);
     }
   } finally {
