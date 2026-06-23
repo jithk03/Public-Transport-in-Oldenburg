@@ -1045,6 +1045,12 @@
 	    let ticketFlowStatus = localStorage.getItem("oldenburgTicketFlowStatus") || "none";
 	    let selectedTicket = localStorage.getItem("oldenburgSelectedTicket") || "";
 	    let paymentReturnPromptShown = localStorage.getItem("oldenburgPaymentReturnPromptShown") === "true";
+	    const welcomeQuickActions = [
+	      { action: "plan_trip", message: "I want to plan a trip." },
+	      { action: "tickets", message: "I need help choosing the correct ticket." },
+	      { action: "accessibility", message: "I need accessibility information for my trip." },
+	      { action: "delay_help", message: "I need help with a delay or missed connection." }
+	    ];
 
 	    function safeJsonParse(value, fallback = null) {
 	      try {
@@ -1067,6 +1073,7 @@
 	        label: String(item.label),
 	        value: String(item.value || item.label)
 	      };
+	      if (item.welcomeAction) chip.welcomeAction = String(item.welcomeAction);
 	      if (item.url) chip.url = String(item.url);
 	      if (item.external === true) chip.external = true;
 	      if (item.action) chip.action = String(item.action);
@@ -1131,11 +1138,12 @@
 	          let items = [...el.querySelectorAll("button")]
 	            .map(button => safeJsonParse(button.dataset.item, null))
 	            .filter(Boolean);
-	          if (["payment_started", "payment_completed"].includes(ticketFlowStatus)) {
+	      if (["payment_started", "payment_completed"].includes(ticketFlowStatus)) {
 	            items = items.filter(item => ![
 	              "ticket_has",
 	              "ticket_need",
-	              "ticket_unsure"
+	              "ticket_unsure",
+	              "ticket_continue"
 	            ].includes(item.action));
 	          }
 	          if (!items.length) return null;
@@ -1260,7 +1268,8 @@
 	            restoredItems = restoredItems.filter(chip => ![
 	              "ticket_has",
 	              "ticket_need",
-	              "ticket_unsure"
+	              "ticket_unsure",
+	              "ticket_continue"
 	            ].includes(chip.action));
 	          }
 	          addChips(restoredItems, null, false);
@@ -1311,7 +1320,7 @@
 	        micListening: "Listening...",
 	        micUnsupported: "Voice input is not supported in this browser.",
 	        micError: "Voice input could not start. Please try again or type your message.",
-	        welcome: "👋 Welcome. I can help you use public transport in Oldenburg and Bremen, even if you are new here.\n\nTry asking:\n• I am at a hotel near Oldenburg railway station and need step-by-step guidance.\n• From Postenweg to Universität Oldenburg at 9:00\n• How do I get from Bremen Hauptbahnhof to my hotel?\n• Which ticket information should I check before boarding?",
+	        welcome: "👋 Welcome. I can help you use public transport in Oldenburg and Bremen, even if you are new here.",
         chips: ["Plan a trip", "Tickets", "Accessibility", "Delay help"]
       },
       de: {
@@ -1328,7 +1337,7 @@
 	        micListening: "Ich höre zu...",
 	        micUnsupported: "Spracheingabe wird in diesem Browser nicht unterstützt.",
 	        micError: "Spracheingabe konnte nicht gestartet werden. Bitte erneut versuchen oder tippen.",
-	        welcome: "👋 Willkommen. Ich helfe dir mit Bus und Bahn in Oldenburg und Bremen, auch wenn du neu bist.\n\nDu kannst fragen:\n• Ich bin in einem Hotel nahe Oldenburg Bahnhof und brauche Schritt-für-Schritt-Hilfe.\n• Von Postenweg zur Universität Oldenburg um 9:00\n• Wie komme ich vom Bremer Hauptbahnhof zu meinem Hotel?\n• Welche Ticketinformationen muss ich vor dem Einsteigen prüfen?",
+	        welcome: "👋 Willkommen. Ich helfe dir mit Bus und Bahn in Oldenburg und Bremen, auch wenn du neu bist.",
         chips: ["Fahrt planen", "Tickets", "Barrierefreiheit", "Verspätung"]
       },
       ar: {
@@ -1345,7 +1354,7 @@
 	        micListening: "أستمع الآن...",
 	        micUnsupported: "الإدخال الصوتي غير مدعوم في هذا المتصفح.",
 	        micError: "تعذر بدء الإدخال الصوتي. حاول مرة أخرى أو اكتب رسالتك.",
-	        welcome: "👋 أهلاً بك. أساعدك في استخدام المواصلات العامة في أولدنبورغ وبريمن حتى لو كنت جديداً هنا.\n\nيمكنك أن تسأل:\n• أنا في فندق قرب محطة أولدنبورغ وأحتاج إرشادات خطوة بخطوة.\n• من Postenweg إلى جامعة أولدنبورغ الساعة 9:00\n• كيف أصل من محطة بريمن الرئيسية إلى الفندق؟\n• ما معلومات التذاكر التي يجب أن أتحقق منها قبل الركوب؟",
+	        welcome: "👋 أهلاً بك. أساعدك في استخدام المواصلات العامة في أولدنبورغ وبريمن حتى لو كنت جديداً هنا.",
         chips: ["خطط رحلة", "التذاكر", "إتاحة الوصول", "تأخر الحافلة"]
       },
       tr: {
@@ -1362,7 +1371,7 @@
 	        micListening: "Dinliyorum...",
 	        micUnsupported: "Ses girişi bu tarayıcıda desteklenmiyor.",
 	        micError: "Ses girişi başlatılamadı. Lütfen tekrar dene veya mesajını yaz.",
-	        welcome: "👋 Hoş geldin. Oldenburg ve Bremen’de toplu taşımayı kullanmana yardımcı olurum; yeniysen de adım adım anlatırım.\n\nŞunları sorabilirsin:\n• Oldenburg tren istasyonu yakınındaki bir oteldeyim ve adım adım yardım istiyorum.\n• Postenweg’den Oldenburg Üniversitesine saat 9:00’da\n• Bremen Hauptbahnhof’tan otelime nasıl giderim?\n• Binmeden önce hangi bilet bilgisini kontrol etmeliyim?",
+	        welcome: "👋 Hoş geldin. Oldenburg ve Bremen’de toplu taşımayı kullanmana yardımcı olurum; yeniysen de adım adım anlatırım.",
         chips: ["Yolculuk planla", "Biletler", "Erişilebilirlik", "Gecikme yardımı"]
       },
       uk: {
@@ -1379,7 +1388,7 @@
 	        micListening: "Слухаю...",
 	        micUnsupported: "Голосове введення не підтримується в цьому браузері.",
 	        micError: "Не вдалося запустити голосове введення. Спробуйте ще раз або напишіть повідомлення.",
-	        welcome: "👋 Вітаю. Я допоможу користуватися громадським транспортом в Ольденбурзі та Бремені, навіть якщо ви тут уперше.\n\nСпробуйте запитати:\n• Я в готелі біля вокзалу Ольденбурга і хочу покрокові підказки.\n• З Postenweg до Університету Ольденбурга о 9:00\n• Як доїхати від Bremen Hauptbahnhof до мого готелю?\n• Яку інформацію про квиток перевірити перед посадкою?",
+	        welcome: "👋 Вітаю. Я допоможу користуватися громадським транспортом в Ольденбурзі та Бремені, навіть якщо ви тут уперше.",
         chips: ["Спланувати поїздку", "Квитки", "Доступність", "Затримка"]
       },
       hi: {
@@ -1396,7 +1405,7 @@
 	        micListening: "सुन रहा हूँ...",
 	        micUnsupported: "इस ब्राउज़र में आवाज़ इनपुट समर्थित नहीं है।",
 	        micError: "आवाज़ इनपुट शुरू नहीं हो सका। फिर से कोशिश करें या संदेश टाइप करें।",
-	        welcome: "👋 नमस्ते। मैं Oldenburg और Bremen में सार्वजनिक परिवहन का उपयोग करने में आपकी मदद कर सकता हूँ, भले ही आप यहाँ नए हों।\n\nआप पूछ सकते हैं:\n• मैं Oldenburg रेलवे स्टेशन के पास एक होटल में हूँ और मुझे चरण-दर-चरण मार्गदर्शन चाहिए।\n• Postenweg से Universität Oldenburg सुबह 9:00 बजे\n• मैं Bremen Hauptbahnhof से अपने होटल कैसे पहुँचूँ?\n• चढ़ने से पहले मुझे कौन-सी टिकट जानकारी जाँचनी चाहिए?",
+	        welcome: "👋 नमस्ते। मैं Oldenburg और Bremen में सार्वजनिक परिवहन का उपयोग करने में आपकी मदद कर सकता हूँ, भले ही आप यहाँ नए हों।",
 	        chips: ["यात्रा योजना", "टिकट", "सुलभता", "देरी सहायता"]
       }
     };
@@ -1425,6 +1434,14 @@
 
 	    function activeSelectedLanguage() {
 	      return normalizeLanguage(language.value || localStorage.getItem("selectedLanguage") || "en");
+	    }
+
+	    function welcomeChipItems(labels) {
+	      return labels.map((label, index) => ({
+	        label,
+	        value: welcomeQuickActions[index]?.message || label,
+	        welcomeAction: welcomeQuickActions[index]?.action || ""
+	      }));
 	    }
 
 	    function resetRouteState() {
@@ -1469,7 +1486,7 @@
 	        cancelPendingResponses();
 	        [...chat.querySelectorAll(".message-row, .chips")].forEach(el => el.remove());
 	        addMessage(l.welcome, "bot");
-	        addChips(l.chips);
+	        addChips(welcomeChipItems(l.chips));
 	        saveChatState();
 	      }
 	    }
@@ -1487,7 +1504,9 @@
         if (storedItem.type === "alternative_route") btn.classList.add("alternative-route");
         btn.textContent = storedItem.label;
         btn.dataset.item = JSON.stringify(storedItem);
+        if (storedItem.welcomeAction) btn.dataset.welcomeAction = storedItem.welcomeAction;
         btn.addEventListener("click", () => {
+          if (storedItem.welcomeAction) return;
           if (storedItem.type === "alternative_route") {
             const matchingSummary = [...chat.querySelectorAll(`.alternative-route-card[data-itinerary-index="${storedItem.itineraryIndex}"] .alternative-route-summary`)].pop();
             if (matchingSummary) {
@@ -1537,6 +1556,20 @@
       return box;
     }
 
+	    function handleWelcomeQuickActionClick(event) {
+	      const button = event.target.closest("button.chip[data-welcome-action]");
+	      if (!button || !chat.contains(button)) return;
+	      const storedItem = safeJsonParse(button.dataset.item, null);
+	      const text = String(storedItem?.value || "").trim();
+	      if (!text) return;
+	      event.preventDefault();
+	      sendMessage(text);
+	    }
+
+	    function setupWelcomeQuickActions() {
+	      chat.addEventListener("click", handleWelcomeQuickActionClick);
+	    }
+
 	    function removeChips(keepTicketOptions = false) {
 	      [...chat.querySelectorAll(".chips")].forEach(el => {
 	        if (keepTicketOptions) {
@@ -1555,7 +1588,11 @@
       ticketSingle:      { en: "Single ticket",                         de: "Einzelticket",                    ar: "تذكرة منفردة",           tr: "Tek bilet",                   uk: "Одноразовий квиток",              hi: "एकल टिकट" },
       ticketDay:         { en: "Day ticket",                            de: "Tageskarte",                      ar: "تذكرة يومية",             tr: "Günlük bilet",                uk: "Денний квиток",                   hi: "दिन टिकट" },
       ticketGroup:       { en: "Group ticket",                          de: "Gruppenfahrkarte",                ar: "تذكرة جماعية",            tr: "Grup bileti",                 uk: "Груповий квиток",                 hi: "समूह टिकट" },
-      ticketStudentInfo: { en: "Student/Semester ticket info",          de: "Studierenden-/Semesterticket",    ar: "معلومات تذكرة الطلاب",    tr: "Öğrenci/Dönem bileti",        uk: "Студентський/Семестровий квиток", hi: "छात्र/सेमेस्टर टिकट जानकारी" },
+      ticketStudentInfo: { en: "Student ticket",                        de: "Studierendenticket",              ar: "تذكرة الطلاب",            tr: "Öğrenci bileti",              uk: "Студентський квиток",             hi: "छात्र टिकट" },
+      ticketNotSure:     { en: "I am not sure",                         de: "Ich bin nicht sicher",            ar: "لست متأكداً",             tr: "Emin değilim",                uk: "Я не впевнений",                  hi: "मुझे यकीन नहीं है" },
+      chooseTicketType:  { en: "Choose ticket type",                    de: "Ticketart auswählen",             ar: "اختر نوع التذكرة",         tr: "Bilet türü seç",              uk: "Вибрати тип квитка",             hi: "टिकट प्रकार चुनें" },
+      officialVbnTicketInfo: { en: "Official VBN ticket information",   de: "Offizielle VBN-Ticketinformationen", ar: "معلومات تذاكر VBN الرسمية", tr: "Resmi VBN bilet bilgisi",   uk: "Офіційна інформація VBN",         hi: "आधिकारिक VBN टिकट जानकारी" },
+      continueTicketPage:{ en: "Continue to ticket page",               de: "Weiter zur Ticketseite",           ar: "المتابعة إلى صفحة التذاكر", tr: "Bilet sayfasına devam et",   uk: "Перейти на сторінку квитків",    hi: "टिकट पेज पर जारी रखें" },
       planAnotherTrip:   { en: "Plan another trip",                     de: "Weitere Fahrt planen",            ar: "تخطيط رحلة أخرى",         tr: "Başka bir yolculuk planla",   uk: "Спланувати ще одну поїздку",      hi: "दूसरी यात्रा की योजना बनाएं" },
       ticketInfo:        { en: "Ticket information",                    de: "Ticketinformationen",             ar: "معلومات التذاكر",          tr: "Bilet bilgisi",               uk: "Інформація про квитки",           hi: "टिकट जानकारी" },
       clearChat:         { en: "Clear chat",                            de: "Chat löschen",                   ar: "مسح المحادثة",             tr: "Sohbeti temizle",             uk: "Очистити чат",                    hi: "चैट साफ़ करें" },
@@ -1570,8 +1607,12 @@
       whereStart:        { en: "Where are you starting from and where do you want to go?", de: "Von wo möchten Sie starten und wohin wollen Sie fahren?", ar: "من أين تبدأ وإلى أين تريد الذهاب؟", tr: "Nereden başlıyorsunuz ve nereye gitmek istiyorsunuz?", uk: "Звідки ви хочете їхати і куди?", hi: "आप कहाँ से शुरू करना चाहते हैं और कहाँ जाना चाहते हैं?" },
       ticketHasMsg:      { en: "Great. Keep your valid ticket ready before boarding. You can continue with the route steps above.", de: "Prima. Halten Sie Ihr gültiges Ticket bereit. Sie können mit den Routenschritten oben fortfahren.", ar: "ممتاز. احتفظ بتذكرتك الصالحة جاهزة قبل الصعود.", tr: "Harika. Biletinizi hazır bulundurun. Yukarıdaki rota adımlarına devam edebilirsiniz.", uk: "Чудово. Тримайте дійсний квиток готовим. Ви можете продовжити за кроками маршруту вище.", hi: "बढ़िया। चढ़ने से पहले वैध टिकट तैयार रखें। आप ऊपर दिए मार्ग के चरण जारी रख सकते हैं।" },
       ticketUnsureMsg:   { en: "If you are not sure, check your existing ticket or semester ticket rules before boarding. You can also select a ticket type below.", de: "Wenn Sie unsicher sind, prüfen Sie Ihr Ticket vor dem Einsteigen. Sie können auch unten einen Tickettyp auswählen.", ar: "إذا لم تكن متأكداً، تحقق من تذكرتك قبل الصعود. يمكنك أيضاً اختيار نوع تذكرة.", tr: "Emin değilseniz biletinizi kontrol edin. Aşağıdan bir bilet türü de seçebilirsiniz.", uk: "Якщо не впевнені, перевірте квиток. Можна вибрати тип квитка нижче.", hi: "यदि निश्चित नहीं हैं, चढ़ने से पहले टिकट जाँचें। नीचे एक प्रकार भी चुन सकते हैं।" },
-      selectTicket:      { en: "Select ticket",                         de: "Ticket auswählen",                ar: "اختر تذكرة",               tr: "Bilet seçin",                 uk: "Виберіть квиток",                 hi: "टिकट चुनें" },
-      ticketSelected:    { en: "selected. I opened the ticket page for you.", de: "ausgewählt. Ich habe die Ticketseite für Sie geöffnet.", ar: "تم الاختيار. فتحت صفحة التذكرة.", tr: "seçildi. Bilet sayfasını açtım.", uk: "вибрано. Я відкрив сторінку квитка.", hi: "चुना गया। मैंने टिकट पृष्ठ खोला है।" },
+      selectTicket:      { en: "Select the ticket type you want to check.", de: "Wählen Sie die Ticketart, die Sie prüfen möchten.", ar: "اختر نوع التذكرة الذي تريد التحقق منه.", tr: "Kontrol etmek istediğiniz bilet türünü seçin.", uk: "Виберіть тип квитка, який хочете перевірити.", hi: "जिस टिकट प्रकार को जांचना चाहते हैं उसे चुनें।" },
+      ticketSingleExplanation: { en: "A single ticket is usually for one one-way journey. The route planner uses VBN data, but official ticket prices and validity rules should be checked on the VBN website." },
+      ticketDayExplanation: { en: "A day ticket is useful for multiple trips on the same day. The route planner uses VBN data, but official ticket prices and validity rules should be checked on the VBN website." },
+      ticketStudentExplanation: { en: "Students should check whether their semester ticket or Deutschlandsemesterticket is valid before buying another ticket. The route planner uses VBN data, but official ticket prices and validity rules should be checked on the VBN website." },
+      ticketGroupExplanation: { en: "A group ticket may be useful when several people travel together. The route planner uses VBN data, but official ticket prices and validity rules should be checked on the VBN website." },
+      ticketUnsureExplanation: { en: "Please tell me your origin, destination, number of people, and whether you plan only one trip or multiple trips. The route planner uses VBN data, but official ticket prices and validity rules should be checked on the VBN website." },
       useCurrentLoc:     { en: "Use my current location",               de: "Meinen Standort nutzen",          ar: "استخدام موقعي الحالي",     tr: "Mevcut konumumu kullan",      uk: "Використати мою локацію",         hi: "मेरा वर्तमान स्थान उपयोग करें" },
       typeManually:      { en: "Enter starting address",                de: "Startadresse eingeben",           ar: "أدخل عنوان البداية",       tr: "Başlangıç adresini gir",      uk: "Ввести адресу початку",           hi: "शुरुआती पता दर्ज करें" },
       serverDown:        { en: "The server is not reachable right now. Please check that the app is running and try again.", de: "Der Server ist gerade nicht erreichbar. Bitte prüfe, ob die App läuft, und versuche es erneut.", ar: "الخادم غير متاح الآن. يرجى التأكد من تشغيل التطبيق والمحاولة مجدداً.", tr: "Sunucu şu anda erişilemiyor. Uygulamanın çalıştığını kontrol edin ve tekrar deneyin.", uk: "Сервер зараз недоступний. Перевірте, чи запущений застосунок, і спробуйте знову.", hi: "सर्वर अभी पहुँच योग्य नहीं है। ऐप चल रही है यह जाँचें और फिर कोशिश करें।" }
@@ -1589,18 +1630,32 @@
 
 	    function ticketOptionButtons() {
 	      return [
-	        { label: ct("ticketSingle"),      value: ct("ticketSingle"),      action: "ticket_option" },
-	        { label: ct("ticketDay"),         value: ct("ticketDay"),         action: "ticket_option" },
-	        { label: ct("ticketGroup"),       value: ct("ticketGroup"),       action: "ticket_option" },
-	        { label: ct("ticketStudentInfo"), value: ct("ticketStudentInfo"), action: "ticket_option" }
+	        { label: ct("ticketSingle"),      value: "single",  action: "ticket_option" },
+	        { label: ct("ticketDay"),         value: "day",     action: "ticket_option" },
+	        { label: ct("ticketStudentInfo"), value: "student", action: "ticket_option" },
+	        { label: ct("ticketGroup"),       value: "group",   action: "ticket_option" },
+	        { label: ct("ticketNotSure"),     value: "unsure",  action: "ticket_option" }
 	      ];
+	    }
+
+	    function continueToTicketPageButton() {
+	      return [{ label: ct("continueTicketPage"), value: selectedTicket || "selected", action: "ticket_continue" }];
+	    }
+
+	    function ticketExplanation(ticketType) {
+	      const key = String(ticketType || "").toLowerCase();
+	      if (key === "single") return ct("ticketSingleExplanation");
+	      if (key === "day") return ct("ticketDayExplanation");
+	      if (key === "student") return ct("ticketStudentExplanation");
+	      if (key === "group") return ct("ticketGroupExplanation");
+	      return ct("ticketUnsureExplanation");
 	    }
 
 	    function continuationButtons() {
 	      return [
 	        { label: ct("planAnotherTrip"), value: ct("planAnotherTrip"), action: "plan_another_trip" },
 	        { label: ct("useCurrentLoc"),   value: "__current_location__" },
-	        { label: ct("ticketInfo"),      value: "https://www.vbn.de/tickets/ticketuebersicht", url: "https://www.vbn.de/tickets/ticketuebersicht", external: true },
+	        { label: ct("officialVbnTicketInfo"), value: "https://www.vbn.de/tickets", url: "https://www.vbn.de/tickets", external: true },
 	        { label: ct("clearChat"),       value: ct("clearChat"),       action: "clear_chat" }
 	      ];
 	    }
@@ -1662,10 +1717,11 @@
 
 	    function ticketParamValue(ticketType) {
 	      const normalized = String(ticketType || "").toLowerCase();
-	      if (normalized.includes("single")) return "single";
-	      if (normalized.includes("day")) return "day";
-	      if (normalized.includes("group")) return "group";
-	      if (normalized.includes("student") || normalized.includes("semester")) return "student";
+	      if (normalized === "single" || normalized.includes("single")) return "single";
+	      if (normalized === "day" || normalized.includes("day")) return "day";
+	      if (normalized === "group" || normalized.includes("group")) return "group";
+	      if (normalized === "student" || normalized.includes("student") || normalized.includes("semester")) return "student";
+	      if (normalized === "unsure" || normalized.includes("not sure")) return "selected";
 	      return normalized.replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "selected";
 	    }
 
@@ -1732,11 +1788,17 @@
 	      }
 
 	      if (item.action === "ticket_option") {
-	        demoTicketState.ticketType = item.value || item.label;
-	        selectedTicket = demoTicketState.ticketType;
-	        setTicketFlow("payment_started", selectedTicket);
-	        addMessage(`${demoTicketState.ticketType} ${ct("ticketSelected")}`, "bot");
-	        openMockPayment(demoTicketState.ticketType);
+	        selectedTicket = item.value || item.label;
+	        demoTicketState.ticketType = item.label || selectedTicket;
+	        setTicketFlow("selecting_ticket", selectedTicket);
+	        addMessage(ticketExplanation(selectedTicket), "bot");
+	        addChips(continueToTicketPageButton());
+	        return;
+	      }
+
+	      if (item.action === "ticket_continue") {
+	        setTicketFlow("payment_started", selectedTicket || item.value || demoTicketState.ticketType);
+	        openMockPayment(selectedTicket || demoTicketState.ticketType || item.value);
 	        return;
 	      }
 
@@ -2436,6 +2498,12 @@
 	      } finally {
 	        isSendingMessage = false;
 	      }
+	    }
+
+	    if (document.readyState === "loading") {
+	      document.addEventListener("DOMContentLoaded", setupWelcomeQuickActions, { once: true });
+	    } else {
+	      setupWelcomeQuickActions();
 	    }
 
 	    sendBtn.addEventListener("click", () => sendMessage());

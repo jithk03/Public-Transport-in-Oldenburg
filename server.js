@@ -89,6 +89,8 @@ const serverStrings = {
   yesHaveTicket:     { en: "Yes, I have a ticket", de: "Ja, ich habe ein Ticket", ar: "نعم، لدي تذكرة", tr: "Evet, biletim var", uk: "Так, у мене є квиток", hi: "हाँ, मेरे पास टिकट है" },
   noNeedTicket:      { en: "No, I need a ticket", de: "Nein, ich brauche ein Ticket", ar: "لا، أحتاج إلى تذكرة", tr: "Hayır, biletime ihtiyacım var", uk: "Ні, мені потрібен квиток", hi: "नहीं, मुझे टिकट चाहिए" },
   notSure:           { en: "I am not sure", de: "Ich bin nicht sicher", ar: "لست متأكداً", tr: "Emin değilim", uk: "Я не впевнений", hi: "मुझे यकीन नहीं है" },
+  chooseTicketType:  { en: "Choose ticket type", de: "Ticketart auswählen", ar: "اختر نوع التذكرة", tr: "Bilet türü seç", uk: "Вибрати тип квитка", hi: "टिकट प्रकार चुनें" },
+  officialVbnTicketInfo: { en: "Official VBN ticket information", de: "Offizielle VBN-Ticketinformationen", ar: "معلومات تذاكر VBN الرسمية", tr: "Resmi VBN bilet bilgisi", uk: "Офіційна інформація VBN про квитки", hi: "आधिकारिक VBN टिकट जानकारी" },
   openInMaps:        { en: "Open in Maps", de: "In Karten öffnen", ar: "فتح في الخريطة", tr: "Haritada aç", uk: "Відкрити на карті", hi: "मैप में खोलें" },
   noTransferLabel:   { en: "No transfer", de: "Kein Umstieg", ar: "بدون تبديل", tr: "Aktarmasız", uk: "Без пересадки", hi: "कोई बदलाव नहीं" },
   walkRoute:         { en: "Walking route", de: "Fußweg", ar: "طريق مشي", tr: "Yürüme rotası", uk: "Пішохідний маршрут", hi: "पैदल रूट" },
@@ -3545,60 +3547,23 @@ function alternativeRouteButtons(routeResult, lang) {
 }
 
 function shortRouteTicketNote(lang, isStudent = false) {
-  const intro = {
-    de: "Ticketinformationen",
-    ar: "معلومات التذاكر",
-    tr: "Bilet bilgisi",
-    uk: "Інформація про квитки",
-    hi: "टिकट जानकारी",
-    en: "Ticket information"
+  const title = {
+    de: "Ticket support",
+    ar: "Ticket support",
+    tr: "Ticket support",
+    uk: "Ticket support",
+    hi: "Ticket support",
+    en: "Ticket support"
   };
-  const notes = {
-    de: [
-      "🎫 Ticket kaufen\nNutze den offiziellen VBN-Ticketservice.",
-      "ℹ️ Ticketinformationen\nPrüfe Ticketarten, Preise, Gültigkeit und Informationen zu Studierendentickets."
-    ],
-    ar: [
-      "🎫 شراء تذكرة\nاستخدم خدمة تذاكر VBN الرسمية.",
-      "ℹ️ معلومات التذاكر\nتحقق من أنواع التذاكر والأسعار والصلاحية ومعلومات تذاكر الطلاب."
-    ],
-    tr: [
-      "🎫 Bilet satın al\nResmi VBN bilet hizmetini kullan.",
-      "ℹ️ Bilet bilgisi\nBilet türlerini, ücretleri, geçerliliği ve öğrenci bileti bilgilerini kontrol et."
-    ],
-    uk: [
-      "🎫 Купити квиток\nСкористайтеся офіційним сервісом квитків VBN.",
-      "ℹ️ Інформація про квитки\nПеревірте типи квитків, тарифи, чинність і студентські квитки."
-    ],
-    hi: [
-      "🎫 टिकट खरीदें\nआधिकारिक VBN टिकट सेवा का उपयोग करें.",
-      "ℹ️ टिकट जानकारी\nटिकट के प्रकार, किराया, वैधता और छात्र टिकट की जानकारी जांचें."
-    ],
-    en: [
-      "🎫 Buy ticket\nUse the official VBN ticket service.",
-      "ℹ️ Ticket Information\nCheck ticket types, fares, validity, and student ticket information."
-    ]
+  const note = {
+    de: "I can help you understand which ticket type may fit your trip. For official prices and validity rules, please check the VBN ticket information page.",
+    ar: "I can help you understand which ticket type may fit your trip. For official prices and validity rules, please check the VBN ticket information page.",
+    tr: "I can help you understand which ticket type may fit your trip. For official prices and validity rules, please check the VBN ticket information page.",
+    uk: "I can help you understand which ticket type may fit your trip. For official prices and validity rules, please check the VBN ticket information page.",
+    hi: "I can help you understand which ticket type may fit your trip. For official prices and validity rules, please check the VBN ticket information page.",
+    en: "I can help you understand which ticket type may fit your trip. For official prices and validity rules, please check the VBN ticket information page."
   };
-  const studentNotes = {
-    de: "🎓 Studierenden-Hinweis\nWenn du studierst, prüfe vor dem Kauf eines weiteren Tickets, ob dein Semesterticket gültig ist.",
-    ar: "🎓 ملاحظة للطلاب\nإذا كنت طالباً، تحقق مما إذا كانت تذكرة الفصل الدراسي صالحة قبل شراء تذكرة أخرى.",
-    tr: "🎓 Öğrenci notu\nÖğrenciysen, başka bir bilet almadan önce dönem biletinin geçerli olup olmadığını kontrol et.",
-    uk: "🎓 Студентська примітка\nЯкщо ви студент, перевірте, чи дійсний ваш семестровий квиток, перш ніж купувати інший.",
-    hi: "🎓 छात्र सूचना\nयदि आप छात्र हैं, तो दूसरा टिकट खरीदने से पहले जांचें कि आपका सेमेस्टर टिकट मान्य है या नहीं.",
-    en: "🎓 Student note\nIf you are a student, check whether your semester ticket is valid before purchasing another ticket."
-  };
-  const limitations = {
-    de: "Hinweis:\nDieser Chatbot kann keine Tickets verkaufen oder offiziellen Preise anzeigen, weil die VBN OTP API keine Ticketdaten bereitstellt.",
-    ar: "ملاحظة:\nلا يستطيع هذا المساعد بيع التذاكر أو عرض الأسعار الرسمية لأن واجهة VBN OTP API لا توفر بيانات التذاكر.",
-    tr: "Not:\nBu sohbet botu bilet satamaz veya resmi fiyatları gösteremez, çünkü VBN OTP API bilet verisi sağlamaz.",
-    uk: "Примітка:\nЦей чатбот не може продавати квитки або показувати офіційні ціни, тому що VBN OTP API не надає квиткових даних.",
-    hi: "सूचना:\nयह चैटबॉट टिकट नहीं बेच सकता या आधिकारिक कीमतें नहीं दिखा सकता, क्योंकि VBN OTP API टिकट डेटा नहीं देता.",
-    en: "Note:\nThis chatbot cannot sell tickets or show official prices because the VBN OTP API does not provide ticket data."
-  };
-  const lines = [intro[lang] || intro.en, ...(notes[lang] || notes.en)];
-  if (isStudent) lines.push(studentNotes[lang] || studentNotes.en);
-  lines.push(limitations[lang] || limitations.en);
-  return lines.join("\n\n");
+  return [title[lang] || title.en, note[lang] || note.en].join("\n\n");
 }
 
 function stopNameForInstruction(place, fallback) {
@@ -4787,40 +4752,11 @@ function quickButtonsForChoices(choices) {
   });
 }
 
-const ticketLinks = [
-  {
-    label: "🎫 Buy ticket",
-    url: "https://www.vbn.de/tickets"
-  },
-  {
-    label: "ℹ️ Ticket Information",
-    url: "https://www.vbn.de/tickets/ticketuebersicht"
-  },
-  {
-    label: "Open in Maps",
-    url: "https://www.google.com/maps"
-  }
-];
-
-function localizedTicketLabels(lang) {
-  const labels = {
-    de: ["🎫 Ticket kaufen", "ℹ️ Ticketinformationen", "Karte öffnen"],
-    ar: ["🎫 شراء تذكرة", "ℹ️ معلومات التذاكر", "فتح الخريطة"],
-    tr: ["🎫 Bilet al", "ℹ️ Bilet bilgisi", "Haritada aç"],
-    uk: ["🎫 Купити квиток", "ℹ️ Інформація про квитки", "Відкрити карту"],
-    hi: ["🎫 टिकट खरीदें", "ℹ️ टिकट जानकारी", "मैप खोलें"],
-    en: ["🎫 Buy ticket", "ℹ️ Ticket information", "Open in Maps"]
-  };
-  return labels[lang] || labels.en;
-}
-
 function ticketQuickButtons(lang) {
-  const labels = localizedTicketLabels(lang);
-  return ticketLinks.slice(0, 2).map((link, index) => ({
-    label: labels[index] || link.label,
-    url: link.url,
-    external: true
-  }));
+  return [
+    { label: ts("chooseTicketType", lang), value: ts("chooseTicketType", lang), action: "ticket_need" },
+    { label: ts("officialVbnTicketInfo", lang), value: "https://www.vbn.de/tickets", url: "https://www.vbn.de/tickets", external: true }
+  ];
 }
 
 function coordParam(coords) {
