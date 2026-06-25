@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#f2c300" />
   <meta name="description" content="A web-based multilingual public transport chatbot for Oldenburg." />
   <link rel="icon" type="image/png" href="/bus-icon.png?v=2" />
@@ -25,12 +25,22 @@
       --border: #e8dfc1;
       --surface: #fffaf0;
       --shadow: 0 24px 70px rgba(23, 25, 28, 0.2);
+      --app-max-width: 1040px;
+      --app-padding: clamp(12px, 2vw, 24px);
+      --card-radius: 18px;
     }
 
     * { box-sizing: border-box; }
 
+    html,
     body {
+      width: 100%;
+      min-height: 100%;
       margin: 0;
+      overflow-x: hidden;
+    }
+
+    body {
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
       background:
         linear-gradient(135deg, rgba(23, 25, 28, 0.9), rgba(47, 51, 58, 0.82)),
@@ -41,32 +51,37 @@
       min-height: 100dvh;
       display: flex;
       justify-content: center;
-      align-items: center;
-      padding: 18px;
+      align-items: stretch;
+      padding: var(--app-padding);
     }
 
     .app {
-      width: 100%;
-      max-width: 430px;
-      height: min(100dvh - 36px, 860px);
-      min-height: 640px;
+      width: min(100%, var(--app-max-width));
+      min-height: calc(100dvh - (var(--app-padding) * 2));
+      height: calc(100dvh - (var(--app-padding) * 2));
+      margin: 0 auto;
       background: var(--panel);
-      border-radius: 34px;
+      border-radius: var(--card-radius);
       box-shadow: var(--shadow);
       display: flex;
       flex-direction: column;
       overflow: hidden;
-      border: 10px solid #111316;
+      border: 1px solid rgba(255, 255, 255, 0.26);
     }
 
     .header {
       position: relative;
-      padding: 18px 18px 16px;
+      flex-shrink: 0;
+      padding: clamp(14px, 2vw, 22px);
       background:
         linear-gradient(135deg, rgba(23, 25, 28, 0.98), rgba(47, 51, 58, 0.94)),
         linear-gradient(90deg, rgba(242, 195, 0, 0.88), transparent 58%);
       color: white;
       overflow: hidden;
+      display: grid;
+      grid-template-columns: minmax(220px, 1fr) minmax(180px, 260px);
+      gap: 12px 16px;
+      align-items: center;
     }
 
     .header .brand,
@@ -104,6 +119,7 @@
       display: flex;
       align-items: center;
       gap: 12px;
+      min-width: 0;
     }
 
     .logo {
@@ -124,19 +140,22 @@
       font-weight: 800;
       line-height: 1.2;
       letter-spacing: 0;
+      overflow-wrap: anywhere;
     }
 
     .subtitle {
       margin: 3px 0 0;
       font-size: 13px;
       opacity: 0.9;
+      overflow-wrap: anywhere;
     }
 
     .language-bar {
-      margin-top: 13px;
       display: flex;
       gap: 8px;
       align-items: center;
+      justify-self: end;
+      min-width: 0;
     }
 
     .language-bar label {
@@ -147,6 +166,7 @@
 
     select {
       flex: 1;
+      min-width: 0;
       border: 1px solid rgba(255,255,255,.35);
       background: rgba(255,255,255,.18);
       color: white;
@@ -169,7 +189,7 @@
     }
 
     .status {
-      margin-top: 10px;
+      grid-column: 1 / -1;
       background: rgba(255,255,255,0.16);
       border: 1px solid rgba(255,255,255,0.2);
       border-radius: 16px;
@@ -178,6 +198,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
       gap: 10px;
       backdrop-filter: blur(12px);
     }
@@ -216,7 +237,8 @@
 
     .chat {
       flex: 1;
-      padding: 20px 14px 18px;
+      min-height: 0;
+      padding: clamp(12px, 2vw, 20px);
       overflow-y: auto;
       scroll-behavior: smooth;
       background:
@@ -244,7 +266,9 @@
       align-items: flex-end;
       gap: 8px;
       margin: 11px auto;
+      width: 100%;
       max-width: 100%;
+      min-width: 0;
     }
 
     .message-row.user { justify-content: flex-end; }
@@ -270,12 +294,14 @@
     }
 
     .message {
-      max-width: min(84%, 720px);
+      max-width: min(75%, 720px);
       padding: 12px 14px;
       border-radius: 18px;
       font-size: 14px;
       line-height: 1.45;
       white-space: pre-line;
+      overflow-wrap: anywhere;
+      word-break: normal;
       box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
     }
 
@@ -297,6 +323,7 @@
       gap: 8px;
       flex-wrap: wrap;
       margin: 14px auto 6px;
+      width: 100%;
       max-width: 100%;
     }
 
@@ -308,9 +335,10 @@
       font-size: 13px;
       cursor: pointer;
       color: var(--text);
-      min-height: 40px;
+      min-height: 44px;
       max-width: 100%;
       overflow-wrap: anywhere;
+      white-space: normal;
       transition: transform 0.16s, border-color 0.16s, color 0.16s, box-shadow 0.16s;
       box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
     }
@@ -320,6 +348,12 @@
       color: #17191c;
       transform: translateY(-1px);
       box-shadow: 0 10px 22px rgba(242, 195, 0, 0.22);
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+      opacity: 0.62;
+      transform: none;
     }
 
     .chip.external {
@@ -365,6 +399,7 @@
 
 		/* Route summary and walking map links — minimal, responsive, matches existing card style */
 		.route-summary-container {
+			width: 100%;
 			margin-top: 10px;
 			border-radius: 12px;
 			background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(250,250,250,0.98));
@@ -374,6 +409,7 @@
 			font-size: 13px;
 			color: var(--text);
 			max-width: 100%;
+			overflow-wrap: anywhere;
 		}
 
 		.route-summary-header {
@@ -383,6 +419,8 @@
 			gap: 8px;
 			align-items: center;
 			justify-content: space-between;
+			flex-wrap: wrap;
+			overflow-wrap: anywhere;
 		}
 
 		.route-summary-title {
@@ -396,6 +434,8 @@
 			display: flex;
 			gap: 8px;
 			align-items: center;
+			min-width: 0;
+			overflow-wrap: anywhere;
 		}
 
 		.route-leg-transit {
@@ -428,6 +468,9 @@
 			padding: 4px 0;
 			cursor: pointer;
 			text-align: left;
+			min-height: 44px;
+			white-space: normal;
+			overflow-wrap: anywhere;
 		}
 
 		.segment-alternatives-list {
@@ -449,6 +492,7 @@
 			font-size: 12px;
 			line-height: 1.35;
 			color: var(--text);
+			overflow-wrap: anywhere;
 		}
 
 		.route-ticket-question {
@@ -471,7 +515,15 @@
 			font-size: 13px;
 		}
 
+		.alternative-routes-list {
+			display: grid;
+			gap: 8px;
+			min-width: 0;
+		}
+
 		.alternative-route-card {
+			width: 100%;
+			max-width: 100%;
 			border: 1px solid rgba(230,230,230,0.95);
 			border-radius: 10px;
 			background: #ffffff;
@@ -488,9 +540,11 @@
 			justify-content: space-between;
 			gap: 10px;
 			padding: 9px;
+			min-height: 44px;
 			text-align: left;
 			cursor: pointer;
 			font: inherit;
+			white-space: normal;
 		}
 
 		.alternative-route-summary[aria-expanded="true"] {
@@ -526,11 +580,14 @@
 		}
 
 		.walking-block {
+			width: 100%;
+			max-width: 100%;
 			border-radius: 10px;
 			padding: 8px;
 			background: linear-gradient(180deg, #ffffff, #fbfbfb);
 			border: 1px solid rgba(230,230,230,0.9);
 			margin: 6px 0;
+			overflow-wrap: anywhere;
 		}
 
 		.walking-title { font-weight: 700; margin-bottom: 6px; }
@@ -548,6 +605,9 @@
 			margin-bottom: 6px;
 			color: var(--text);
 			text-decoration: none;
+			max-width: 100%;
+			overflow-wrap: anywhere;
+			white-space: normal;
 		}
 
 		.walking-map-button.disabled,
@@ -577,7 +637,7 @@
 
     .payment-dialog {
       width: min(100%, 430px);
-      max-height: min(760px, 100dvh - 36px);
+      max-height: calc(100dvh - (var(--app-padding) * 2));
       overflow: auto;
       background: white;
       border-radius: 8px;
@@ -742,7 +802,10 @@
     }
 
     .input-area {
-      padding: 12px 12px 14px;
+      flex-shrink: 0;
+      position: sticky;
+      bottom: 0;
+      padding: 12px max(12px, env(safe-area-inset-right)) max(14px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
       border-top: 1px solid var(--border);
       background: rgba(255, 255, 255, 0.96);
     }
@@ -773,6 +836,7 @@
 
     textarea {
       flex: 1;
+      min-width: 0;
       border: none;
       outline: none;
       resize: none;
@@ -794,8 +858,9 @@
       background: var(--primary);
       color: #17191c;
       border-radius: 14px;
-      width: 42px;
-      height: 42px;
+      width: 44px;
+      height: 44px;
+      min-height: 44px;
       font-size: 18px;
       cursor: pointer;
       flex: 0 0 auto;
@@ -813,8 +878,9 @@
       background: #ffffff;
       color: #17191c;
       border-radius: 14px;
-      width: 42px;
-      height: 42px;
+      width: 44px;
+      height: 44px;
+      min-height: 44px;
       font-size: 18px;
       cursor: pointer;
       flex: 0 0 auto;
@@ -851,13 +917,24 @@
       border-bottom-left-radius: 6px;
     }
 
-    @media (max-width: 520px) {
+    @media (max-width: 900px) {
+      .header {
+        grid-template-columns: 1fr;
+      }
+
+      .language-bar {
+        justify-self: stretch;
+      }
+    }
+
+    @media (max-width: 600px) {
       body {
         align-items: stretch;
         padding: 0;
       }
 
       .app {
+        width: 100%;
         max-width: none;
         height: 100dvh;
         min-height: 100dvh;
@@ -866,21 +943,68 @@
         box-shadow: none;
       }
 
+      .header {
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      .brand {
+        align-items: flex-start;
+      }
+
+      .logo {
+        width: 40px;
+        height: 40px;
+        border-radius: 14px;
+        font-size: 21px;
+      }
+
       .title {
-        font-size: 17px;
+        font-size: 1rem;
+        line-height: 1.25;
+      }
+
+      .language-bar,
+      .status {
+        width: 100%;
+        align-items: flex-start;
+      }
+
+      .language-bar {
+        flex-wrap: wrap;
+      }
+
+      .language-bar label {
+        width: 100%;
+      }
+
+      select {
+        width: 100%;
+        flex-basis: 100%;
+      }
+
+      .status {
+        justify-content: flex-start;
+      }
+
+      #statusLeft {
+        flex: 1 1 100%;
       }
 
       .message {
-        max-width: calc(100% - 44px);
+        max-width: min(92%, calc(100% - 44px));
+      }
+
+      .input-wrap {
+        border-radius: 0;
       }
 
       .chips {
-        display: grid;
-        grid-template-columns: 1fr;
+        align-items: stretch;
       }
 
       .chip {
-        width: 100%;
+        flex: 1 1 100%;
         border-radius: 14px;
         text-align: center;
       }
@@ -903,6 +1027,48 @@
 
       .payment-grid {
         grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .header {
+        padding: 12px;
+      }
+
+      .chat {
+        padding: 12px 10px;
+      }
+
+      .avatar {
+        width: 28px;
+        height: 28px;
+        border-radius: 10px;
+      }
+
+      .message {
+        padding: 11px 12px;
+        font-size: 13px;
+      }
+
+      button.send,
+      button.mic {
+        width: 44px;
+        height: 44px;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .input-wrap {
+        flex-wrap: wrap;
+      }
+
+      textarea {
+        flex-basis: 100%;
+      }
+
+      button.send,
+      button.mic {
+        flex: 1 1 calc(50% - 4px);
       }
     }
   </style>
@@ -1615,8 +1781,11 @@
       ticketUnsureExplanation: { en: "Please tell me your origin, destination, number of people, and whether you plan only one trip or multiple trips. The route planner uses VBN data, but official ticket prices and validity rules should be checked on the VBN website." },
       useCurrentLoc:     { en: "Use my current location",               de: "Meinen Standort nutzen",          ar: "استخدام موقعي الحالي",     tr: "Mevcut konumumu kullan",      uk: "Використати мою локацію",         hi: "मेरा वर्तमान स्थान उपयोग करें" },
       typeManually:      { en: "Enter starting address",                de: "Startadresse eingeben",           ar: "أدخل عنوان البداية",       tr: "Başlangıç adresini gir",      uk: "Ввести адресу початку",           hi: "शुरुआती पता दर्ज करें" },
-      serverDown:        { en: "The server is not reachable right now. Please check that the app is running and try again.", de: "Der Server ist gerade nicht erreichbar. Bitte prüfe, ob die App läuft, und versuche es erneut.", ar: "الخادم غير متاح الآن. يرجى التأكد من تشغيل التطبيق والمحاولة مجدداً.", tr: "Sunucu şu anda erişilemiyor. Uygulamanın çalıştığını kontrol edin ve tekrar deneyin.", uk: "Сервер зараз недоступний. Перевірте, чи запущений застосунок, і спробуйте знову.", hi: "सर्वर अभी पहुँच योग्य नहीं है। ऐप चल रही है यह जाँचें और फिर कोशिश करें।" }
-      ,findingBestRoute: { en: "Finding the best route...", de: "Beste Route wird gesucht...", ar: "جارٍ البحث عن أفضل مسار...", tr: "En iyi rota aranıyor...", uk: "Шукаю найкращий маршрут...", hi: "सबसे अच्छा रास्ता खोजा जा रहा है..." }
+      serverDown:        { en: "The server is not reachable right now. Please check that the app is running and try again.", de: "Der Server ist gerade nicht erreichbar. Bitte prüfe, ob die App läuft, und versuche es erneut.", ar: "الخادم غير متاح الآن. يرجى التأكد من تشغيل التطبيق والمحاولة مجدداً.", tr: "Sunucu şu anda erişilemiyor. Uygulamanın çalıştığını kontrol edin ve tekrar deneyin.", uk: "Сервер зараз недоступний. Перевірте, чи запущений застосунок, і спробуйте знову.", hi: "सर्वर अभी पहुँच योग्य नहीं है। ऐप चल रही है यह जाँचें और फिर कोशिश करें।" },
+      findingBestRoute:  { en: "Finding the best route...", de: "Ich suche die beste Route...", ar: "جارٍ البحث عن أفضل مسار...", tr: "En iyi rota aranıyor...", uk: "Шукаю найкращий маршрут...", hi: "सबसे अच्छा मार्ग खोजा जा रहा है..." },
+      stillSearchingRoute: { en: "Still searching. The transport service is taking longer than usual...", de: "Ich suche noch. Der Verkehrsdienst braucht länger als üblich...", ar: "ما زال البحث جارياً. خدمة النقل تستغرق وقتاً أطول من المعتاد...", tr: "Hala aranıyor. Ulaşım servisi normalden uzun sürüyor...", uk: "Ще шукаю. Транспортний сервіс відповідає довше, ніж зазвичай...", hi: "अभी भी खोज रहा हूँ। परिवहन सेवा सामान्य से अधिक समय ले रही है..." },
+      showOtherOptions:  { en: "Show other options", de: "Weitere Optionen anzeigen", ar: "عرض خيارات أخرى", tr: "Diğer seçenekleri göster", uk: "Показати інші варіанти", hi: "अन्य विकल्प दिखाएँ" },
+      hideOtherOptions:  { en: "Hide other options", de: "Weitere Optionen ausblenden", ar: "إخفاء الخيارات الأخرى", tr: "Diğer seçenekleri gizle", uk: "Сховати інші варіанти", hi: "अन्य विकल्प छिपाएँ" }
     };
 
     function ct(key) {
@@ -1842,6 +2011,24 @@
       if (persist) scrollChatToBottom();
       if (persist) saveChatState();
       return row;
+    }
+
+    function updateMessageText(row, text) {
+      if (!row) return;
+      const bubble = row.querySelector(".message");
+      if (!bubble) return;
+      row.__messageText = String(text || "");
+      row.dataset.messageText = row.__messageText;
+      bubble.textContent = row.__messageText;
+      scrollChatToBottom();
+    }
+
+    function setRequestInProgress(active) {
+      isSendingMessage = active;
+      sendBtn.disabled = active;
+      sendBtn.setAttribute("aria-busy", String(active));
+      input.setAttribute("aria-busy", String(active));
+      micBtn.disabled = active;
     }
 
 	    function formatRouteClock(value) {
@@ -2422,7 +2609,7 @@
 	        return;
 	      }
 	      if (isSendingMessage) return;
-	      isSendingMessage = true;
+	      setRequestInProgress(true);
 	      lastUserSend = { text, at: now };
 	      const lang = currentLang();
 	      console.log("[Send Debug] start", { rawText: text, selectedLanguage: lang });
@@ -2446,6 +2633,9 @@
 	        addMessage(text, "user", true, { id: newMessageId() });
 	        const routeLoadingRow = looksLikeNewRouteRequest(text)
 	          ? addMessage(ct("findingBestRoute"), "bot", false, { id: newMessageId() })
+	          : null;
+	        const routeSlowTimer = routeLoadingRow
+	          ? setTimeout(() => updateMessageText(routeLoadingRow, ct("stillSearchingRoute")), 3000)
 	          : null;
 	        console.log("[Add User Message Debug]", {
 	          text,
@@ -2484,6 +2674,7 @@
 
 	        try {
 	          if (routeLoadingRow) routeLoadingRow.remove();
+	          if (routeSlowTimer) clearTimeout(routeSlowTimer);
 	          if (response && (response.text || response.lastRouteResult || (Array.isArray(response.quickButtons) && response.quickButtons.length))) {
 	            console.log("[Send Debug] adding bot message", response);
 	            renderChatResponse(response);
@@ -2492,11 +2683,12 @@
 	            addMessage(ct("couldNotProcessRequest"), "bot");
 	          }
 	        } catch (error) {
+	          if (routeSlowTimer) clearTimeout(routeSlowTimer);
 	          console.error("[Send Error]", error);
 	          addMessage(ct("routeProcessingError"), "bot");
 	        }
 	      } finally {
-	        isSendingMessage = false;
+	        setRequestInProgress(false);
 	      }
 	    }
 
@@ -3113,7 +3305,27 @@
 			title.textContent = routeResult?.walkRecommended
 				? t(lang, 'youCanAlsoTakePublicTransport')
 				: t(lang, 'otherOptions');
-			wrapper.appendChild(title);
+
+			const toggleAll = document.createElement('button');
+			toggleAll.type = 'button';
+			toggleAll.className = 'segment-alternatives-toggle';
+			toggleAll.setAttribute('aria-expanded', 'false');
+			toggleAll.textContent = ct('showOtherOptions');
+			if (lang === 'ar') toggleAll.style.textAlign = 'right';
+
+			const list = document.createElement('div');
+			list.hidden = true;
+			list.className = 'alternative-routes-list';
+			list.appendChild(title);
+
+			toggleAll.addEventListener('click', () => {
+				const isOpen = toggleAll.getAttribute('aria-expanded') !== 'true';
+				toggleAll.setAttribute('aria-expanded', String(isOpen));
+				toggleAll.textContent = isOpen ? ct('hideOtherOptions') : ct('showOtherOptions');
+				list.hidden = !isOpen;
+			});
+
+			wrapper.appendChild(toggleAll);
 
 			const setExpanded = (nextId) => {
 				expandedAlternativeId = expandedAlternativeId === nextId ? null : nextId;
@@ -3162,9 +3374,10 @@
 				button.addEventListener('click', () => setExpanded(id));
 				card.appendChild(button);
 				card.appendChild(details);
-				wrapper.appendChild(card);
+				list.appendChild(card);
 			});
 
+			wrapper.appendChild(list);
 			container.appendChild(wrapper);
 		}
 

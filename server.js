@@ -46,8 +46,9 @@ let stopsCache = { loadedAt: 0, stops: [] };
 const stopsCacheTtlMs = 1000 * 60 * 60;
 const placeCache = new Map();
 const routeCache = new Map();
-const routeCacheTtlMs = 1000 * 60 * 2;
+const routeCacheTtlMs = 1000 * 60;
 const placeCacheTtlMs = 1000 * 60 * 15;
+const DEBUG_MODE = String(process.env.DEBUG_MODE || "").toLowerCase() === "true";
 
 const supportedLanguageLabels = {
   en: "English", de: "Deutsch", ar: "العربية", tr: "Türkçe", uk: "Українська", hi: "हिन्दी"
@@ -289,7 +290,7 @@ async function fetchJsonWithTimeout(url, options = {}, timeoutMs = 15000) {
 async function withTimeout(promise, ms, label) {
   let timeoutId;
   const timeout = new Promise((_, reject) => {
-    timeoutId = setTimeout(() => reject(new Error(`${label} timed out`)), ms);
+    timeoutId = setTimeout(() => reject(new Error(`${label} timed out after ${ms}ms`)), ms);
   });
 
   try {
@@ -2773,17 +2774,19 @@ function logRouteCoordinateDebug({ rawText = "", details = {}, resolvedOrigin = 
     mapsUrl: firstWalkLeg?.mapsUrl
   });
 
-  console.log("[ALL WALK LEGS DEBUG]", (route?.legs || [])
-    .filter(leg => leg.mode === "WALK")
-    .map((leg, index) => ({
-      index,
-      from: leg.from,
-      to: leg.to,
-      fromCoords: leg.fromCoords,
-      toCoords: leg.toCoords,
-      mapsUrl: leg.mapsUrl
-    }))
-  );
+  if (DEBUG_MODE) {
+    console.log("[ALL WALK LEGS DEBUG]", (route?.legs || [])
+      .filter(leg => leg.mode === "WALK")
+      .map((leg, index) => ({
+        index,
+        from: leg.from,
+        to: leg.to,
+        fromCoords: leg.fromCoords,
+        toCoords: leg.toCoords,
+        mapsUrl: leg.mapsUrl
+      }))
+    );
+  }
 
   assertFirstWalkUsesResolvedOrigin(resolvedOrigin, firstWalkLeg);
 
@@ -2969,21 +2972,23 @@ function fixWalkingLegEndpoints(route) {
     })
   };
 
-  console.log("[WALK LEGS FIX DEBUG]", fixedRoute.legs.map((leg, index) => ({
-    index,
-    mode: leg.mode,
-    from: leg.from?.label || leg.from?.name,
-    to: leg.to?.label || leg.to?.name,
-    fromCoords: leg.fromCoords,
-    toCoords: leg.toCoords,
-    mapsUrl: leg.mapsUrl
-  })));
-  console.log("[WALK LEG CONSISTENCY DEBUG]", {
-    requestedOrigin,
-    requestedDestination,
-    firstTransitFrom: firstTransit?.leg?.from,
-    lastTransitTo: lastTransit?.leg?.to
-  });
+  if (DEBUG_MODE) {
+    console.log("[WALK LEGS FIX DEBUG]", fixedRoute.legs.map((leg, index) => ({
+      index,
+      mode: leg.mode,
+      from: leg.from?.label || leg.from?.name,
+      to: leg.to?.label || leg.to?.name,
+      fromCoords: leg.fromCoords,
+      toCoords: leg.toCoords,
+      mapsUrl: leg.mapsUrl
+    })));
+    console.log("[WALK LEG CONSISTENCY DEBUG]", {
+      requestedOrigin,
+      requestedDestination,
+      firstTransitFrom: firstTransit?.leg?.from,
+      lastTransitTo: lastTransit?.leg?.to
+    });
+  }
 
   return fixedRoute;
 }
@@ -4033,9 +4038,19 @@ function pastTimeRouteResult(details, validation) {
 }
 
 async function planRoute(details, fromCoords = null, options = {}) {
+  const perfStart = performance.now();
+  const rawText = options.rawText || details.rawText || "";
+  const selectedLanguage = normalizeLanguage(options.selectedLanguage || details.selectedLanguage || "en");
+  console.log("[PERF ROUTE START]", {
+    rawText,
+    language: selectedLanguage
+  });
   console.time("[Route Timing] total");
   console.time("[Route Timing] parse");
   console.timeEnd("[Route Timing] parse");
+  console.log("[PERF PARSE DONE]", {
+    durationMs: Math.round(performance.now() - perfStart)
+  });
   if (!details.start || !details.destination) {
     console.timeEnd("[Route Timing] total");
     return { ok: false, status: 400, error: "missing_trip_details", details };
@@ -4091,6 +4106,11 @@ async function planRoute(details, fromCoords = null, options = {}) {
   console.timeEnd("[Route Timing] place resolution");
   const from = fromResolution?.place;
   const to = toResolution.place;
+  console.log("[PERF RESOLVE DONE]", {
+    durationMs: Math.round(performance.now() - perfStart),
+    originResolved: Boolean(from),
+    destinationResolved: Boolean(to)
+  });
 
   if (!from || !to) {
     const failedResolution = from ? toResolution : fromResolution || toResolution;
@@ -4147,8 +4167,6 @@ async function planRoute(details, fromCoords = null, options = {}) {
   }
   let tripTime = dateTimeResolution.tripTime;
   const routeMode = dateTimeResolution.mode;
-  const rawText = options.rawText || details.rawText || "";
-  const selectedLanguage = normalizeLanguage(options.selectedLanguage || details.selectedLanguage || "en");
   const shortDistanceMeters = Math.round(distanceMeters(from, to));
   const estimatedWalkMinutes = Math.max(1, Math.ceil(shortDistanceMeters / 80));
   const modeDecision = decideRecommendedMode({
@@ -4189,6 +4207,29 @@ async function planRoute(details, fromCoords = null, options = {}) {
     });
   }
 
+  if (recommendWalking && !userRequestedTransit) {
+    console.time("[Route Timing] OTP route");
+    console.timeEnd("[Route Timing] OTP route");
+    console.time("[Route Timing] alternatives");
+    console.timeEnd("[Route Timing] alternatives");
+    console.time("[Route Timing] segment alternatives");
+    console.timeEnd("[Route Timing] segment alternatives");
+    console.time("[Route Timing] render response");
+    const walkingResult = buildWalkingRecommendationRoute(details, from, to, tripTime, { arriveBy });
+    console.timeEnd("[Route Timing] render response");
+    console.log("[PERF ROUTE API DONE]", {
+      durationMs: Math.round(performance.now() - perfStart),
+      routeFound: true,
+      skippedOtp: true,
+      reason: "walkable_short_route"
+    });
+    console.log("[PERF FIRST RESPONSE READY]", {
+      durationMs: Math.round(performance.now() - perfStart)
+    });
+    console.timeEnd("[Route Timing] total");
+    return walkingResult;
+  }
+
   // Walking remains useful even when live transit data is unavailable.
   if (recommendWalking && !vbnApiKey) {
     console.time("[Route Timing] OTP route");
@@ -4200,6 +4241,15 @@ async function planRoute(details, fromCoords = null, options = {}) {
     console.time("[Route Timing] render response");
     const walkingResult = buildWalkingRecommendationRoute(details, from, to, tripTime, { arriveBy });
     console.timeEnd("[Route Timing] render response");
+    console.log("[PERF ROUTE API DONE]", {
+      durationMs: Math.round(performance.now() - perfStart),
+      routeFound: true,
+      skippedOtp: true,
+      reason: "missing_vbn_key_walk_fallback"
+    });
+    console.log("[PERF FIRST RESPONSE READY]", {
+      durationMs: Math.round(performance.now() - perfStart)
+    });
     console.timeEnd("[Route Timing] total");
     return walkingResult;
   }
@@ -4257,6 +4307,14 @@ async function planRoute(details, fromCoords = null, options = {}) {
     console.timeEnd("[Route Timing] segment alternatives");
     console.time("[Route Timing] render response");
     console.timeEnd("[Route Timing] render response");
+    console.log("[PERF ROUTE API DONE]", {
+      durationMs: Math.round(performance.now() - perfStart),
+      routeFound: true,
+      cacheHit: true
+    });
+    console.log("[PERF FIRST RESPONSE READY]", {
+      durationMs: Math.round(performance.now() - perfStart)
+    });
     console.timeEnd("[Route Timing] total");
     return cachedRoute;
   }
@@ -4321,6 +4379,10 @@ async function planRoute(details, fromCoords = null, options = {}) {
   console.time("[Route Timing] OTP route");
   let { errorResult: fetchError, itineraries } = await fetchOtpItineraries(tripTime);
   console.timeEnd("[Route Timing] OTP route");
+  console.log("[PERF ROUTE API DONE]", {
+    durationMs: Math.round(performance.now() - perfStart),
+    routeFound: Boolean(!fetchError && itineraries?.length)
+  });
   if (fetchError) {
     if (recommendWalking) {
       console.time("[Route Timing] alternatives");
@@ -4330,6 +4392,9 @@ async function planRoute(details, fromCoords = null, options = {}) {
       console.time("[Route Timing] render response");
       const walkingResult = buildWalkingRecommendationRoute(details, from, to, tripTime, { arriveBy });
       console.timeEnd("[Route Timing] render response");
+      console.log("[PERF FIRST RESPONSE READY]", {
+        durationMs: Math.round(performance.now() - perfStart)
+      });
       console.timeEnd("[Route Timing] total");
       return walkingResult;
     }
@@ -4454,25 +4519,27 @@ async function planRoute(details, fromCoords = null, options = {}) {
     });
   }
 
-  console.log("[SALBEISTRASSE ROUTE DEBUG]", {
-    rawText,
-    originText,
-    destinationText,
-    resolvedOrigin,
-    resolvedDestination,
-    firstWalkLeg,
-    allWalkLegs: normalizedRoute?.legs?.filter(l => l.mode === "WALK")
-  });
+  if (DEBUG_MODE) {
+    console.log("[SALBEISTRASSE ROUTE DEBUG]", {
+      rawText,
+      originText,
+      destinationText,
+      resolvedOrigin,
+      resolvedDestination,
+      firstWalkLeg,
+      allWalkLegs: normalizedRoute?.legs?.filter(l => l.mode === "WALK")
+    });
 
-  console.log("[NORMALIZED ROUTE DEBUG]", {
-    requestedOrigin: resolvedOrigin,
-    requestedDestination: resolvedDestination,
-    legs: normalizedRoute?.legs,
-    firstWalkLeg: normalizedRoute?.legs?.find(l => l.mode === "WALK"),
-    walkingMapUrls: normalizedRoute?.legs
-      ?.filter(l => l.mode === "WALK")
-      ?.map(l => l.mapsUrl)
-  });
+    console.log("[NORMALIZED ROUTE DEBUG]", {
+      requestedOrigin: resolvedOrigin,
+      requestedDestination: resolvedDestination,
+      legs: normalizedRoute?.legs,
+      firstWalkLeg: normalizedRoute?.legs?.find(l => l.mode === "WALK"),
+      walkingMapUrls: normalizedRoute?.legs
+        ?.filter(l => l.mode === "WALK")
+        ?.map(l => l.mapsUrl)
+    });
+  }
 
   if (resolvedOrigin && firstFrom) {
     const distanceFromRequestedOrigin = haversineMeters(
@@ -4533,6 +4600,9 @@ async function planRoute(details, fromCoords = null, options = {}) {
   };
   console.timeEnd("[Route Timing] render response");
   cacheSet(routeCache, routeCacheKey, result, routeCacheTtlMs);
+  console.log("[PERF FIRST RESPONSE READY]", {
+    durationMs: Math.round(performance.now() - perfStart)
+  });
   console.timeEnd("[Route Timing] total");
   return result;
 }
