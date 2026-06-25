@@ -35,8 +35,9 @@
     html,
     body {
       width: 100%;
-      min-height: 100%;
+      max-width: 100%;
       margin: 0;
+      padding: 0;
       overflow-x: hidden;
     }
 
@@ -49,10 +50,39 @@
       color: var(--text);
       min-height: 100vh;
       min-height: 100dvh;
+      max-width: 100%;
       display: flex;
       justify-content: center;
       align-items: stretch;
-      padding: var(--app-padding);
+      padding: 0;
+    }
+
+    #app,
+    .app,
+    .chat,
+    .chat-container {
+      max-width: 100%;
+    }
+
+    img,
+    svg,
+    video,
+    canvas {
+      max-width: 100%;
+    }
+
+    button,
+    input,
+    textarea,
+    select {
+      font: inherit;
+      max-width: 100%;
+    }
+
+    @media (min-width: 641px) {
+      body {
+        padding: var(--app-padding);
+      }
     }
 
     .app {
@@ -1030,6 +1060,182 @@
       }
     }
 
+    @media (max-width: 640px) {
+      .app,
+      #app {
+        width: 100%;
+        max-width: 100%;
+        min-height: 100dvh;
+        margin: 0;
+        overflow-x: hidden;
+      }
+
+      .chat {
+        width: 100%;
+        max-width: 100%;
+        min-height: 100dvh;
+        margin: 0;
+        overflow-x: hidden;
+      }
+
+      .header {
+        width: 100%;
+        max-width: 100%;
+        padding: 14px 14px 12px;
+        border-radius: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+        overflow-x: hidden;
+      }
+
+      .header::after {
+        display: none;
+      }
+
+      .brand,
+      .language-bar,
+      .status {
+        width: 100%;
+        max-width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-width: 0;
+      }
+
+      .brand {
+        flex-wrap: wrap;
+      }
+
+      .brand > div {
+        min-width: 0;
+        flex: 1;
+      }
+
+      .title,
+      h1 {
+        font-size: clamp(20px, 5.2vw, 26px);
+        line-height: 1.15;
+        overflow-wrap: anywhere;
+      }
+
+      .subtitle {
+        font-size: clamp(14px, 3.8vw, 17px);
+        line-height: 1.25;
+        overflow-wrap: anywhere;
+      }
+
+      .language-bar label,
+      .language-bar,
+      .status {
+        width: 100%;
+        max-width: 100%;
+      }
+
+      select {
+        width: 100%;
+        max-width: 100%;
+      }
+
+      .chat {
+        padding: 12px;
+      }
+
+      .message-row {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+      }
+
+      .message,
+      .bot .message,
+      .user .message {
+        max-width: calc(100% - 42px);
+        min-width: 0;
+        overflow-wrap: anywhere;
+        word-break: normal;
+      }
+
+      .route-summary-container,
+      .route-summary-header,
+      .alternative-route-card,
+      .alternative-route-summary,
+      .alternative-route-details,
+      .walking-block,
+      .route-leg-compact,
+      .route-leg-transit,
+      .route-warning,
+      .route-transfer-note,
+      .route-destination-notice,
+      .walking-title,
+      .walking-summary,
+      .walking-map-button,
+      .maps-button,
+      .open-maps-link {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        overflow-x: hidden;
+        overflow-wrap: anywhere;
+      }
+
+      .route-summary-header {
+        flex-wrap: wrap;
+      }
+
+      .walking-map-button,
+      .maps-button,
+      .open-maps-link {
+        display: inline-flex;
+        white-space: normal;
+      }
+
+      .input-area {
+        width: 100%;
+        max-width: 100%;
+        padding: 12px;
+        overflow-x: hidden;
+      }
+
+      .input-wrap {
+        width: 100%;
+        max-width: 100%;
+        display: grid;
+        grid-template-columns: 1fr auto auto;
+        gap: 10px;
+        align-items: center;
+      }
+
+      textarea {
+        width: 100%;
+        min-width: 0;
+        max-width: 100%;
+      }
+
+      button.send,
+      button.mic {
+        width: 56px;
+        min-width: 56px;
+        max-width: 56px;
+        height: 48px;
+      }
+    }
+
+    @media (max-width: 380px) {
+      .input-wrap {
+        grid-template-columns: 1fr;
+      }
+
+      button.send,
+      button.mic {
+        width: 100%;
+        min-width: 0;
+        max-width: 100%;
+      }
+    }
+
     @media (max-width: 360px) {
       .header {
         padding: 12px;
@@ -1059,16 +1265,13 @@
 
     @media (max-width: 420px) {
       .input-wrap {
-        flex-wrap: wrap;
-      }
-
-      textarea {
-        flex-basis: 100%;
+        grid-template-columns: 1fr;
       }
 
       button.send,
       button.mic {
-        flex: 1 1 calc(50% - 4px);
+        width: 100%;
+        min-width: 0;
       }
     }
   </style>
