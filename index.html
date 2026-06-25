@@ -1439,6 +1439,7 @@
 	    let chatSessionId = localStorage.getItem("oldenburgChatSessionId") || "";
 	    let currentServerMemory = null;
 	    let lastRouteResult = safeJsonParse(localStorage.getItem(LAST_ROUTE_RESULT_KEY), null);
+	    let pendingDetectedLocation = null;
 	    let routeState = {
 	      fromCoords: null,
 	      useCurrentLocation: false
@@ -1850,6 +1851,7 @@
 	    }
 
 	    function resetRouteState() {
+	      pendingDetectedLocation = null;
 	      routeState = {
 	        fromCoords: null,
 	        useCurrentLocation: false
@@ -1942,7 +1944,12 @@
             useCurrentLocation();
             return;
           }
+          if (storedItem.value === "__continue_detected_location__") {
+            continueWithDetectedLocation();
+            return;
+          }
           if (storedItem.value === "__type_location_manually__") {
+            pendingDetectedLocation = null;
             removeChips();
             addMessage(ct("typeLocationPrompt"), "bot");
             input.focus();
@@ -2451,15 +2458,18 @@
 	          currentLocationDenied: "Location permission was blocked. Please enable location access or type a nearby street or stop.",
 	          currentLocationPending: "Finding your current location...",
 	          currentLocationFound: "I found your location. I’ll use the nearest suitable stop and guide you from there.",
-	          currentLocationLowAccuracy: "Your location was detected, but it may not be very accurate.",
+	          currentLocationLowAccuracy: "Your location was detected, but it may be approximate. You can continue or enter your starting point manually.",
 	          geoPermissionDenied: "Location permission is blocked. Please allow location in your browser settings or enter your starting point manually.",
 	          geoPositionUnavailable: "Your phone could not provide the current location right now. Please check that Precise Location is enabled, or enter your starting point manually.",
+	          geoAndroidPositionUnavailable: "Your Android phone could not provide the current location right now. Please enable Location, Precise Location, and Google Location Accuracy, or enter your starting point manually.",
 	          geoTimeout: "Getting your current location took too long. Please try again or enter your starting point manually.",
+	          geoAndroidTimeout: "Getting your Android location took too long. Please try again outdoors/near a window, or enter your starting point manually.",
 	          geoNotSecure: "Current location is blocked because the page is not opened securely. Please use the HTTPS link or enter your starting point manually.",
 	          geoNotSupported: "This browser does not support current location. Please enter your starting point manually.",
 	          geoInvalidCoordinates: "Current location could not be read correctly. Please enter your starting point manually.",
 	          geoUnknownError: "Current location could not be found. Please try again or enter your starting point manually.",
 	          tryCurrentLocationAgain: "Try current location again",
+	          continueDetectedLocation: "Continue with detected location",
 	          openWalkingMap: "Open walking map",
 	          walkingMapUnavailable: "Map not available for this walking section.",
 	          openInMaps: "Open in Maps",
@@ -2810,11 +2820,99 @@
 	      return null;
 	    }
 
+	    function isAndroidDevice() {
+	      return /Android/i.test(navigator.userAgent || "");
+	    }
+
+	    function logAndroidGeoDebug() {
+	      console.log("[ANDROID GEO DEBUG]", {
+	        href: window.location.href,
+	        isAndroid: isAndroidDevice(),
+	        isSecureContext: window.isSecureContext,
+	        hasGeolocation: "geolocation" in navigator,
+	        userAgent: navigator.userAgent
+	      });
+	      console.log("[GEO DEVICE DEBUG]", {
+	        userAgent: navigator.userAgent,
+	        isAndroid: isAndroidDevice(),
+	        isSecureContext: window.isSecureContext,
+	        hasGeolocation: "geolocation" in navigator,
+	        protocol: window.location.protocol
+	      });
+	    }
+
+	    function getCurrentPositionWithOptions(options) {
+	      return new Promise((resolve, reject) => {
+	        navigator.geolocation.getCurrentPosition(resolve, reject, options);
+	      });
+	    }
+
+	    async function getCurrentLocationRobust(pendingRoute = null) {
+	      if (!("geolocation" in navigator)) {
+	        throw new Error("geolocation_not_supported");
+	      }
+
+	      if (!window.isSecureContext) {
+	        throw new Error("not_secure_context");
+	      }
+
+	      const firstAttemptOptions = {
+	        enableHighAccuracy: true,
+	        timeout: isAndroidDevice() ? 20000 : 15000,
+	        maximumAge: 60000
+	      };
+
+	      console.log("[GEO REQUEST OPTIONS]", {
+	        firstAttemptOptions,
+	        pendingRoute
+	      });
+
+	      try {
+	        return await getCurrentPositionWithOptions(firstAttemptOptions);
+	      } catch (error) {
+	        console.warn("[GEO FIRST ATTEMPT FAILED]", {
+	          code: error?.code,
+	          message: error?.message,
+	          options: firstAttemptOptions,
+	          isAndroid: isAndroidDevice()
+	        });
+
+	        if (isAndroidDevice() && (error?.code === error?.POSITION_UNAVAILABLE || error?.code === 2 || error?.code === error?.TIMEOUT || error?.code === 3)) {
+	          const secondAttemptOptions = {
+	            enableHighAccuracy: false,
+	            timeout: 15000,
+	            maximumAge: 300000
+	          };
+
+	          console.log("[GEO ANDROID RETRY LOW ACCURACY]", secondAttemptOptions);
+	          return await getCurrentPositionWithOptions(secondAttemptOptions);
+	        }
+
+	        throw error;
+	      }
+	    }
+
+	    function validateGeolocationPosition(position) {
+	      const coords = position?.coords;
+	      if (
+	        !coords ||
+	        typeof coords.latitude !== "number" ||
+	        typeof coords.longitude !== "number" ||
+	        Number.isNaN(coords.latitude) ||
+	        Number.isNaN(coords.longitude) ||
+	        !Number.isFinite(coords.latitude) ||
+	        !Number.isFinite(coords.longitude)
+	      ) {
+	        throw new Error("invalid_coordinates");
+	      }
+	      return coords;
+	    }
+
 	    function geolocationFallbackMessage(reason, lang = currentLang()) {
 	      const keyByReason = {
 	        permission_denied: "geoPermissionDenied",
-	        position_unavailable: "geoPositionUnavailable",
-	        timeout: "geoTimeout",
+	        position_unavailable: isAndroidDevice() ? "geoAndroidPositionUnavailable" : "geoPositionUnavailable",
+	        timeout: isAndroidDevice() ? "geoAndroidTimeout" : "geoTimeout",
 	        not_secure_context: "geoNotSecure",
 	        geolocation_not_supported: "geoNotSupported",
 	        invalid_coordinates: "geoInvalidCoordinates",
@@ -2826,6 +2924,7 @@
 	    function showGeolocationFallback(reason) {
 	      const lang = currentLang();
 	      routeState.useCurrentLocation = false;
+	      pendingDetectedLocation = null;
 	      removeChips();
 	      updateNote(ui[lang].note);
 	      addMessage(geolocationFallbackMessage(reason, lang), "bot");
@@ -2836,18 +2935,26 @@
 	      input.focus();
 	    }
 
-	    function handleGeolocationError(error) {
+	    function mapGeolocationError(error) {
 	      let mappedReason = "unknown_error";
-	      if (error && (error.code === error.PERMISSION_DENIED || error.code === 1)) mappedReason = "permission_denied";
+	      if (error?.message === "geolocation_not_supported") mappedReason = "geolocation_not_supported";
+	      else if (error?.message === "not_secure_context") mappedReason = "not_secure_context";
+	      else if (error?.message === "invalid_coordinates") mappedReason = "invalid_coordinates";
+	      else if (error && (error.code === error.PERMISSION_DENIED || error.code === 1)) mappedReason = "permission_denied";
 	      else if (error && (error.code === error.POSITION_UNAVAILABLE || error.code === 2)) mappedReason = "position_unavailable";
 	      else if (error && (error.code === error.TIMEOUT || error.code === 3)) mappedReason = "timeout";
 
-	      console.log("[GEO ERROR]", {
-	        code: error?.code,
-	        message: error?.message,
-	        mappedReason
+	      console.log("[GEO ERROR MAPPED]", {
+	        rawCode: error?.code,
+	        rawMessage: error?.message,
+	        mappedReason,
+	        isAndroid: isAndroidDevice()
 	      });
-	      return showGeolocationFallback(mappedReason);
+	      return mappedReason;
+	    }
+
+	    function handleGeolocationError(error) {
+	      return showGeolocationFallback(mapGeolocationError(error));
 	    }
 
 	    async function logGeolocationPermissionState() {
@@ -2864,99 +2971,89 @@
 	      }
 	    }
 
-	    function logMobileGeoDebug() {
-	      console.log("[MOBILE GEO DEBUG]", {
-	        href: window.location.href,
-	        protocol: window.location.protocol,
-	        isSecureContext: window.isSecureContext,
-	        hasGeolocation: "geolocation" in navigator,
-	        userAgent: navigator.userAgent,
-	        platform: navigator.platform,
-	        language: navigator.language
-	      });
+	    async function continueWithDetectedLocation(candidate = pendingDetectedLocation) {
+	      const lang = currentLang();
+	      if (!candidate?.coords) {
+	        return showGeolocationFallback("invalid_coordinates");
+	      }
+	      removeChips();
+	      routeState.fromCoords = candidate.coords;
+	      routeState.useCurrentLocation = true;
+	      pendingDetectedLocation = null;
+	      addMessage(t(lang, "currentLocationFound"), "bot");
+	      pendingResponseCount += 1;
+	      typing.style.display = "flex";
+	      scrollChatToBottom();
+
+	      try {
+	        const response = await requestAiChat("Use my current location", lang, {
+	          useCurrentLocation: true,
+	          fromCoords: candidate.coords
+	        });
+	        renderChatResponse(response);
+	      } catch (error) {
+	        console.error("Current location route request failed:", error);
+	        addMessage(ct("serverDown"), "bot");
+	      } finally {
+	        pendingResponseCount = Math.max(0, pendingResponseCount - 1);
+	        typing.style.display = pendingResponseCount > 0 ? "flex" : "none";
+	        updateNote(ui[currentLang()].note);
+	      }
 	    }
 
 	    async function useCurrentLocation() {
 	      const lang = currentLang();
 	      const pendingRoute = pendingRouteForGeoDebug();
-	      logMobileGeoDebug();
+	      logAndroidGeoDebug();
 
-	      if (!("geolocation" in navigator)) {
-	        return showGeolocationFallback("geolocation_not_supported");
+	      try {
+	        await logGeolocationPermissionState();
+	      } catch (error) {
+	        console.log("[GEO PERMISSION STATE]", { error: error.message });
 	      }
-
-	      if (!window.isSecureContext) {
-	        return showGeolocationFallback("not_secure_context");
-	      }
-
-	      await logGeolocationPermissionState();
 
 	      removeChips();
 	      updateNote(t(lang, "currentLocationPending"));
 	      addMessage(t(lang, "currentLocationPending"), "bot");
 
-	      const geoOptions = {
-	        enableHighAccuracy: true,
-	        timeout: 15000,
-	        maximumAge: 30000
-	      };
-	      console.log("[GEO REQUEST START]", {
-	        ...geoOptions,
-	        pendingRoute
-	      });
+	      try {
+	        const position = await getCurrentLocationRobust(pendingRoute);
+	        const positionCoords = validateGeolocationPosition(position);
+	        const coords = {
+	          lat: positionCoords.latitude,
+	          lon: positionCoords.longitude
+	        };
 
-	      navigator.geolocation.getCurrentPosition(
-	        async position => {
-	          if (
-	            !position ||
-	            !position.coords ||
-	            typeof position.coords.latitude !== "number" ||
-	            typeof position.coords.longitude !== "number" ||
-	            !Number.isFinite(position.coords.latitude) ||
-	            !Number.isFinite(position.coords.longitude)
-	          ) {
-	            return showGeolocationFallback("invalid_coordinates");
-	          }
+	        console.log("[GEO SUCCESS]", {
+	          latitude: positionCoords.latitude,
+	          longitude: positionCoords.longitude,
+	          accuracy: positionCoords.accuracy,
+	          isAndroid: isAndroidDevice(),
+	          timestamp: position.timestamp
+	        });
 
-	          console.log("[GEO SUCCESS]", {
-	            latitude: position.coords.latitude,
-	            longitude: position.coords.longitude,
-	            accuracy: position.coords.accuracy,
+	        if (Number(positionCoords.accuracy) > 1000) {
+	          pendingDetectedLocation = {
+	            coords,
+	            accuracy: positionCoords.accuracy,
 	            timestamp: position.timestamp
-	          });
-
-	          const coords = {
-	            lat: position.coords.latitude,
-	            lon: position.coords.longitude
 	          };
-	          routeState.fromCoords = coords;
-	          routeState.useCurrentLocation = true;
-	          addMessage(t(lang, "currentLocationFound"), "bot");
-	          if (Number(position.coords.accuracy) > 1000) {
-	            addMessage(t(lang, "currentLocationLowAccuracy"), "bot");
-	          }
-	          pendingResponseCount += 1;
-	          typing.style.display = "flex";
-	          scrollChatToBottom();
+	          routeState.useCurrentLocation = false;
+	          routeState.fromCoords = null;
+	          removeChips();
+	          addMessage(t(lang, "currentLocationLowAccuracy"), "bot");
+	          addChips([
+	            { label: t(lang, "continueDetectedLocation"), value: "__continue_detected_location__" },
+	            { label: ct("typeManually"), value: "__type_location_manually__" }
+	          ]);
+	          input.focus();
+	          return;
+	        }
 
-	          try {
-	            const response = await requestAiChat("Use my current location", lang, {
-	              useCurrentLocation: true,
-	              fromCoords: coords
-	            });
-	            renderChatResponse(response);
-	          } catch (error) {
-	            console.error("Current location route request failed:", error);
-	            addMessage(ct("serverDown"), "bot");
-	          } finally {
-	            pendingResponseCount = Math.max(0, pendingResponseCount - 1);
-	            typing.style.display = pendingResponseCount > 0 ? "flex" : "none";
-	            updateNote(ui[currentLang()].note);
-	          }
-	        },
-	        handleGeolocationError,
-	        geoOptions
-	      );
+	        return continueWithDetectedLocation({ coords, accuracy: positionCoords.accuracy, timestamp: position.timestamp });
+	      } catch (error) {
+	        return handleGeolocationError(error);
+	      }
 	    }
 
 	    async function sendMessage(customText, extra = {}) {
