@@ -973,60 +973,12 @@
         box-shadow: none;
       }
 
-      .header {
-        align-items: flex-start;
-        gap: 10px;
-      }
-
-      .brand {
-        align-items: flex-start;
-      }
-
-      .logo {
-        width: 40px;
-        height: 40px;
-        border-radius: 14px;
-        font-size: 21px;
-      }
-
-      .title {
-        font-size: 1rem;
-        line-height: 1.25;
-      }
-
-      .language-bar,
-      .status {
-        width: 100%;
-        align-items: flex-start;
-      }
-
-      .language-bar {
-        flex-wrap: wrap;
-      }
-
-      .language-bar label {
-        width: 100%;
-      }
-
-      select {
-        width: 100%;
-        flex-basis: 100%;
-      }
-
-      .status {
-        justify-content: flex-start;
-      }
-
       #statusLeft {
         flex: 1 1 100%;
       }
 
       .message {
         max-width: min(92%, calc(100% - 44px));
-      }
-
-      .input-wrap {
-        border-radius: 0;
       }
 
       .chips {
@@ -1073,7 +1025,7 @@
       .chat {
         width: 100%;
         max-width: 100%;
-        min-height: 100dvh;
+        min-height: 0;
         margin: 0;
         overflow-x: hidden;
       }
@@ -1081,12 +1033,12 @@
       .header {
         width: 100%;
         max-width: 100%;
-        padding: 14px 14px 12px;
+        padding: 18px 16px 16px;
         border-radius: 0;
         display: flex;
         flex-direction: column;
         align-items: stretch;
-        gap: 10px;
+        gap: 14px;
         overflow-x: hidden;
       }
 
@@ -1106,7 +1058,10 @@
       }
 
       .brand {
-        flex-wrap: wrap;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        align-items: center;
+        gap: 12px;
       }
 
       .brand > div {
@@ -1114,21 +1069,41 @@
         flex: 1;
       }
 
+      .logo {
+        width: 52px;
+        height: 52px;
+        min-width: 52px;
+        max-width: 52px;
+        flex: 0 0 52px;
+        border-radius: 16px;
+        padding: 0;
+        font-size: 28px;
+      }
+
       .title,
       h1 {
-        font-size: clamp(20px, 5.2vw, 26px);
-        line-height: 1.15;
-        overflow-wrap: anywhere;
+        font-size: clamp(22px, 6.4vw, 28px);
+        line-height: 1.08;
+        margin: 0;
+        overflow-wrap: normal;
+        word-break: normal;
       }
 
       .subtitle {
         font-size: clamp(14px, 3.8vw, 17px);
         line-height: 1.25;
-        overflow-wrap: anywhere;
+        margin-top: 4px;
+        overflow-wrap: normal;
+        word-break: normal;
+      }
+
+      .language-bar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
       }
 
       .language-bar label,
-      .language-bar,
       .status {
         width: 100%;
         max-width: 100%;
@@ -1137,10 +1112,25 @@
       select {
         width: 100%;
         max-width: 100%;
+        height: 52px;
+        border-radius: 16px;
+        flex: none;
+      }
+
+      .status {
+        align-items: center;
+        justify-content: flex-start;
+        padding: 16px;
+        border-radius: 18px;
+      }
+
+      .clear-chat {
+        width: auto;
+        min-width: 120px;
       }
 
       .chat {
-        padding: 12px;
+        padding: 16px 12px;
       }
 
       .message-row {
@@ -1152,8 +1142,9 @@
       .message,
       .bot .message,
       .user .message {
-        max-width: calc(100% - 42px);
+        max-width: calc(100% - 48px);
         min-width: 0;
+        padding: 14px 16px;
         overflow-wrap: anywhere;
         word-break: normal;
       }
@@ -1196,6 +1187,7 @@
         width: 100%;
         max-width: 100%;
         padding: 12px;
+        min-height: auto;
         overflow-x: hidden;
       }
 
@@ -1203,15 +1195,34 @@
         width: 100%;
         max-width: 100%;
         display: grid;
-        grid-template-columns: 1fr auto auto;
+        grid-template-columns: 1fr auto;
+        grid-template-areas:
+          "text text"
+          "mic send";
         gap: 10px;
         align-items: center;
+        border-radius: 18px;
+        padding: 8px;
       }
 
       textarea {
+        grid-area: text;
         width: 100%;
+        min-height: 48px;
+        max-height: 120px;
         min-width: 0;
         max-width: 100%;
+        resize: none;
+      }
+
+      button.mic {
+        grid-area: mic;
+        justify-self: start;
+      }
+
+      button.send {
+        grid-area: send;
+        justify-self: end;
       }
 
       button.send,
@@ -1220,19 +1231,20 @@
         min-width: 56px;
         max-width: 56px;
         height: 48px;
+        min-height: 48px;
       }
     }
 
     @media (max-width: 380px) {
       .input-wrap {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr auto;
       }
 
       button.send,
       button.mic {
-        width: 100%;
-        min-width: 0;
-        max-width: 100%;
+        width: 48px;
+        min-width: 48px;
+        max-width: 48px;
       }
     }
 
@@ -1259,19 +1271,15 @@
       button.send,
       button.mic {
         width: 44px;
+        min-width: 44px;
+        max-width: 44px;
         height: 44px;
       }
     }
 
     @media (max-width: 420px) {
       .input-wrap {
-        grid-template-columns: 1fr;
-      }
-
-      button.send,
-      button.mic {
-        width: 100%;
-        min-width: 0;
+        grid-template-columns: 1fr auto;
       }
     }
   </style>
