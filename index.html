@@ -1440,7 +1440,9 @@
 	    let currentServerMemory = null;
 	    let lastRouteResult = safeJsonParse(localStorage.getItem(LAST_ROUTE_RESULT_KEY), null);
 	    let pendingDetectedLocation = null;
+    let geoRequestInProgress = false;
 	    window.__geoDebug = {
+	      deviceType: null,
 	      isAndroid: false,
 	      isChromeAndroid: false,
 	      isSecureContext: window.isSecureContext,
@@ -2469,8 +2471,10 @@
 	          currentLocationFound: "I found your location. I’ll use the nearest suitable stop and guide you from there.",
 	          currentLocationLowAccuracy: "Your location was detected, but it may be approximate. You can continue or enter your starting point manually.",
 	          geoPermissionDenied: "Location permission is blocked. Please allow location in your browser settings or enter your starting point manually.",
-	          geoPositionUnavailable: "Your phone could not provide the current location right now. Please check that Precise Location is enabled, or enter your starting point manually.",
-	          geoAndroidPositionUnavailable: "Your Android phone could not provide the current location right now. Please enable Location, Precise Location, and Google Location Accuracy, or enter your starting point manually.",
+	          geoPositionUnavailable: "Your browser could not determine the current location right now. Please try again or enter your starting point manually.",
+	          geoAndroidPositionUnavailable: "Your Android phone could not determine the current location right now. Please try again or enter your starting point manually.",
+	          geoIosPositionUnavailable: "Your iPhone could not determine the current location right now. Please try again or enter your starting point manually.",
+	          geoMacPositionUnavailable: "Your Mac/browser could not determine the current location right now. Please try again or enter your starting point manually.",
 	          geoChromeAndroidFailed: "Chrome on Android could not provide your current location right now. Please try again or enter your starting point manually.",
 	          geoTimeout: "Getting your current location took too long. Please try again or enter your starting point manually.",
 	          geoAndroidTimeout: "Getting your Android location took too long. Please try again outdoors/near a window, or enter your starting point manually.",
@@ -2832,21 +2836,33 @@
 	      return null;
 	    }
 
+	    function getDeviceType() {
+	      const ua = navigator.userAgent || "";
+	      const platform = navigator.platform || "";
+	      if (/Android/i.test(ua)) return "android";
+	      if (/iPhone|iPad|iPod/i.test(ua)) return "ios";
+	      if (/Mac/i.test(platform) || /Macintosh/i.test(ua)) return "mac";
+	      if (/Win/i.test(platform) || /Windows/i.test(ua)) return "windows";
+	      return "unknown";
+	    }
+
 	    function isAndroidDevice() {
-	      return /Android/i.test(navigator.userAgent || "");
+	      return getDeviceType() === "android";
+	    }
+
+	    function isChromeBrowser() {
+	      const ua = navigator.userAgent || "";
+	      return /Chrome/i.test(ua) && !/Edg|OPR|Opera|SamsungBrowser/i.test(ua);
 	    }
 
 	    function isChromeAndroid() {
-	      const ua = navigator.userAgent || "";
-	      return /Android/i.test(ua) &&
-	        /Chrome/i.test(ua) &&
-	        !/Edg|OPR|Opera|Brave|SamsungBrowser/i.test(ua) &&
-	        !navigator.brave;
+	      return isAndroidDevice() && isChromeBrowser();
 	    }
 
 	    function syncGeoDebug(update = {}) {
 	      window.__geoDebug = {
 	        ...(window.__geoDebug || {}),
+	        deviceType: getDeviceType(),
 	        isAndroid: isAndroidDevice(),
 	        isChromeAndroid: isChromeAndroid(),
 	        isSecureContext: window.isSecureContext,
@@ -2889,6 +2905,8 @@
 	      const debug = window.__geoDebug || {};
 	      panel.textContent = JSON.stringify({
 	        browser: navigator.userAgent,
+	        platform: navigator.platform,
+	        deviceType: debug.deviceType,
 	        isAndroid: debug.isAndroid,
 	        isChromeAndroid: debug.isChromeAndroid,
 	        isSecureContext: debug.isSecureContext,
@@ -2948,65 +2966,55 @@
 	        throw new Error("not_secure_context");
 	      }
 
+	      const deviceType = getDeviceType();
 	      const attempts = [];
 
-	      if (isChromeAndroid()) {
+	      if (deviceType === "android") {
 	        attempts.push({
-	          label: "chrome_android_cached_or_network",
-	          options: {
-	            enableHighAccuracy: false,
-	            timeout: 12000,
-	            maximumAge: 300000
-	          }
+	          label: "android_cached_or_network",
+	          options: { enableHighAccuracy: false, timeout: 12000, maximumAge: 300000 }
 	        });
 	        attempts.push({
-	          label: "chrome_android_high_accuracy",
-	          options: {
-	            enableHighAccuracy: true,
-	            timeout: 25000,
-	            maximumAge: 60000
-	          }
+	          label: "android_high_accuracy",
+	          options: { enableHighAccuracy: true, timeout: 25000, maximumAge: 60000 }
 	        });
 	        attempts.push({
-	          label: "chrome_android_final_low_accuracy",
-	          options: {
-	            enableHighAccuracy: false,
-	            timeout: 20000,
-	            maximumAge: 600000
-	          }
+	          label: "android_final_low_accuracy",
+	          options: { enableHighAccuracy: false, timeout: 20000, maximumAge: 600000 }
+	        });
+	      } else if (deviceType === "mac") {
+	        attempts.push({
+	          label: "mac_high_accuracy",
+	          options: { enableHighAccuracy: true, timeout: 20000, maximumAge: 60000 }
+	        });
+	        attempts.push({
+	          label: "mac_low_accuracy_fallback",
+	          options: { enableHighAccuracy: false, timeout: 15000, maximumAge: 300000 }
 	        });
 	      } else {
 	        attempts.push({
 	          label: "default_high_accuracy",
-	          options: {
-	            enableHighAccuracy: true,
-	            timeout: 15000,
-	            maximumAge: 60000
-	          }
+	          options: { enableHighAccuracy: true, timeout: 15000, maximumAge: 60000 }
 	        });
 	        attempts.push({
 	          label: "default_low_accuracy_fallback",
-	          options: {
-	            enableHighAccuracy: false,
-	            timeout: 12000,
-	            maximumAge: 300000
-	          }
+	          options: { enableHighAccuracy: false, timeout: 12000, maximumAge: 300000 }
 	        });
 	      }
 
-	      console.log("[GEO REQUEST OPTIONS]", {
-	        attempts,
-	        pendingRoute
-	      });
+	      console.log("[GEO REQUEST OPTIONS]", { attempts, deviceType, pendingRoute });
 
 	      let lastError = null;
+	      const attemptsTried = [];
 
 	      for (const attempt of attempts) {
 	        try {
+	          attemptsTried.push(attempt.label);
 	          syncGeoDebug({ lastStage: `attempt_${attempt.label}` });
 	          console.log("[GEO ATTEMPT START]", {
 	            label: attempt.label,
 	            options: attempt.options,
+	            deviceType,
 	            isChromeAndroid: isChromeAndroid()
 	          });
 
@@ -3029,6 +3037,9 @@
 	            accuracy: position.coords?.accuracy,
 	            timestamp: position.timestamp
 	          });
+
+	          position.__attemptLabel = attempt.label;
+	          position.__attemptsTried = attemptsTried;
 	          return position;
 	        } catch (error) {
 	          lastError = error;
@@ -3037,20 +3048,24 @@
 	            lastError: {
 	              code: error?.code,
 	              message: error?.message,
+	              mappedCode: mapGeolocationError(error),
 	              label: attempt.label
 	            }
 	          });
 	          console.warn("[GEO ATTEMPT FAILED]", {
 	            label: attempt.label,
 	            code: error?.code,
+	            mappedCode: mapGeolocationError(error),
 	            message: error?.message,
-	            isChromeAndroid: isChromeAndroid()
+	            deviceType
 	          });
 	        }
 	      }
 
 	      syncGeoDebug({ lastStage: "all_attempts_failed" });
-	      throw lastError || new Error("geolocation_failed");
+	      const err = lastError || new Error("geolocation_failed");
+	      err.__attemptsTried = attemptsTried;
+	      throw err;
 	    }
 
 	    function validateGeolocationPosition(position) {
@@ -3070,11 +3085,22 @@
 	    }
 
 	    function geolocationFallbackMessage(reason, lang = currentLang()) {
+	      const deviceType = getDeviceType();
+
+	      const positionUnavailableKey =
+	        deviceType === "android" ? "geoAndroidPositionUnavailable" :
+	        deviceType === "ios"     ? "geoIosPositionUnavailable" :
+	        deviceType === "mac"     ? "geoMacPositionUnavailable" :
+	        "geoPositionUnavailable";
+
+	      const timeoutKey =
+	        deviceType === "android" ? "geoAndroidTimeout" : "geoTimeout";
+
 	      const keyByReason = {
 	        permission_denied: "geoPermissionDenied",
 	        chrome_android_failed: "geoChromeAndroidFailed",
-	        position_unavailable: isAndroidDevice() ? "geoAndroidPositionUnavailable" : "geoPositionUnavailable",
-	        timeout: isAndroidDevice() ? "geoAndroidTimeout" : "geoTimeout",
+	        position_unavailable: positionUnavailableKey,
+	        timeout: timeoutKey,
 	        not_secure_context: "geoNotSecure",
 	        geolocation_not_supported: "geoNotSupported",
 	        invalid_coordinates: "geoInvalidCoordinates",
@@ -3103,7 +3129,6 @@
 	      else if (error?.message === "not_secure_context") mappedReason = "not_secure_context";
 	      else if (error?.message === "invalid_coordinates") mappedReason = "invalid_coordinates";
 	      else if (error && (error.code === error.PERMISSION_DENIED || error.code === 1)) mappedReason = "permission_denied";
-	      else if (isChromeAndroid()) mappedReason = "chrome_android_failed";
 	      else if (error && (error.code === error.POSITION_UNAVAILABLE || error.code === 2)) mappedReason = "position_unavailable";
 	      else if (error && (error.code === error.TIMEOUT || error.code === 3)) mappedReason = "timeout";
 
@@ -3111,7 +3136,8 @@
 	        rawCode: error?.code,
 	        rawMessage: error?.message,
 	        mappedReason,
-	        isAndroid: isAndroidDevice()
+	        deviceType: getDeviceType(),
+	        isChromeAndroid: isChromeAndroid()
 	      });
 	      return mappedReason;
 	    }
@@ -3174,9 +3200,23 @@
 	    }
 
 	    async function useCurrentLocation() {
+	      if (geoRequestInProgress) return;
+	      geoRequestInProgress = true;
+
 	      const lang = currentLang();
 	      const pendingRoute = pendingRouteForGeoDebug();
-		    logGeoBrowserDebug();
+
+	      console.log("[GEO DEBUG BEFORE REQUEST]", {
+	        href: window.location.href,
+	        protocol: window.location.protocol,
+	        isSecureContext: window.isSecureContext,
+	        hasGeolocation: "geolocation" in navigator,
+	        userAgent: navigator.userAgent,
+	        platform: navigator.platform,
+	        deviceType: getDeviceType(),
+	        isChromeBrowser: isChromeBrowser(),
+	        isChromeAndroid: isChromeAndroid()
+	      });
 
 	      try {
 	        await logGeolocationPermissionState();
@@ -3186,10 +3226,13 @@
 
 	      removeChips();
 	      updateNote(t(lang, "currentLocationPending"));
-	      addMessage(t(lang, "currentLocationPending"), "bot");
+	      const loadingRow = addMessage(t(lang, "currentLocationPending"), "bot");
+
+	      let attemptsTried = [];
 
 	      try {
 	        const position = await getCurrentLocationRobust(pendingRoute);
+	        attemptsTried = position.__attemptsTried || [];
 	        const positionCoords = validateGeolocationPosition(position);
 	        const coords = {
 	          lat: positionCoords.latitude,
@@ -3200,8 +3243,16 @@
 	          latitude: positionCoords.latitude,
 	          longitude: positionCoords.longitude,
 	          accuracy: positionCoords.accuracy,
-	          isAndroid: isAndroidDevice(),
+	          deviceType: getDeviceType(),
 	          timestamp: position.timestamp
+	        });
+
+	        console.log("[GEO FINAL RESULT]", {
+	          success: true,
+	          deviceType: getDeviceType(),
+	          attemptsTried,
+	          usedCoordinatesDirectly: true,
+	          pendingRoutePreserved: Boolean(pendingRoute?.destinationText)
 	        });
 
 	        if (Number(positionCoords.accuracy) > 1000) {
@@ -3224,7 +3275,33 @@
 
 	        return continueWithDetectedLocation({ coords, accuracy: positionCoords.accuracy, timestamp: position.timestamp });
 	      } catch (error) {
-	        return handleGeolocationError(error);
+	        const mappedCode = mapGeolocationError(error);
+	        attemptsTried = error?.__attemptsTried || attemptsTried;
+	        const errorMessage = geolocationFallbackMessage(mappedCode, lang);
+
+	        routeState.useCurrentLocation = false;
+	        pendingDetectedLocation = null;
+	        updateNote(ui[lang].note);
+
+	        updateMessageText(loadingRow, errorMessage);
+
+	        removeChips();
+	        addChips([
+	          { label: t(lang, "tryCurrentLocationAgain"), value: "__current_location__" },
+	          { label: ct("typeManually"), value: "__type_location_manually__" }
+	        ]);
+	        input.focus();
+
+	        console.log("[GEO FINAL FAILURE SUMMARY]", {
+	          mappedCode,
+	          rawCode: error?.code,
+	          rawMessage: error?.message,
+	          deviceType: getDeviceType(),
+	          attemptsTried,
+	          pendingRoutePreserved: Boolean(pendingRoute?.destinationText)
+	        });
+	      } finally {
+	        geoRequestInProgress = false;
 	      }
 	    }
 
