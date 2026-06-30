@@ -80,7 +80,7 @@ const serverStrings = {
   arriveAround:      { en: "Arrive around {time}", de: "Ankunft gegen {time}", ar: "الوصول حوالي {time}", tr: "Tahmini varış: {time}", uk: "Прибуття приблизно о {time}", hi: "लगभग {time} पर पहुँचें" },
   noTransferReq:     { en: "No transfer is required.", de: "Kein Umstieg erforderlich.", ar: "لا يلزم التبديل.", tr: "Aktarma gerekmez.", uk: "Пересадка не потрібна.", hi: "कोई बदलाव आवश्यक नहीं है।" },
   otherOptions:      { en: "Other options", de: "Weitere Optionen", ar: "خيارات أخرى", tr: "Diğer seçenekler", uk: "Інші варіанти", hi: "अन्य विकल्प" },
-  validTicketQ:      { en: "Do you already have a valid ticket for this trip?", de: "Haben Sie bereits ein gültiges Ticket für diese Fahrt?", ar: "هل لديك تذكرة صالحة لهذه الرحلة؟", tr: "Bu yolculuk için geçerli biletiniz var mı?", uk: "У вас уже є дійсний квиток для цієї поїздки?", hi: "क्या आपके पास इस यात्रा के लिए पहले से वैध टिकट है?" },
+  validTicketQ:      { en: "Do you already have a ticket that might cover this trip?", de: "Haben Sie schon ein Ticket, das diese Fahrt abdecken könnte?", ar: "هل لديك تذكرة قد تغطي هذه الرحلة؟", tr: "Bu yolculuğu kapsayabilecek bir biletiniz var mı?", uk: "У вас уже є квиток, який може покривати цю поїздку?", hi: "क्या आपके पास पहले से ऐसा टिकट है जो इस यात्रा को कवर कर सकता है?" },
   towardsH:          { en: "towards {h}", de: "Richtung {h}", ar: "باتجاه {h}", tr: "{h} yönünde", uk: "у напрямку {h}", hi: "{h} की ओर" },
   inDirectionShown:  { en: "in the direction shown on the vehicle display", de: "in der auf dem Display angezeigten Richtung", ar: "في الاتجاه المعروض على لوحة المركبة", tr: "araç ekranındaki yönde", uk: "у напрямку на табло", hi: "वाहन के डिस्प्ले पर दिखाई दिशा में" },
   comfortableConn:   { en: "This looks like a comfortable connection", de: "Das sieht nach einer komfortablen Verbindung aus", ar: "يبدو هذا اتصالاً مريحاً", tr: "Bu rahat bir bağlantı gibi görünüyor", uk: "Схоже на комфортну пересадку", hi: "यह एक आरामदायक कनेक्शन लगता है" },
@@ -91,7 +91,8 @@ const serverStrings = {
   noNeedTicket:      { en: "No, I need a ticket", de: "Nein, ich brauche ein Ticket", ar: "لا، أحتاج إلى تذكرة", tr: "Hayır, biletime ihtiyacım var", uk: "Ні, мені потрібен квиток", hi: "नहीं, मुझे टिकट चाहिए" },
   notSure:           { en: "I am not sure", de: "Ich bin nicht sicher", ar: "لست متأكداً", tr: "Emin değilim", uk: "Я не впевнений", hi: "मुझे यकीन नहीं है" },
   chooseTicketType:  { en: "Choose ticket type", de: "Ticketart auswählen", ar: "اختر نوع التذكرة", tr: "Bilet türü seç", uk: "Вибрати тип квитка", hi: "टिकट प्रकार चुनें" },
-  officialVbnTicketInfo: { en: "Official VBN ticket information", de: "Offizielle VBN-Ticketinformationen", ar: "معلومات تذاكر VBN الرسمية", tr: "Resmi VBN bilet bilgisi", uk: "Офіційна інформація VBN про квитки", hi: "आधिकारिक VBN टिकट जानकारी" },
+  officialVbnTicketInfo: { en: "Open VBN ticket info", de: "VBN-Ticketinfo öffnen", ar: "افتح معلومات تذاكر VBN", tr: "VBN bilet bilgisini aç", uk: "Відкрити інформацію VBN", hi: "VBN टिकट जानकारी खोलें" },
+  continueTicketPage: { en: "Continue to ticket page", de: "Weiter zur Ticketseite", ar: "المتابعة إلى صفحة التذاكر", tr: "Bilet sayfasına devam et", uk: "Перейти на сторінку квитків", hi: "टिकट पेज पर जारी रखें" },
   openInMaps:        { en: "Open in Maps", de: "In Karten öffnen", ar: "فتح في الخريطة", tr: "Haritada aç", uk: "Відкрити на карті", hi: "मैप में खोलें" },
   noTransferLabel:   { en: "No transfer", de: "Kein Umstieg", ar: "بدون تبديل", tr: "Aktarmasız", uk: "Без пересадки", hi: "कोई बदलाव नहीं" },
   walkRoute:         { en: "Walking route", de: "Fußweg", ar: "طريق مشي", tr: "Yürüme rotası", uk: "Пішохідний маршрут", hi: "पैदल रूट" },
@@ -108,9 +109,9 @@ const serverStrings = {
   destSaved:         { en: "Destination saved.", de: "Ziel gespeichert.", ar: "تم حفظ الوجهة.", tr: "Hedef kaydedildi.", uk: "Пункт призначення збережено.", hi: "गंतव्य सहेजा गया।" },
   startSaved:        { en: "Starting point saved.", de: "Startpunkt gespeichert.", ar: "تم حفظ نقطة الانطلاق.", tr: "Başlangıç noktası kaydedildi.", uk: "Відправну точку збережено.", hi: "शुरुआती बिंदु सहेजा गया।" },
   useCurrentLoc:     { en: "Use my current location", de: "Meinen Standort nutzen", ar: "استخدام موقعي الحالي", tr: "Mevcut konumumu kullan", uk: "Використати мою поточну локацію", hi: "मेरा वर्तमान स्थान उपयोग करें" },
-  typeLocManually:   { en: "Enter location manually", de: "Standort manuell eingeben", ar: "أدخل الموقع يدوياً", tr: "Konumu manuel gir", uk: "Ввести місце вручну", hi: "स्थान मैन्युअली दर्ज करें" },
+  typeLocManually:   { en: "Type starting point", de: "Startpunkt eingeben", ar: "اكتب نقطة البداية", tr: "Başlangıç noktasını yaz", uk: "Ввести початкову точку", hi: "शुरुआती स्थान लिखें" },
   askRouteOrigin:    { en: "Where are you starting from?", de: "Von wo starten Sie?", ar: "من أين تبدأ؟", tr: "Nereden başlıyorsunuz?", uk: "Звідки ви починаєте?", hi: "आप कहाँ से शुरू कर रहे हैं?" },
-  askRouteOriginForDestination: { en: "You want to go to {destination}. Please choose your starting point:", de: "Sie möchten nach {destination}. Bitte wählen Sie Ihren Startpunkt:", ar: "تريد الذهاب إلى {destination}. يرجى اختيار نقطة البداية:", tr: "{destination} hedefine gitmek istiyorsunuz. Lütfen başlangıç noktanızı seçin:", uk: "Ви хочете поїхати до {destination}. Будь ласка, оберіть початкову точку:", hi: "आप {destination} जाना चाहते हैं। कृपया अपना शुरुआती बिंदु चुनें:" },
+  askRouteOriginForDestination: { en: "I can help with that. Where are you starting from?", de: "Dabei helfe ich gern. Von wo starten Sie?", ar: "يمكنني مساعدتك في ذلك. من أين تبدأ؟", tr: "Buna yardımcı olurum. Nereden başlıyorsunuz?", uk: "Я допоможу з цим. Звідки ви починаєте?", hi: "मैं इसमें मदद कर सकता हूँ। आप कहाँ से शुरू कर रहे हैं?" },
   welcomeOldenburg:  { en: "👋 Welcome to Oldenburg!", de: "👋 Willkommen in Oldenburg!", ar: "👋 أهلاً بك في أولدنبورغ!", tr: "👋 Oldenburg'a hoş geldiniz!", uk: "👋 Ласкаво просимо до Ольденбурга!", hi: "👋 Oldenburg में आपका स्वागत है!" },
   welcomeBremen:     { en: "👋 Welcome to Bremen!", de: "👋 Willkommen in Bremen!", ar: "👋 أهلاً بك في بريمن!", tr: "👋 Bremen'e hoş geldiniz!", uk: "👋 Ласкаво просимо до Бремена!", hi: "👋 Bremen में आपका स्वागत है!" },
   welcomeGeneral:    { en: "👋 Welcome!", de: "👋 Willkommen!", ar: "👋 أهلاً وسهلاً!", tr: "👋 Hoş geldiniz!", uk: "👋 Ласкаво просимо!", hi: "👋 स्वागत है!" },
@@ -119,10 +120,11 @@ const serverStrings = {
   locOutside:        { en: "That looks outside {areas}. Please choose a location in that area.", de: "Das liegt nicht in {areas}. Bitte nenne einen Ort in diesem Bereich.", ar: "يبدو ذلك خارج {areas}. يرجى اختيار موقع في تلك المنطقة.", tr: "Bu {areas} dışında görünüyor. Lütfen o bölgede bir konum seçin.", uk: "Це виглядає поза {areas}. Будь ласка, оберіть місце в цьому районі.", hi: "वह {areas} के बाहर लगता है। कृपया उस क्षेत्र में एक स्थान चुनें।" },
   locAmbiguous:      { en: "I found a few matching places. Which one do you mean?", de: "Ich habe mehrere passende Orte gefunden. Welchen meinst du?", ar: "وجدت عدة أماكن مطابقة. أيها تقصد؟", tr: "Birkaç eşleşen yer buldum. Hangisini kastediyorsunuz?", uk: "Я знайшов кілька відповідних місць. Яке ви маєте на увазі?", hi: "मुझे कुछ मेल खाने वाली जगहें मिलीं। आपका मतलब कौन सी है?" },
   missingApiKey:     { en: "The VBN OTP API is not configured yet. Set VBN_OTP_API_KEY on the server.", de: "Die VBN OTP API ist noch nicht konfiguriert. Setze VBN_OTP_API_KEY auf dem Server.", ar: "لم يتم تكوين VBN OTP API بعد. قم بتعيين VBN_OTP_API_KEY على الخادم.", tr: "VBN OTP API henüz yapılandırılmamış. Sunucuda VBN_OTP_API_KEY'i ayarlayın.", uk: "VBN OTP API ще не налаштовано. Встановіть VBN_OTP_API_KEY на сервері.", hi: "VBN OTP API अभी तक कॉन्फ़िगर नहीं है। सर्वर पर VBN_OTP_API_KEY सेट करें।" },
-  vbnFetchError:     { en: "I could not fetch the VBN route right now. Please try again in a moment.", de: "Ich konnte die VBN Route gerade nicht abrufen. Bitte versuche es gleich noch einmal.", ar: "تعذر جلب طريق VBN الآن. يرجى المحاولة مرة أخرى.", tr: "VBN rotası şu an alınamıyor. Lütfen birazdan tekrar deneyin.", uk: "Не вдалося отримати маршрут VBN. Спробуйте знову за хвилину.", hi: "अभी VBN रूट नहीं मिल सका। कृपया एक पल बाद फिर कोशिश करें।" },
+  vbnFetchError:     { en: "The live route service is not responding right now. You can try again, or continue with ticket help.", de: "Der Live-Routendienst antwortet gerade nicht. Sie können es erneut versuchen oder mit der Tickethilfe weitermachen.", ar: "خدمة المسارات المباشرة لا تستجيب الآن. يمكنك المحاولة مرة أخرى أو متابعة مساعدة التذاكر.", tr: "Canlı rota servisi şu anda yanıt vermiyor. Tekrar deneyebilir veya bilet yardımıyla devam edebilirsiniz.", uk: "Сервіс маршрутів зараз не відповідає. Можете спробувати ще раз або продовжити з допомогою щодо квитків.", hi: "लाइव रूट सेवा अभी जवाब नहीं दे रही है। आप फिर कोशिश कर सकते हैं या टिकट सहायता जारी रख सकते हैं।" },
   noUsableRoute:     { en: "I found the locations, but VBN did not return a usable itinerary for that time.", de: "Ich habe die Orte gefunden, aber VBN hat für diese Zeit keine nutzbare Verbindung zurückgegeben.", ar: "وجدت المواقع، لكن VBN لم يرجع مساراً مناسباً لذلك الوقت.", tr: "Konumları buldum, ancak VBN bu saat için kullanılabilir bir güzergah döndürmedi.", uk: "Я знайшов місця, але VBN не повернув придатний маршрут на цей час.", hi: "मुझे जगहें मिल गईं, लेकिन VBN ने उस समय के लिए उपयोगी यात्रा-कार्यक्रम नहीं लौटाया।" },
+  noArriveByRoute:   { en: "I couldn't find a route that arrives by the requested time. Try an earlier start time or check other options.", de: "Ich konnte keine Verbindung finden, die bis zur gewünschten Zeit ankommt. Versuchen Sie eine frühere Startzeit oder prüfen Sie andere Optionen.", ar: "لم أجد مساراً يصل قبل الوقت المطلوب. جرّب وقت بدء أبكر أو تحقق من خيارات أخرى.", tr: "İstenen saate kadar varan bir rota bulamadım. Daha erken bir başlangıç saati deneyin veya diğer seçenekleri kontrol edin.", uk: "Я не знайшов маршрут, який прибуває до потрібного часу. Спробуйте раніший час старту або перевірте інші варіанти.", hi: "मुझे अनुरोधित समय तक पहुँचने वाला रूट नहीं मिला। पहले शुरू करने का समय आज़माएँ या दूसरे विकल्प देखें।" },
   noPlaceSuggestions:{ en: "I could not find this place. Please enter the street address or choose a nearby stop.", de: "Ich konnte diesen Ort nicht finden. Bitte gib die Adresse ein oder wähle eine nahe Haltestelle.", ar: "لم أتمكن من العثور على هذا المكان. يرجى إدخال عنوان الشارع أو اختيار محطة قريبة.", tr: "Bu yeri bulamadım. Lütfen sokak adresini girin veya yakındaki bir durağı seçin.", uk: "Я не зміг знайти це місце. Введіть адресу або виберіть найближчу зупинку.", hi: "मैं यह जगह नहीं ढूंढ पाया। कृपया सड़क का पता दर्ज करें या पास का स्टॉप चुनें।" },
-  exactAddressNotFound: { en: "I could not find that house number exactly. Please choose the street, its bus stop, or enter another address.", de: "Ich konnte diese Hausnummer nicht genau finden. Bitte wählen Sie die Straße, die Haltestelle oder geben Sie eine andere Adresse ein.", ar: "لم أتمكن من العثور على رقم المنزل بدقة. اختر الشارع أو محطة الحافلة أو أدخل عنواناً آخر.", tr: "Bu kapı numarasını tam olarak bulamadım. Sokağı, otobüs durağını seçin veya başka bir adres girin.", uk: "Не вдалося точно знайти цей номер будинку. Виберіть вулицю, автобусну зупинку або введіть іншу адресу.", hi: "मुझे यह मकान नंबर ठीक से नहीं मिला। सड़क, बस स्टॉप चुनें या दूसरा पता दर्ज करें।" },
+  exactAddressNotFound: { en: "I couldn't find that exact house number. Did you mean the street or a nearby stop?", de: "Ich konnte diese Hausnummer nicht genau finden. Meinten Sie die Straße oder eine nahe Haltestelle?", ar: "لم أجد رقم المنزل هذا بالضبط. هل تقصد الشارع أو محطة قريبة؟", tr: "Bu kapı numarasını tam bulamadım. Sokağı mı yoksa yakındaki bir durağı mı kastettiniz?", uk: "Я не знайшов цей номер будинку точно. Ви маєте на увазі вулицю або найближчу зупинку?", hi: "मुझे वह मकान नंबर ठीक से नहीं मिला। क्या आपका मतलब सड़क या पास का स्टॉप है?" },
   aiSetupMissing:    { en: "The AI backend is not configured yet. Add OLLAMA_BASE_URL and OLLAMA_MODEL, or OPENAI_API_KEY, on the server and restart the app.", de: "Das KI-Backend ist noch nicht konfiguriert. Setze OLLAMA_BASE_URL und OLLAMA_MODEL oder OPENAI_API_KEY auf dem Server und starte die App neu.", ar: "لم يتم إعداد خلفية الذكاء الاصطناعي بعد. أضف OLLAMA_BASE_URL و OLLAMA_MODEL أو OPENAI_API_KEY على الخادم ثم أعد تشغيل التطبيق.", tr: "Yapay zeka backend'i henüz yapılandırılmadı. Sunucuda OLLAMA_BASE_URL ve OLLAMA_MODEL veya OPENAI_API_KEY ekleyip uygulamayı yeniden başlatın.", uk: "AI-бекенд ще не налаштовано. Додайте OLLAMA_BASE_URL і OLLAMA_MODEL або OPENAI_API_KEY на сервері та перезапустіть застосунок.", hi: "AI बैकएंड अभी कॉन्फ़िगर नहीं है। सर्वर पर OLLAMA_BASE_URL और OLLAMA_MODEL, या OPENAI_API_KEY जोड़ें और ऐप पुनः आरंभ करें।" },
   outOfScope:        { en: "I can help with public transport in Oldenburg and Bremen.", de: "Ich kann beim öffentlichen Nahverkehr in Oldenburg und Bremen helfen.", ar: "يمكنني المساعدة في النقل العام في أولدنبورغ وبريمن.", tr: "Oldenburg ve Bremen'deki toplu taşıma konusunda yardımcı olabilirim.", uk: "Я можу допомогти з громадським транспортом в Ольденбурзі та Бремені.", hi: "मैं Oldenburg और Bremen में सार्वजनिक परिवहन में मदद कर सकता हूँ।" },
   openAiAuthError:   { en: "The AI backend could not authenticate. Please check OPENAI_API_KEY in .env and restart the app.", de: "Das KI-Backend konnte sich nicht authentifizieren. Prüfe OPENAI_API_KEY in .env und starte die App neu.", ar: "تعذر على خلفية الذكاء الاصطناعي المصادقة. تحقق من OPENAI_API_KEY في .env ثم أعد تشغيل التطبيق.", tr: "Yapay zeka backend'i kimlik doğrulaması yapamadı. .env içindeki OPENAI_API_KEY değerini kontrol edip uygulamayı yeniden başlatın.", uk: "AI-бекенд не зміг пройти автентифікацію. Перевірте OPENAI_API_KEY у .env і перезапустіть застосунок.", hi: "AI बैकएंड प्रमाणित नहीं हो पाया। .env में OPENAI_API_KEY जाँचें और ऐप पुनः आरंभ करें।" },
@@ -144,6 +146,53 @@ const serverStrings = {
   usingCorrectedPlaces: { en: "Using {origin} and {destination}.", de: "Verwende {origin} und {destination}.", ar: "سيتم استخدام {origin} و{destination}.", tr: "{origin} ve {destination} kullanılıyor.", uk: "Використовую {origin} та {destination}.", hi: "{origin} और {destination} का उपयोग कर रहे हैं।" },
   destinationWalkNotice: { en: "Fastest route gets off at {stop}, then walk {minutes} minutes to {destination}.", de: "Die schnellste Route endet an der Haltestelle {stop}, dann gehen Sie {minutes} Minuten zu Fuß bis {destination}.", ar: "أسرع طريق ينزل عند محطة {stop}، ثم اسر {minutes} دقيقة إلى {destination}.", tr: "En hızlı rota {stop} durağında biter, sonra {destination}'a {minutes} dakika yürüyün.", uk: "Найшвидший маршрут закінчується на зупинці {stop}, потім йдіть {minutes} хвилин до {destination}.", hi: "सबसे तेज़ मार्ग {stop} स्टॉप पर उतरता है, फिर {destination} तक {minutes} मिनट पैदल चलें।" },
   routeDirectlyToStop: { en: "Route directly to {destination} stop", de: "Route direkt zur Haltestelle {destination}", ar: "طريق مباشر إلى محطة {destination}", tr: "{destination} durağına direkt rota", uk: "Маршрут прямо до зупинки {destination}", hi: "{destination} स्टॉप के लिए सीधा मार्ग" },
+  checkingRoute:     { en: "Got it. I'm checking the best route now...", de: "Alles klar. Ich prüfe jetzt die beste Verbindung...", ar: "حسناً. أتحقق الآن من أفضل مسار...", tr: "Tamam. Şimdi en iyi rotayı kontrol ediyorum...", uk: "Зрозуміло. Зараз перевіряю найкращий маршрут...", hi: "ठीक है। मैं अभी सबसे अच्छा रूट देख रहा हूँ..." },
+  routeBusIntro:     { en: "Here's the easiest public transport option I found.", de: "Hier ist die einfachste Verbindung mit dem öffentlichen Verkehr, die ich gefunden habe.", ar: "هذا أسهل خيار مواصلات عامة وجدته.", tr: "Bulduğum en kolay toplu taşıma seçeneği bu.", uk: "Ось найпростіший варіант громадського транспорту, який я знайшов.", hi: "मुझे मिला सबसे आसान सार्वजनिक परिवहन विकल्प यह है।" },
+  routeWalkIntro:    { en: "This is close enough to walk. That's probably the easiest option.", de: "Das ist nah genug zum Laufen. Das ist wahrscheinlich am einfachsten.", ar: "المكان قريب بما يكفي للمشي. غالباً هذا هو الخيار الأسهل.", tr: "Burası yürümek için yeterince yakın. Muhtemelen en kolay seçenek bu.", uk: "Це досить близько, щоб пройти пішки. Ймовірно, це найпростіший варіант.", hi: "यह पैदल जाने लायक पास है। शायद यही सबसे आसान विकल्प है।" },
+  routeGotItChecking: { en: "Got it - from {origin} to {destination}. I'll check the route.", de: "Alles klar - von {origin} nach {destination}. Ich prüfe die Route.", ar: "فهمت - من {origin} إلى {destination}. سأتحقق من المسار.", tr: "Anladım - {origin} ile {destination} arası. Rotayı kontrol edeceğim.", uk: "Зрозуміло - від {origin} до {destination}. Перевірю маршрут.", hi: "समझ गया - {origin} से {destination}। मैं रूट देखता हूँ।" },
+  ambiguousPlaceQuestion: { en: "Do you want to start from {place} or go to {place}?", de: "Möchten Sie von {place} starten oder nach {place} fahren?", ar: "هل تريد أن تبدأ من {place} أم تذهب إلى {place}؟", tr: "{place} konumundan mı başlamak istiyorsunuz, yoksa {place} konumuna mı gitmek istiyorsunuz?", uk: "Ви хочете почати з {place} чи поїхати до {place}?", hi: "क्या आप {place} से शुरू करना चाहते हैं या {place} जाना चाहते हैं?" },
+  startFromPlace:  { en: "Start from {place}", de: "Von {place} starten", ar: "ابدأ من {place}", tr: "{place} konumundan başla", uk: "Почати з {place}", hi: "{place} से शुरू करें" },
+  goToPlace:       { en: "Go to {place}", de: "Nach {place} fahren", ar: "اذهب إلى {place}", tr: "{place} konumuna git", uk: "Поїхати до {place}", hi: "{place} जाएँ" },
+  originConfirmedAskDestination: { en: "Got it - you're starting from {place}. Where do you want to go?", de: "Alles klar - Sie starten von {place}. Wohin möchten Sie fahren?", ar: "فهمت - ستبدأ من {place}. إلى أين تريد الذهاب؟", tr: "Anladım - {place} konumundan başlıyorsunuz. Nereye gitmek istiyorsunuz?", uk: "Зрозуміло - ви починаєте з {place}. Куди хочете поїхати?", hi: "समझ गया - आप {place} से शुरू कर रहे हैं। आप कहाँ जाना चाहते हैं?" },
+  destinationConfirmedAskOrigin: { en: "Got it - you want to go to {place}. Where are you starting from?", de: "Alles klar - Sie möchten nach {place}. Von wo starten Sie?", ar: "فهمت - تريد الذهاب إلى {place}. من أين تبدأ؟", tr: "Anladım - {place} konumuna gitmek istiyorsunuz. Nereden başlıyorsunuz?", uk: "Зрозуміло - ви хочете поїхати до {place}. Звідки починаєте?", hi: "समझ गया - आप {place} जाना चाहते हैं। आप कहाँ से शुरू कर रहे हैं?" },
+  chooseStartOrGo: { en: "Please choose one: start from {place} or go to {place}.", de: "Bitte wählen Sie eines aus: von {place} starten oder nach {place} fahren.", ar: "يرجى اختيار واحد: ابدأ من {place} أو اذهب إلى {place}.", tr: "Lütfen birini seçin: {place} konumundan başla veya {place} konumuna git.", uk: "Будь ласка, оберіть одне: почати з {place} або поїхати до {place}.", hi: "कृपया एक चुनें: {place} से शुरू करें या {place} जाएँ।" },
+  ambiguousPlaceLost: { en: "I lost that place. Please type it again.", de: "Ich habe diesen Ort verloren. Bitte geben Sie ihn noch einmal ein.", ar: "فقدت ذلك المكان. يرجى كتابته مرة أخرى.", tr: "O yeri kaybettim. Lütfen tekrar yazın.", uk: "Я втратив це місце. Будь ласка, введіть його ще раз.", hi: "मैं वह स्थान भूल गया। कृपया उसे फिर से लिखें।" },
+  ticketAmbiguousPlaceQuestion: { en: "Is {place} your starting point or your destination?", de: "Ist {place} Ihr Startpunkt oder Ihr Ziel?", ar: "هل {place} نقطة البداية أم وجهتك؟", tr: "{place} başlangıç noktanız mı yoksa hedefiniz mi?", uk: "{place} - це ваша початкова точка чи пункт призначення?", hi: "क्या {place} आपका शुरुआती स्थान है या गंतव्य?" },
+  startingPoint:   { en: "Starting point", de: "Startpunkt", ar: "نقطة البداية", tr: "Başlangıç noktası", uk: "Початкова точка", hi: "शुरुआती स्थान" },
+  destination:     { en: "Destination", de: "Ziel", ar: "الوجهة", tr: "Hedef", uk: "Пункт призначення", hi: "गंतव्य" },
+  ticketStartHelp:   { en: "Sure. I'll help you choose the right ticket. Where are you travelling from and to?", de: "Gern. Ich helfe Ihnen, das passende Ticket zu finden. Von wo nach wo fahren Sie?", ar: "أكيد. سأساعدك في اختيار التذكرة المناسبة. من أين إلى أين تسافر؟", tr: "Tabii. Doğru bileti seçmenize yardım ederim. Nereden nereye gidiyorsunuz?", uk: "Звісно. Я допоможу вибрати правильний квиток. Звідки і куди ви їдете?", hi: "ज़रूर। मैं सही टिकट चुनने में मदद करूंगा। आप कहाँ से कहाँ जा रहे हैं?" },
+  ticketUnsureStart: { en: "No problem. I can help you narrow it down. Where are you travelling from and to?", de: "Kein Problem. Ich helfe Ihnen, es einzugrenzen. Von wo nach wo fahren Sie?", ar: "لا مشكلة. يمكنني مساعدتك في تضييق الخيارات. من أين إلى أين تسافر؟", tr: "Sorun değil. Seçenekleri daraltmanıza yardım ederim. Nereden nereye gidiyorsunuz?", uk: "Без проблем. Я допоможу звузити вибір. Звідки і куди ви їдете?", hi: "कोई बात नहीं। मैं विकल्प कम करने में मदद करूंगा। आप कहाँ से कहाँ जा रहे हैं?" },
+  ticketNeedOriginDestination: { en: "First, where are you travelling from and to?", de: "Zuerst: Von wo nach wo fahren Sie?", ar: "أولاً، من أين إلى أين تسافر؟", tr: "Önce, nereden nereye gidiyorsunuz?", uk: "Спочатку: звідки і куди ви їдете?", hi: "पहले बताएं, आप कहाँ से कहाँ जा रहे हैं?" },
+  ticketAckRouteAskPassengerTrip: { en: "Got it - {origin} to {destination}. How many people are travelling, and is it one trip or several trips?", de: "Alles klar - {origin} nach {destination}. Wie viele Personen fahren mit, und ist es eine Fahrt oder sind es mehrere Fahrten?", ar: "فهمت - من {origin} إلى {destination}. كم شخصاً يسافرون، وهل هي رحلة واحدة أم عدة رحلات؟", tr: "Anladım - {origin} ile {destination} arası. Kaç kişi seyahat ediyor ve bu tek yolculuk mu, birkaç yolculuk mu?", uk: "Зрозуміло - {origin} до {destination}. Скільки людей їде, і це одна поїздка чи кілька?", hi: "समझ गया - {origin} से {destination}। कितने लोग यात्रा कर रहे हैं, और यह एक यात्रा है या कई यात्राएँ?" },
+  ticketAskPassenger: { en: "Great. How many people are travelling?", de: "Gut. Wie viele Personen fahren mit?", ar: "رائع. كم شخصاً يسافرون؟", tr: "Güzel. Kaç kişi seyahat ediyor?", uk: "Добре. Скільки людей їде?", hi: "अच्छा। कितने लोग यात्रा कर रहे हैं?" },
+  ticketAskTrip:     { en: "Thanks. Is it one trip, a return trip, or several trips?", de: "Danke. Ist es eine einfache Fahrt, eine Hin- und Rückfahrt oder sind es mehrere Fahrten?", ar: "شكراً. هل هي رحلة واحدة، ذهاب وعودة، أم عدة رحلات؟", tr: "Teşekkürler. Bu tek yolculuk mu, gidiş-dönüş mü, yoksa birkaç yolculuk mu?", uk: "Дякую. Це одна поїздка, поїздка туди й назад чи кілька поїздок?", hi: "धन्यवाद। यह एक यात्रा है, वापसी यात्रा है, या कई यात्राएँ?" },
+  ticketSeveralTripsAck: { en: "Thanks. Since that's several trips, I'll check route and ticket options.", de: "Danke. Da es mehrere Fahrten sind, prüfe ich Verbindung und Ticketoptionen.", ar: "شكراً. بما أنها عدة رحلات، سأتحقق من المسار وخيارات التذاكر.", tr: "Teşekkürler. Birkaç yolculuk olduğu için rota ve bilet seçeneklerini kontrol edeceğim.", uk: "Дякую. Оскільки це кілька поїздок, перевірю маршрут і варіанти квитків.", hi: "धन्यवाद। चूंकि यह कई यात्राएँ हैं, मैं रूट और टिकट विकल्प देखता हूँ।" },
+  ticketCompleteAck: { en: "Thanks. I'll check the route and ticket options.", de: "Danke. Ich prüfe Verbindung und Ticketoptionen.", ar: "شكراً. سأتحقق من المسار وخيارات التذاكر.", tr: "Teşekkürler. Rota ve bilet seçeneklerini kontrol edeceğim.", uk: "Дякую. Перевірю маршрут і варіанти квитків.", hi: "धन्यवाद। मैं रूट और टिकट विकल्प देखता हूँ।" },
+  ticketRouteUnsureIntro: { en: "No problem. I'll help with the ticket for this route.", de: "Kein Problem. Ich helfe mit dem Ticket für diese Route.", ar: "لا مشكلة. سأساعدك في التذكرة لهذا المسار.", tr: "Sorun değil. Bu rota için bilet konusunda yardımcı olurum.", uk: "Без проблем. Я допоможу з квитком для цього маршруту.", hi: "कोई बात नहीं। मैं इस रूट के टिकट में मदद करूँगा।" },
+  ticketRouteNeedIntro: { en: "Okay. For this route from {origin} to {destination}, let's choose the ticket type.", de: "Okay. Für diese Route von {origin} nach {destination} wählen wir die Ticketart.", ar: "حسناً. لهذا المسار من {origin} إلى {destination}، لنختر نوع التذكرة.", tr: "Tamam. {origin} ile {destination} arasındaki bu rota için bilet türünü seçelim.", uk: "Добре. Для цього маршруту від {origin} до {destination} виберімо тип квитка.", hi: "ठीक है। {origin} से {destination} तक इस रूट के लिए टिकट प्रकार चुनते हैं।" },
+  ticketRouteHasIntro: { en: "Good. Please make sure your ticket is valid for this route and time before boarding.", de: "Gut. Bitte prüfen Sie vor dem Einsteigen, ob Ihr Ticket für diese Route und Zeit gültig ist.", ar: "جيد. يرجى التأكد قبل الصعود من أن تذكرتك صالحة لهذا المسار والوقت.", tr: "İyi. Binmeden önce biletinizin bu rota ve saat için geçerli olduğundan emin olun.", uk: "Добре. Перед посадкою переконайтеся, що ваш квиток дійсний для цього маршруту й часу.", hi: "अच्छा। चढ़ने से पहले सुनिश्चित करें कि आपका टिकट इस रूट और समय के लिए मान्य है।" },
+  ticketRouteCheckExisting: { en: "For this trip from {origin} to {destination}, first check whether you already have a valid ticket, semester ticket, or Deutschlandticket.", de: "Für diese Fahrt von {origin} nach {destination} prüfen Sie zuerst, ob Sie bereits ein gültiges Ticket, Semesterticket oder Deutschlandticket haben.", ar: "لهذه الرحلة من {origin} إلى {destination}، تحقق أولاً مما إذا كان لديك تذكرة صالحة أو تذكرة فصل دراسي أو Deutschlandticket.", tr: "{origin} ile {destination} arasındaki bu yolculuk için önce geçerli bir biletiniz, dönem biletiniz veya Deutschlandticket'iniz olup olmadığını kontrol edin.", uk: "Для цієї поїздки від {origin} до {destination} спочатку перевірте, чи вже маєте дійсний квиток, семестровий квиток або Deutschlandticket.", hi: "{origin} से {destination} की इस यात्रा के लिए पहले जाँचें कि आपके पास वैध टिकट, सेमेस्टर टिकट या Deutschlandticket पहले से है या नहीं।" },
+  ticketRecommendationTitle: { en: "Ticket suggestion", de: "Ticketvorschlag", ar: "اقتراح تذكرة", tr: "Bilet önerisi", uk: "Порада щодо квитка", hi: "टिकट सुझाव" },
+  ticketSingleAdvice: { en: "For {passengers} and {trips}, start by checking a single ticket.", de: "Für {passengers} und {trips} prüfen Sie zuerst ein Einzelticket.", ar: "لـ {passengers} و{trips}، ابدأ بالتحقق من تذكرة مفردة.", tr: "{passengers} ve {trips} için önce tek bilet kontrol edin.", uk: "Для {passengers} і {trips} спочатку перевірте разовий квиток.", hi: "{passengers} और {trips} के लिए पहले सिंगल टिकट देखें।" },
+  ticketReturnAdvice: { en: "For a return trip on the same day, compare a day ticket with two single tickets.", de: "Für eine Hin- und Rückfahrt am selben Tag vergleichen Sie ein Tagesticket mit zwei Einzeltickets.", ar: "لرحلة ذهاب وعودة في اليوم نفسه، قارن تذكرة اليوم بتذكرتين مفردتين.", tr: "Aynı gün gidiş-dönüş için günlük bileti iki tek biletle karşılaştırın.", uk: "Для поїздки туди й назад в той самий день порівняйте денний квиток із двома разовими.", hi: "उसी दिन वापसी यात्रा के लिए डे टिकट की तुलना दो सिंगल टिकटों से करें।" },
+  ticketManyTripsAdvice: { en: "Since you plan several trips, don't only check single tickets. A day, weekly/monthly, or Deutschlandticket option may be better depending on when you travel.", de: "Da Sie mehrere Fahrten planen, prüfen Sie nicht nur Einzeltickets. Je nach Reisezeit kann ein Tages-, Wochen-/Monatsticket oder Deutschlandticket besser sein.", ar: "بما أنك تخطط لعدة رحلات، لا تتحقق من التذاكر المفردة فقط. قد تكون تذكرة يومية أو أسبوعية/شهرية أو Deutschlandticket أفضل حسب وقت السفر.", tr: "Birkaç yolculuk planladığınız için sadece tek biletleri kontrol etmeyin. Seyahat zamanınıza göre günlük, haftalık/aylık veya Deutschlandticket daha iyi olabilir.", uk: "Оскільки ви плануєте кілька поїздок, не перевіряйте лише разові квитки. Денний, тижневий/місячний квиток або Deutschlandticket може бути кращим залежно від часу поїздок.", hi: "कई यात्राओं के लिए सिर्फ सिंगल टिकट न देखें। यात्रा के समय के अनुसार डे, साप्ताहिक/मासिक या Deutschlandticket बेहतर हो सकता है।" },
+  ticketStudentAdvice: { en: "If you are a student, first check whether your semester ticket or Deutschlandsemesterticket already covers this route.", de: "Wenn Sie studieren, prüfen Sie zuerst, ob Ihr Semesterticket oder Deutschlandsemesterticket diese Strecke schon abdeckt.", ar: "إذا كنت طالباً، تحقق أولاً مما إذا كانت تذكرة الفصل أو Deutschlandsemesterticket تغطي هذا المسار بالفعل.", tr: "Öğrenciyseniz, önce dönem biletinizin veya Deutschlandsemesterticket'in bu rotayı kapsayıp kapsamadığını kontrol edin.", uk: "Якщо ви студент, спочатку перевірте, чи ваш semester ticket або Deutschlandsemesterticket уже покриває цей маршрут.", hi: "यदि आप छात्र हैं, तो पहले देखें कि आपका semester ticket या Deutschlandsemesterticket इस रूट को पहले से कवर करता है या नहीं।" },
+  ticketGroupAdvice: { en: "For {passengers}, check group or day-ticket options before buying separate tickets.", de: "Für {passengers} prüfen Sie Gruppen- oder Tagestickets, bevor Sie einzelne Tickets kaufen.", ar: "لـ {passengers}، تحقق من خيارات تذاكر المجموعة أو اليوم قبل شراء تذاكر منفصلة.", tr: "{passengers} için ayrı bilet almadan önce grup veya günlük bilet seçeneklerini kontrol edin.", uk: "Для {passengers} перевірте групові або денні квитки перед купівлею окремих квитків.", hi: "{passengers} के लिए अलग-अलग टिकट खरीदने से पहले ग्रुप या डे टिकट विकल्प देखें।" },
+  ticketUnsureCompare: { en: "No problem. If you are unsure, compare single, day, repeated-travel, and group options before buying.", de: "Kein Problem. Wenn Sie unsicher sind, vergleichen Sie vor dem Kauf Einzel-, Tages-, Mehrfahrten- und Gruppenoptionen.", ar: "لا مشكلة. إذا لم تكن متأكداً، قارن خيارات التذكرة المفردة واليومية والمتكررة والجماعية قبل الشراء.", tr: "Sorun değil. Emin değilseniz satın almadan önce tek, günlük, tekrar seyahat ve grup seçeneklerini karşılaştırın.", uk: "Без проблем. Якщо ви не впевнені, перед купівлею порівняйте разові, денні, регулярні та групові варіанти.", hi: "कोई बात नहीं। यदि आप अनिश्चित हैं, तो खरीदने से पहले सिंगल, डे, बार-बार यात्रा और ग्रुप विकल्पों की तुलना करें।" },
+  ticketCaution:     { en: "Please confirm the official price and validity on the VBN page before buying.", de: "Bitte bestätigen Sie vor dem Kauf den offiziellen Preis und die Gültigkeit auf der VBN-Seite.", ar: "يرجى تأكيد السعر الرسمي والصلاحية على صفحة VBN قبل الشراء.", tr: "Satın almadan önce resmi fiyatı ve geçerliliği VBN sayfasında kontrol edin.", uk: "Перед купівлею підтвердьте офіційну ціну та чинність на сторінці VBN.", hi: "खरीदने से पहले VBN पेज पर आधिकारिक कीमत और वैधता की पुष्टि करें।" },
+  ticketRouteFailedPrefix: { en: "The live route service is not responding right now. I can still help with the ticket type based on {summary}.", de: "Der Live-Routendienst antwortet gerade nicht. Ich kann trotzdem anhand von {summary} beim Tickettyp helfen.", ar: "خدمة المسارات المباشرة لا تستجيب الآن. لا يزال بإمكاني مساعدتك في نوع التذكرة بناءً على {summary}.", tr: "Canlı rota servisi şu anda yanıt vermiyor. Yine de {summary} bilgilerine göre bilet türünde yardımcı olabilirim.", uk: "Сервіс маршрутів зараз не відповідає. Я все одно можу допомогти з типом квитка на основі {summary}.", hi: "लाइव रूट सेवा अभी जवाब नहीं दे रही है। मैं फिर भी {summary} के आधार पर टिकट प्रकार में मदद कर सकता हूँ।" },
+  ticketGuidancePrefix: { en: "Thanks. Based on what you told me, here's what I would check first.", de: "Danke. Nach Ihren Angaben würde ich zuerst Folgendes prüfen.", ar: "شكراً. بناءً على ما أخبرتني به، هذا ما سأتحقق منه أولاً.", tr: "Teşekkürler. Söylediklerinize göre önce şunu kontrol ederdim.", uk: "Дякую. На основі ваших даних я б спочатку перевірив ось це.", hi: "धन्यवाद। आपने जो बताया उसके आधार पर मैं पहले यह देखूंगा।" },
+  tryRouteAgain:    { en: "Try route again", de: "Route erneut versuchen", ar: "حاول المسار مرة أخرى", tr: "Rotayı tekrar dene", uk: "Спробувати маршрут ще раз", hi: "रूट फिर आजमाएँ" },
+  continueTicketHelp: { en: "Continue with ticket help", de: "Mit Tickethilfe fortfahren", ar: "متابعة مساعدة التذاكر", tr: "Bilet yardımıyla devam et", uk: "Продовжити з допомогою щодо квитків", hi: "टिकट सहायता जारी रखें" },
+  useThisStreet:    { en: "Use this street", de: "Diese Straße nutzen", ar: "استخدم هذا الشارع", tr: "Bu sokağı kullan", uk: "Використати цю вулицю", hi: "यह सड़क उपयोग करें" },
+  useNearbyStop:    { en: "Use nearby stop", de: "Nahe Haltestelle nutzen", ar: "استخدم محطة قريبة", tr: "Yakındaki durağı kullan", uk: "Використати найближчу зупинку", hi: "पास का स्टॉप उपयोग करें" },
+  enterAnotherAddress: { en: "Enter another address", de: "Andere Adresse eingeben", ar: "أدخل عنواناً آخر", tr: "Başka adres gir", uk: "Ввести іншу адресу", hi: "दूसरा पता दर्ज करें" },
+  singleTicketInfo: { en: "Single ticket info", de: "Einzelticket-Info", ar: "معلومات التذكرة المفردة", tr: "Tek bilet bilgisi", uk: "Інформація про разовий квиток", hi: "सिंगल टिकट जानकारी" },
+  dayTicketInfo:    { en: "Day ticket info", de: "Tagesticket-Info", ar: "معلومات تذكرة اليوم", tr: "Günlük bilet bilgisi", uk: "Інформація про денний квиток", hi: "डे टिकट जानकारी" },
+  groupTicketInfo:  { en: "Group ticket info", de: "Gruppenticket-Info", ar: "معلومات تذكرة المجموعة", tr: "Grup bileti bilgisi", uk: "Інформація про груповий квиток", hi: "ग्रुप टिकट जानकारी" },
+  studentTicketInfo:{ en: "Student ticket info", de: "Studierendenticket-Info", ar: "معلومات تذكرة الطالب", tr: "Öğrenci bileti bilgisi", uk: "Інформація про студентський квиток", hi: "छात्र टिकट जानकारी" },
+  weeklyMonthlyTicketInfo: { en: "Weekly/monthly ticket info", de: "Wochen-/Monatsticket-Info", ar: "معلومات التذاكر الأسبوعية/الشهرية", tr: "Haftalık/aylık bilet bilgisi", uk: "Інформація про тижневий/місячний квиток", hi: "साप्ताहिक/मासिक टिकट जानकारी" },
+  multiTripTicketInfo: { en: "Multi-trip ticket info", de: "Mehrfahrten-Ticketinfo", ar: "معلومات تذكرة الرحلات المتعددة", tr: "Çoklu yolculuk bileti bilgisi", uk: "Інформація про квиток на кілька поїздок", hi: "मल्टी-ट्रिप टिकट जानकारी" },
 };
 
 function ts(key, lang, params = {}) {
@@ -974,60 +1023,130 @@ function isResolvableRoutePlace(value) {
   return isStreetToStreetPlace(value) || placeQueryResolvesDirectly(value);
 }
 
-function streetToStreetRouteFromText(rawText) {
+function looksLikePlaceOrAddress(value) {
+  const cleaned = cleanRoutePlaceName(value);
+  if (!cleaned) return false;
+  if (isResolvableRoutePlace(cleaned)) return true;
+  if (looksLikeStreetAddress(cleaned) || isAddressLikeQuery(cleaned)) return true;
+  if (/\b(?:hbf|bahnhof|hauptbahnhof|lappan|pferdemarkt|postenweg|uni|university|universitat|universitaet|campus|haarentor|harentor|wechloy|melkbrink)\b/i.test(cleaned)) return true;
+  return false;
+}
+
+function trimShortRouteLocationText(value) {
+  return cleanRoutePlaceName(value)
+    .replace(/^(?:route\s+from|go\s+from)\s+/i, "from ")
+    .replace(/^(?:from)\s+/i, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function parseShortOriginToArrivalDestination(rawText) {
   const value = normalizeUserInput(rawText).trim();
+  const cleaned = cleanRouteCommandPhrases(value)
+    .replace(/^(?:route\s+from|go\s+from)\s+/i, "from ")
+    .trim();
+  const timeBoundary = String.raw`(?=\s*(?:,?\s*(?:now|today|tomorrow|tomorow|tommorow|at|around|by|um|gegen)\b|[,.!?]|$))`;
+  const patterns = [
+    {
+      detectedArrivalPhrase: "destination_arrival_from_origin",
+      pattern: new RegExp(`^\\s*(?:i\\s+)?(?:want|need|have)\\s+to\\s+be\\s+(?:in|at)\\s+(.+?)${timeBoundary}.*?\\s+from\\s+(.+?)(?=[,.!?]|$)`, "i"),
+      originGroup: 2,
+      destinationGroup: 1
+    },
+    {
+      detectedArrivalPhrase: "from_origin_need_to_be_destination",
+      pattern: new RegExp(`^\\s*from\\s+(.+?)\\s+(?:i\\s+)?(?:want|need|have)\\s+to\\s+be\\s+(?:in|at)\\s+(.+?)${timeBoundary}`, "i")
+    },
+    {
+      detectedArrivalPhrase: "origin_to_be_destination",
+      pattern: new RegExp(`^\\s*(?:from\\s+)?(.+?)\\s+to\\s+be\\s+(?:in|at)\\s+(.+?)${timeBoundary}`, "i")
+    },
+    {
+      detectedArrivalPhrase: "origin_need_to_be_destination",
+      pattern: new RegExp(`^\\s*(.+?)\\s+(?:i\\s+)?(?:want|need|have)\\s+to\\s+be\\s+(?:in|at)\\s+(.+?)${timeBoundary}`, "i")
+    }
+  ];
+
+  for (const { pattern, detectedArrivalPhrase } of patterns) {
+    const match = cleaned.match(pattern);
+    if (!match) continue;
+    const item = patterns.find(entry => entry.pattern === pattern) || {};
+    const originText = trimShortRouteLocationText(match[item.originGroup || 1]);
+    const destinationText = trimShortRouteLocationText(match[item.destinationGroup || 2]);
+    const requestedDateTime = extractTimeText(value) || "now";
+    const timeMode = TIME_MODE.ARRIVE_BY;
+
+    console.log("[ARRIVE BY PARSE DEBUG]", {
+      rawText,
+      normalizedText: normalizeText(rawText),
+      detectedArrivalPhrase,
+      originText,
+      destinationText,
+      requestedDateTime,
+      explicitDate: detectExplicitDate(value),
+      timeMode
+    });
+
+    if (/\b(?:i|want|need|have)\b/i.test(originText)) continue;
+    if (!looksLikePlaceOrAddress(originText) || !looksLikePlaceOrAddress(destinationText)) continue;
+    return {
+      start: originText,
+      destination: destinationText,
+      time: requestedDateTime,
+      timeMode,
+      confidence: 0.96
+    };
+  }
+
+  return null;
+}
+
+function parseShortOriginToDestination(rawText) {
+  const value = normalizeUserInput(rawText).trim();
+  const cleaned = cleanRouteCommandPhrases(value)
+    .replace(/^(?:route\s+from|go\s+from)\s+/i, "from ")
+    .trim();
+  const shortArrival = parseShortOriginToArrivalDestination(rawText);
+  if (shortArrival) return shortArrival;
   const patterns = [
     {
       detectedPattern: "go_to_origin_to_destination",
-      pattern: /^\s*(?:i\s+)?(?:want|need|would\s+like)\s+to\s+(?:go|get|travel|ride)\s+to\s+(.+?)\s+to\s+(.+?)(?=\s+(?:now|today|tomorrow|at\s+\d{1,2}(?::\d{2})?\s*(?:am|pm)?)\b|[,.!?]|$)/i
+      pattern: /^\s*(?:i\s+)?(?:want|need|would\s+like)\s+to\s+(?:go|get|travel|ride)\s+to\s+(.+?)\s+(?:to|->)\s+(.+?)(?=\s*(?:,?\s*(?:now|today|tomorrow|tomorow|tommorow|at|around|by|arrive\s+by|i\s+need\s+to\s+be\s+there\s+by)\b|[,.!?]|$))/i
     },
     {
-      detectedPattern: "address_to_address",
-      pattern: /^\s*(?!from\b)(.+?)\s+to\s+(.+?)(?=\s+(?:now|today|tomorrow)\b|[,.!?]|$)/i
+      detectedPattern: "short_origin_to_destination",
+      pattern: /^\s*(?:from\s+)?(.+?)\s+(?:to|->|-)\s+(.+?)(?=\s*(?:,?\s*(?:now|today|tomorrow|tomorow|tommorow|at|around|by|arrive\s+by|i\s+need\s+to\s+be\s+there\s+by)\b|[,.!?]|$))/i
     }
   ];
 
   for (const { pattern, detectedPattern } of patterns) {
-    const match = value.match(pattern);
+    const match = cleaned.match(pattern);
     if (!match) continue;
-    const possibleOriginText = cleanRoutePlaceName(match[1]);
-    const possibleDestinationText = cleanRoutePlaceName(match[2]);
-    const acceptsGeneralPlaces = detectedPattern === "go_to_origin_to_destination";
-    const originResolvable = acceptsGeneralPlaces
-      ? isResolvableRoutePlace(possibleOriginText)
-      : isStreetToStreetPlace(possibleOriginText);
-    const destinationResolvable = acceptsGeneralPlaces
-      ? isResolvableRoutePlace(possibleDestinationText)
-      : isStreetToStreetPlace(possibleDestinationText);
+    const possibleOriginText = trimShortRouteLocationText(match[1]);
+    const possibleDestinationText = trimShortRouteLocationText(match[2]);
+    const originLooksValid = looksLikePlaceOrAddress(possibleOriginText);
+    const destinationLooksValid = looksLikePlaceOrAddress(possibleDestinationText);
     const requestedDateTime = extractTimeText(value) || "now";
-    const timeMode = TIME_MODE.DEPART_AT;
+    const timeMode = inferTimeModeFromText(value);
 
-    if (acceptsGeneralPlaces) {
-      console.log("[TO TO ROUTE PARSE DEBUG]", {
-        rawText,
-        detectedPattern,
-        possibleOriginText,
-        possibleDestinationText,
-        originResolvable,
-        destinationResolvable,
-        originText: originResolvable && destinationResolvable ? possibleOriginText : null,
-        destinationText: originResolvable && destinationResolvable ? possibleDestinationText : null,
-        requestedDateTime,
-        timeMode
-      });
-    }
-
-    if (!originResolvable || !destinationResolvable) continue;
-    const originText = possibleOriginText;
-    const destinationText = possibleDestinationText;
-    console.log("[STREET TO STREET PARSE DEBUG]", {
+    console.log("[SHORT ROUTE PARSE DEBUG]", {
       rawText,
-      originText,
-      destinationText,
+      normalizedText: normalizeText(rawText),
+      detectedPattern,
+      possibleOriginText,
+      possibleDestinationText,
+      originLooksValid,
+      destinationLooksValid,
+      parsedOriginText: originLooksValid && destinationLooksValid ? possibleOriginText : null,
+      parsedDestinationText: originLooksValid && destinationLooksValid ? possibleDestinationText : null,
       requestedDateTime,
       timeMode,
-      detectedPattern
+      source: "short_origin_to_destination"
     });
+
+    if (!originLooksValid || !destinationLooksValid) continue;
+    const originText = possibleOriginText;
+    const destinationText = possibleDestinationText;
     return {
       start: originText,
       destination: destinationText,
@@ -1037,6 +1156,10 @@ function streetToStreetRouteFromText(rawText) {
     };
   }
   return null;
+}
+
+function streetToStreetRouteFromText(rawText) {
+  return parseShortOriginToDestination(rawText);
 }
 
 const transitIntentPhrases = [
@@ -1089,6 +1212,9 @@ function cleanPlaceName(value) {
 
 function cleanRoutePlaceName(value) {
   return cleanPlaceName(value)
+    .replace(/^(?:start|leave|depart)\s+from\s+/i, "")
+    .replace(/^(?:start|leave|depart)\s+/i, "")
+    .replace(/^(?:to\s+)?(?:reach|arrive\s+at|get\s+to)\s+/i, "")
     .replace(/\b(?:today|tomorrow|tomorow|tommorow|morgen|now|jetzt)\b/gi, "")
     .replace(/\s+/g, " ")
     .trim();
@@ -1113,6 +1239,7 @@ function inferTimeModeFromText(text) {
   if (/\b(?:have|need)\s+to\s+be\s+there\b/i.test(value)) return TIME_MODE.ARRIVE_BY;
   if (/\b(?:want|need)\s+to\s+be\s+(?:at|on|in)\b/i.test(value)) return TIME_MODE.ARRIVE_BY;
   if (/\bhave\s+to\s+be\s+(?:at|on|in)\b/i.test(value)) return TIME_MODE.ARRIVE_BY;
+  if (/\bto\s+be\s+(?:at|on|in)\b/i.test(value)) return TIME_MODE.ARRIVE_BY;
   if (/\bneed\s+to\s+arrive(?:\s+(?:at|on|in))?\b/i.test(value)) return TIME_MODE.ARRIVE_BY;
   if (/\bshould\s+reach\b/i.test(value)) return TIME_MODE.ARRIVE_BY;
   if (/\bhave\s+to\s+arrive\s+(?:at|on|in)?\b/i.test(value)) return TIME_MODE.ARRIVE_BY;
@@ -1642,9 +1769,16 @@ function extractTripDetailsLegacy(text, selectedLanguage = "") {
       }
 
       if (item.type === "destination") {
+        const destinationText = cleanRoutePlaceName(match[1]);
+        console.log("[DESTINATION ONLY PARSE DEBUG]", {
+          rawText,
+          destinationText,
+          originText: null,
+          reason: "no_origin_detected"
+        });
         return {
           start: "",
-          destination: cleanRoutePlaceName(match[1]),
+          destination: destinationText,
           time: cleanRouteTimeText(match[2]) || extractTimeText(cleanedText) || "now",
           timeMode: inferTimeModeFromText(cleanedText),
           confidence: 0.65
@@ -1661,9 +1795,18 @@ function extractTripDetailsLegacy(text, selectedLanguage = "") {
     }
   }
 
+  const destinationText = inferPlaceNameFromText(cleanedText);
+  if (destinationText) {
+    console.log("[DESTINATION ONLY PARSE DEBUG]", {
+      rawText,
+      destinationText,
+      originText: null,
+      reason: "no_origin_detected"
+    });
+  }
   return {
     start: "",
-    destination: inferPlaceNameFromText(cleanedText),
+    destination: destinationText,
     time: extractTimeText(cleanedText),
     timeMode: inferTimeModeFromText(cleanedText),
     confidence: 0.35
@@ -3748,23 +3891,29 @@ function walkRecommendedReply(routeResult, lang = "en") {
   const meters = Math.round(Number(walk.distanceMeters) || 0);
   const distance = meters >= 1000 ? `${(meters / 1000).toFixed(1)} km` : `${meters} m`;
   const messages = {
-    de: `Empfohlen: Zu Fuß. Etwa ${minutes} Min. · ca. ${distance}.`,
-    ar: `الموصى به: المشي. حوالي ${minutes} دقيقة · حوالي ${distance}.`,
-    tr: `Önerilen: Yürüyün. Yaklaşık ${minutes} dk · yaklaşık ${distance}.`,
-    uk: `Рекомендовано: пішки. Близько ${minutes} хв · приблизно ${distance}.`,
-    hi: `सुझाव: पैदल जाएं। लगभग ${minutes} मिनट · करीब ${distance}.`,
-    en: `Recommended: Walk. About ${minutes} minutes · around ${distance}.`
+    de: `${ts("routeWalkIntro", lang)}\n\nEtwa ${minutes} Min. · ca. ${distance}.`,
+    ar: `${ts("routeWalkIntro", lang)}\n\nحوالي ${minutes} دقيقة · حوالي ${distance}.`,
+    tr: `${ts("routeWalkIntro", lang)}\n\nYaklaşık ${minutes} dk · yaklaşık ${distance}.`,
+    uk: `${ts("routeWalkIntro", lang)}\n\nБлизько ${minutes} хв · приблизно ${distance}.`,
+    hi: `${ts("routeWalkIntro", lang)}\n\nलगभग ${minutes} मिनट · करीब ${distance}.`,
+    en: `${ts("routeWalkIntro", lang)}\n\nAbout ${minutes} minutes · around ${distance}.`
   };
   return messages[lang] || messages.en;
 }
 
 function routeReplyForResult(routeResult, message, lang, context = {}) {
-  return routeResult?.walkRecommended
+  const acknowledgement = routeResult?.query?.start && routeResult?.query?.destination
+    ? `${ts("routeGotItChecking", lang, {
+      origin: routeResult.query.requestedStart || routeResult.query.start,
+      destination: routeResult.query.requestedDestination || routeResult.query.destination
+    })}\n\n`
+    : "";
+  return acknowledgement + (routeResult?.walkRecommended
     ? walkRecommendedReply(routeResult, lang)
-    : compactRouteIntro(message, lang, context);
+    : `${ts("routeBusIntro", lang)}\n\n${compactRouteIntro(message, lang, context)}`);
 }
 
-function routeButtonsForResult(routeResult, lang) {
+function routeButtonsForResult(routeResult, lang, session = null) {
   if (routeResult?.walkRecommended) return [];
 
   const buttons = [];
@@ -3777,7 +3926,7 @@ function routeButtonsForResult(routeResult, lang) {
     });
   }
 
-  return [...buttons, ...routeTicketButtons(lang)];
+  return [...buttons, ...routeTicketButtons(lang, session?.lastRouteContext?.routeContextId || routeResult?.query?.routeContextId || "")];
 }
 
 function buildWalkingRecommendationRoute(details, from, to, tripTime, options = {}) {
@@ -4138,6 +4287,13 @@ async function planRoute(details, fromCoords = null, options = {}) {
   const arriveBy = options.arriveBy === true || normalizeTimeMode(details.timeMode) === TIME_MODE.ARRIVE_BY;
   const now = options.now instanceof Date ? options.now : new Date();
   const requestedRouteTimeText = datedRouteTimeText(details.time, details.explicitDate);
+  console.log("[ROUTE REQUEST TIME MODE DEBUG]", {
+    originText: details.start,
+    destinationText: details.destination,
+    requestedDateTime: requestedRouteTimeText || details.time,
+    timeMode: arriveBy ? TIME_MODE.ARRIVE_BY : TIME_MODE.DEPART_AT,
+    arriveBy
+  });
   const dateTimeResolution = resolveRequestedDateTime(requestedRouteTimeText, now);
   if (dateTimeResolution.status === "past_time") {
     console.timeEnd("[Route Timing] total");
@@ -4404,11 +4560,47 @@ async function planRoute(details, fromCoords = null, options = {}) {
 
   if (arriveBy) {
     const requestedDeadlineMs = otpDateTimeMs(deadlineTime.date, deadlineTime.time);
-    itineraries = itineraries.filter(itinerary => itinerarySatisfiesTimeMode(
-      itinerary,
-      requestedDeadlineMs,
-      TIME_MODE.ARRIVE_BY
-    ));
+    itineraries = itineraries.filter(itinerary => {
+      const routeAccepted = itinerarySatisfiesTimeMode(
+        itinerary,
+        requestedDeadlineMs,
+        TIME_MODE.ARRIVE_BY
+      );
+      console.log("[ARRIVE BY RESULT VALIDATION DEBUG]", {
+        requestedArrival: requestedDeadlineMs ? new Date(requestedDeadlineMs).toISOString() : null,
+        finalArrival: itinerary?.endTime ? new Date(itinerary.endTime).toISOString() : null,
+        routeAccepted
+      });
+      if (!routeAccepted) {
+        console.warn("[BUG ARRIVE_BY ROUTE ARRIVES LATE]", {
+          requestedArrival: requestedDeadlineMs ? new Date(requestedDeadlineMs).toISOString() : null,
+          finalArrival: itinerary?.endTime ? new Date(itinerary.endTime).toISOString() : null
+        });
+      }
+      return routeAccepted;
+    });
+    if (!itineraries.length) {
+      console.timeEnd("[Route Timing] total");
+      return {
+        ok: false,
+        status: 200,
+        error: "arrive_by_no_route",
+        details,
+        query: {
+          start: from.name,
+          destination: to.name,
+          requestedStart: details.start,
+          requestedDestination: details.destination,
+          selectedOrigin: routeResolvedEndpoint(details.start, from),
+          selectedDestination: routeResolvedEndpoint(details.destination, to),
+          requestedDateTime: requestedRouteTimeText || details.time,
+          deadlineDate: deadlineTime.date,
+          deadlineTime: deadlineTime.time,
+          arriveBy: true,
+          timeMode: TIME_MODE.ARRIVE_BY
+        }
+      };
+    }
   }
 
   // Never render an itinerary whose first departure is already behind the
@@ -4684,12 +4876,14 @@ function createSession() {
     fromCoords: null,
     pendingLocation: null,
     pendingRoute: null,
+    pendingAmbiguousPlace: null,
     selectedLocations: {
       start: null,
       destination: null
     },
     ticketFlowStatus: "none",
     selectedTicket: "",
+    pendingTicketDetails: null,
     selectedLanguage: "en",
     context: {
       isStudent: false,
@@ -4697,6 +4891,7 @@ function createSession() {
       needsTicketHelp: false
     },
     messages: [],
+    lastRouteContext: null,
     lastSeen: Date.now()
   };
 }
@@ -4775,8 +4970,10 @@ function getSession(sessionId) {
   if (!session.selectedLocations) session.selectedLocations = { start: null, destination: null };
   if (!("pendingLocation" in session)) session.pendingLocation = null;
   if (!("pendingRoute" in session)) session.pendingRoute = null;
+  if (!("pendingAmbiguousPlace" in session)) session.pendingAmbiguousPlace = null;
   if (!session.ticketFlowStatus) session.ticketFlowStatus = "none";
   if (!("selectedTicket" in session)) session.selectedTicket = "";
+  if (!("pendingTicketDetails" in session)) session.pendingTicketDetails = null;
   session.lastSeen = Date.now();
   return { id, session };
 }
@@ -4808,6 +5005,164 @@ function quickButtonsForMissing(missing, lang = "en") {
   ];
 }
 
+function selectedPlacePayloadFromPlace(place) {
+  return selectedPlaceFromPayload(locationChoice(place)?.locationSelection) || (place ? {
+    placeId: String(place.placeId || place.id || `${normalizeText(place.name)}:${Number(place.lat).toFixed(5)}:${Number(place.lon).toFixed(5)}`),
+    stopId: String(place.stopId || ""),
+    name: place.name,
+    lat: place.lat,
+    lon: place.lon,
+    area: String(place.area || areaForCoords(place.lat, place.lon)?.name || ""),
+    source: String(place.source || ""),
+    type: String(place.type || (place.stopId ? "stop" : "place")),
+    nearbyStops: Array.isArray(place.nearbyStops) ? place.nearbyStops.slice(0, 4) : []
+  } : null);
+}
+
+function ambiguousPlaceButtons(place, lang, ticketMode = false) {
+  const placeText = String(place || "");
+  if (ticketMode) {
+    return [
+      { label: ts("startingPoint", lang), value: ts("startingPoint", lang), action: "set_ambiguous_place_role", role: "origin", placeText },
+      { label: ts("destination", lang), value: ts("destination", lang), action: "set_ambiguous_place_role", role: "destination", placeText }
+    ];
+  }
+  return [
+    { label: ts("startFromPlace", lang, { place }), value: ts("startFromPlace", lang, { place }), action: "set_ambiguous_place_role", role: "origin", placeText },
+    { label: ts("goToPlace", lang, { place }), value: ts("goToPlace", lang, { place }), action: "set_ambiguous_place_role", role: "destination", placeText }
+  ];
+}
+
+function clearTimeFromSinglePlaceText(value) {
+  return cleanRoutePlaceName(String(value || "")
+    .replace(/\b(?:at|by)\s+[0-2]?\d(?::[0-5]\d)?\s*(?:am|pm)?\b/gi, " ")
+    .replace(/\b(?:today|tomorrow|tomorow|tommorow|morgen|now|jetzt)\b/gi, " ")
+    .replace(/\s+/g, " ")
+    .trim());
+}
+
+function hasClearDestinationIntent(message) {
+  const normalized = normalizeText(message);
+  return /^(?:i want to go to|i need to go to|go to|to|take me to|get me to|nach|zur|zum)\b/.test(normalized)
+    || /\b(?:want to go to|need to go to|going to|go to|take me to|get me to)\b/.test(normalized);
+}
+
+function hasClearOriginIntent(message) {
+  const normalized = normalizeText(message);
+  return /^(?:from|start from|starting from|i am at|im at|i'm at|my location is|my origin is|origin)\b/.test(normalized)
+    || /\b(?:i am at|im at|i'm at|starting from|my location is|my origin is)\b/.test(normalized);
+}
+
+function explicitOriginOnlyText(message) {
+  if (!hasClearOriginIntent(message)) return "";
+  const text = String(message || "")
+    .replace(/^(?:from|start(?:ing)?\s+from|i\s+am\s+at|i'm\s+at|im\s+at|my\s+location\s+is|my\s+origin\s+is|origin)\s+/i, "");
+  const cleaned = clearTimeFromSinglePlaceText(text);
+  return cleaned && !/\b(?:to|go to|nach|zur|zum)\b/i.test(cleaned) ? cleaned : "";
+}
+
+function ambiguousSinglePlaceText(message, route = {}) {
+  if (hasClearDestinationIntent(message) || hasClearOriginIntent(message)) return "";
+  if (route.start && route.destination) return "";
+  if (!(route.destination || route.destinationText)) return "";
+  const candidate = clearTimeFromSinglePlaceText(message);
+  if (!candidate || candidate.length > 80) return "";
+  if (/\b(route|ticket|delay|verspät|accessible|barrierefrei)\b/i.test(candidate)) return "";
+  return normalizeText(candidate).split(" ").length <= 5 ? candidate : "";
+}
+
+function formatAmbiguousPlaceName(placeText, resolvedPlace = null) {
+  const source = placeText || resolvedPlace?.rawText || resolvedPlace?.name || "";
+  return displayPlace(source.replace(/^oldenburg\(oldb\)\s+/i, ""));
+}
+
+function rememberPendingAmbiguousPlace(session, { placeText, resolvedPlace, route, source = "single_place_ambiguous" }) {
+  session.pendingAmbiguousPlace = {
+    placeText,
+    resolvedPlace: selectedPlacePayloadFromPlace(resolvedPlace),
+    requestedDateTime: route?.requestedDateTime || route?.time || "now",
+    explicitDate: route?.explicitDate || "",
+    timeMode: normalizeTimeMode(route?.timeMode),
+    conversationStateBefore: source,
+    source,
+    createdAt: Date.now()
+  };
+  session.conversationState = "awaiting_ambiguous_place_role";
+  return session.pendingAmbiguousPlace;
+}
+
+function responseForAmbiguousSinglePlace({ session, message, route, lang, ticketMode = false }) {
+  const placeText = ambiguousSinglePlaceText(message, route);
+  if (!placeText) return null;
+  return resolveSupportedLocation(placeText, { allowAmbiguous: true }).then(resolution => {
+    if (!resolution.ok) return null;
+    const display = formatAmbiguousPlaceName(placeText, resolution.place);
+    const pending = rememberPendingAmbiguousPlace(session, {
+      placeText: display,
+      resolvedPlace: resolution.place,
+      route,
+      source: ticketMode ? "ticket_single_place_ambiguous" : "single_place_ambiguous"
+    });
+    console.log("[AMBIGUOUS SINGLE PLACE DEBUG]", {
+      rawText: message,
+      normalizedText: normalizeText(message),
+      resolvedPlace: pending.resolvedPlace,
+      requestedDateTime: pending.requestedDateTime,
+      timeMode: pending.timeMode,
+      conversationState: ticketMode ? session.ticketFlowStatus : "route",
+      action: "ask_origin_or_destination"
+    });
+    return {
+      reply: ticketMode
+        ? ts("ticketAmbiguousPlaceQuestion", lang, { place: display })
+        : ts("ambiguousPlaceQuestion", lang, { place: display }),
+      quickButtons: ambiguousPlaceButtons(display, lang, ticketMode),
+      routeResult: null
+    };
+  });
+}
+
+function interpretAmbiguousPlaceRole(message, pending, lang) {
+  const text = normalizeText(message);
+  const place = pending?.placeText || "";
+  const originLabels = [
+    ts("startFromPlace", lang, { place }),
+    ts("startingPoint", lang),
+    "origin",
+    "start",
+    "start from there",
+    "from there",
+    "my origin",
+    "starting point"
+  ];
+  const destinationLabels = [
+    ts("goToPlace", lang, { place }),
+    ts("destination", lang),
+    "destination",
+    "go there",
+    "to there",
+    "i want to go there",
+    "yes destination"
+  ];
+  const isOrigin = originLabels.some(value => normalizeText(value) === text || text.includes(normalizeText(value)));
+  const isDestination = destinationLabels.some(value => normalizeText(value) === text || text.includes(normalizeText(value)));
+  let interpretedRole = null;
+  let confidence = 0;
+  if (isOrigin && !isDestination) {
+    interpretedRole = "origin";
+    confidence = 0.9;
+  } else if (isDestination && !isOrigin) {
+    interpretedRole = "destination";
+    confidence = 0.9;
+  }
+  console.log("[AMBIGUOUS PLACE NATURAL REPLY DEBUG]", {
+    rawText: message,
+    interpretedRole,
+    confidence
+  });
+  return { role: interpretedRole, confidence };
+}
+
 function quickButtonsForChoices(choices) {
   return (choices || []).slice(0, 4).map(choice => {
     const item = typeof choice === "string" ? { label: choice, value: choice } : choice;
@@ -4829,6 +5184,36 @@ function ticketQuickButtons(lang) {
   ];
 }
 
+function ticketGuidanceButtons(lang, recommendation = {}, options = {}) {
+  const recommendedButtons = (recommendation.recommendedOptions || []).map(option => {
+    if (option === "single") return { label: ts("singleTicketInfo", lang), value: "single", action: "ticket_option" };
+    if (option === "day") return { label: ts("dayTicketInfo", lang), value: "day", action: "ticket_option" };
+    if (option === "group") return { label: ts("groupTicketInfo", lang), value: "group", action: "ticket_option" };
+    if (option === "student") return { label: ts("studentTicketInfo", lang), value: "student", action: "ticket_option" };
+    if (option === "time_based") return { label: ts("weeklyMonthlyTicketInfo", lang), value: "https://www.vbn.de/tickets", url: "https://www.vbn.de/tickets", external: true };
+    if (option === "multi_trip") return { label: ts("multiTripTicketInfo", lang), value: "https://www.vbn.de/tickets", url: "https://www.vbn.de/tickets", external: true };
+    return null;
+  }).filter(Boolean);
+
+  const seen = new Set();
+  const buttons = [...recommendedButtons, {
+    label: ts("officialVbnTicketInfo", lang),
+    value: "https://www.vbn.de/tickets",
+    url: "https://www.vbn.de/tickets",
+    external: true
+  }].filter(button => {
+    const key = `${button.label}|${button.value}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+
+  if (options.includeRouteRetry) {
+    buttons.push({ label: ts("tryRouteAgain", lang), value: ts("tryRouteAgain", lang) });
+  }
+  return buttons;
+}
+
 function coordParam(coords) {
   const lat = Number(coords?.lat);
   const lon = Number(coords?.lon);
@@ -4836,11 +5221,11 @@ function coordParam(coords) {
   return `${lat.toFixed(6)},${lon.toFixed(6)}`;
 }
 
-function routeTicketButtons(lang) {
+function routeTicketButtons(lang, routeContextId = "") {
   return [
-    { label: ts("yesHaveTicket", lang), value: ts("yesHaveTicket", lang), action: "ticket_has" },
-    { label: ts("noNeedTicket", lang), value: ts("noNeedTicket", lang), action: "ticket_need" },
-    { label: ts("notSure", lang), value: ts("notSure", lang), action: "ticket_unsure" }
+    { label: ts("yesHaveTicket", lang), value: "has_ticket", action: "ticket_status_response", routeContextId, legacyAction: "ticket_has" },
+    { label: ts("noNeedTicket", lang), value: "needs_ticket", action: "ticket_status_response", routeContextId, legacyAction: "ticket_need" },
+    { label: ts("notSure", lang), value: "not_sure", action: "ticket_status_response", routeContextId, legacyAction: "ticket_unsure" }
   ];
 }
 
@@ -4864,8 +5249,752 @@ function routeSummaryForDemo(routeResult, lang = "en") {
   ].join(" | ");
 }
 
+function saveLastRouteContext(session, routeResult, lang = "en") {
+  if (!session || !routeResult?.ok) return null;
+  const createdAt = Date.now();
+  const query = routeResult.query || {};
+  const context = {
+    routeContextId: `route_${createdAt}`,
+    originText: query.requestedStart || query.start || "",
+    destinationText: query.requestedDestination || query.destination || "",
+    resolvedOrigin: query.selectedOrigin || null,
+    resolvedDestination: query.selectedDestination || null,
+    routeSummary: routeSummaryForDemo(routeResult, lang),
+    requestedDateTime: query.time || "",
+    timeMode: normalizeTimeMode(query.timeMode),
+    passengerCount: null,
+    tripCount: null,
+    tripPattern: null,
+    createdAt
+  };
+  session.lastRouteResult = routeResult;
+  session.lastRouteContext = context;
+  if (!routeResult.query) routeResult.query = {};
+  routeResult.query.routeContextId = context.routeContextId;
+  console.log("[LAST ROUTE CONTEXT SAVED DEBUG]", {
+    originText: context.originText,
+    destinationText: context.destinationText,
+    requestedDateTime: context.requestedDateTime,
+    timeMode: context.timeMode,
+    routeSummary: context.routeSummary,
+    createdAt: context.createdAt
+  });
+  return context;
+}
+
 function ticketFallbackWithContext(lang, context = {}) {
-  return shortRouteTicketNote(lang, context.isStudent);
+  if (context?.isStudent) {
+    return `${ts("ticketUnsureStart", lang)}\n\n${ts("ticketStudentAdvice", lang)}`;
+  }
+  return ts("ticketUnsureStart", lang);
+}
+
+function numberWordValue(value) {
+  const normalized = normalizeText(value);
+  const words = {
+    one: 1,
+    two: 2,
+    three: 3,
+    four: 4,
+    five: 5,
+    six: 6,
+    seven: 7,
+    eight: 8,
+    nine: 9,
+    ten: 10
+  };
+  if (/^\d+$/.test(normalized)) return Number(normalized);
+  return words[normalized] || null;
+}
+
+function normalizeTicketReplyText(value) {
+  return String(value || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/ß/g, "ss")
+    .replace(/[;|/]+/g, ",")
+    .replace(/[^a-z0-9,\s]/g, " ")
+    .replace(/\s+/g, " ")
+    .replace(/\s*,\s*/g, ", ")
+    .trim();
+}
+
+function ticketDetailSegmentKind(segment) {
+  const text = normalizeText(segment);
+  if (!text) return "";
+  if (/\b(?:person|people|passenger|passengers)\b/.test(text)) return "passenger";
+  if (/\bfor\s+(?:one|two|three|four|five|six|seven|eight|nine|ten|\d+)\b/.test(text)) return "passenger";
+  if (/\b(?:trip|trips)\b/.test(text)) return "trip";
+  if (/\b(?:single|return|multiple|day)\s+trip\b/.test(text)) return "trip";
+  return "";
+}
+
+function bareNumberValue(segment) {
+  const text = normalizeText(segment);
+  if (!/^(?:one|two|three|four|five|six|seven|eight|nine|ten|\d+)$/.test(text)) return null;
+  return numberWordValue(text);
+}
+
+function removeTicketDetailPhrases(value) {
+  return String(value || "")
+    .replace(/\b(?:for\s+)?(?:one|two|three|four|five|six|seven|eight|nine|ten|\d+)\s*(?:person|people|passenger|passengers)\b/gi, " ")
+    .replace(/\bfor\s+(?:one|two|three|four|five|six|seven|eight|nine|ten|\d+)\b/gi, " ")
+    .replace(/\b(?:one|two|three|four|five|six|seven|eight|nine|ten|\d+)\s+trips?\b/gi, " ")
+    .replace(/\b(?:single|return|multiple|day)\s+trip\b/gi, " ")
+    .replace(/\bmultiple\s+trips\b/gi, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function cleanTicketLocationText(value) {
+  return cleanRoutePlaceName(removeTicketDetailPhrases(value)
+    .replace(/^(?:from|to)\s+/i, " ")
+    .replace(/^(?:please|pls)\s+/i, " ")
+    .replace(/\s+/g, " ")
+    .trim());
+}
+
+function parseTicketPassengerCount(text) {
+  const match = text.match(/\b(?:for\s+)?(one|two|three|four|five|six|seven|eight|nine|ten|\d+)\s*(?:person|people|passenger|passengers)\b/i)
+    || text.match(/\bfor\s+(one|two|three|four|five|six|seven|eight|nine|ten|\d+)\b/i);
+  return match ? numberWordValue(match[1]) : null;
+}
+
+function parseTicketTripInfo(text) {
+  const tripNumber = text.match(/\b(one|two|three|four|five|six|seven|eight|nine|ten|\d+)\s+trips?\b/i);
+  if (tripNumber) {
+    const count = numberWordValue(tripNumber[1]);
+    return {
+      tripCount: count,
+      tripPattern: count === 1 ? "single_trip" : "multiple_trips"
+    };
+  }
+  if (/\bsingle\s+trip\b/i.test(text)) return { tripCount: 1, tripPattern: "single_trip" };
+  if (/\bone\s+trip\b/i.test(text)) return { tripCount: 1, tripPattern: "single_trip" };
+  if (/\breturn\s+trip\b/i.test(text)) return { tripCount: null, tripPattern: "return_trip" };
+  if (/\bmultiple\s+trips\b/i.test(text)) return { tripCount: null, tripPattern: "multiple_trips" };
+  if (/\bday\s+trip\b/i.test(text)) return { tripCount: null, tripPattern: "day_trip" };
+  return { tripCount: null, tripPattern: null };
+}
+
+function computeMissingTicketFields(details = {}) {
+  if (Number(details.tripCount) >= 2 && !details.tripPattern) details.tripPattern = "multiple_trips";
+  if (Number(details.tripCount) === 1 && !details.tripPattern) details.tripPattern = "single_trip";
+  const missing = [];
+  if (!details.originText) missing.push("originText");
+  if (!details.destinationText) missing.push("destinationText");
+  if (!details.passengerCount) missing.push("passengerCount");
+  if (!details.tripPattern && !details.tripCount) missing.push("tripPattern");
+  return missing;
+}
+
+function initialPendingTicketDetails(session = {}) {
+  return {
+    sourceFlow: "ticket_support",
+    originText: null,
+    destinationText: null,
+    passengerCount: null,
+    tripCount: null,
+    tripPattern: null,
+    selectedTicketOption: session.selectedTicket || null,
+    userIsUnsure: true,
+    missingFields: ["originText", "destinationText", "passengerCount", "tripPattern"]
+  };
+}
+
+function parseTicketLocations(text) {
+  const segments = normalizeTicketReplyText(text)
+    .split(",")
+    .map(segment => segment.trim())
+    .filter(Boolean);
+  const locationSegments = segments
+    .filter(segment => !ticketDetailSegmentKind(segment))
+    .map(removeTicketDetailPhrases)
+    .map(segment => segment.trim())
+    .filter(Boolean);
+
+  const commaToPattern = locationSegments.length >= 2 && /^to\s+\S+/i.test(locationSegments[1])
+    ? [locationSegments[0], locationSegments[1].replace(/^to\s+/i, "")]
+    : null;
+  if (commaToPattern) {
+    return {
+      originText: cleanTicketLocationText(commaToPattern[0]),
+      destinationText: cleanTicketLocationText(commaToPattern[1])
+    };
+  }
+
+  const joinedLocations = locationSegments.join(", ");
+  const toMatch = joinedLocations.match(/^(?:from\s+)?(.+?)\s+to\s+(.+)$/i);
+  if (toMatch) {
+    return {
+      originText: cleanTicketLocationText(toMatch[1]),
+      destinationText: cleanTicketLocationText(toMatch[2])
+    };
+  }
+
+  if (locationSegments.length >= 2) {
+    return {
+      originText: cleanTicketLocationText(locationSegments[0]),
+      destinationText: cleanTicketLocationText(locationSegments[1])
+    };
+  }
+
+  return { originText: null, destinationText: null };
+}
+
+function parseTicketDetailsReply(rawText, language = "en") {
+  const parsed = parsePartialTicketDetails(rawText, initialPendingTicketDetails(), language);
+  const merged = mergeTicketDetails(initialPendingTicketDetails(), parsed);
+  return {
+    originText: merged.originText,
+    destinationText: merged.destinationText,
+    passengerCount: merged.passengerCount,
+    tripCount: merged.tripCount,
+    tripPattern: merged.tripPattern,
+    confidence: parsed.confidence,
+    missingFields: merged.missingFields,
+    language: normalizeLanguage(language)
+  };
+}
+
+function parsePartialTicketDetails(rawText, previousDetails = {}, selectedLanguage = "en") {
+  const text = normalizeTicketReplyText(rawText);
+  const segments = text.split(",").map(segment => segment.trim()).filter(Boolean);
+  const parsed = {
+    originText: null,
+    destinationText: null,
+    passengerCount: null,
+    tripCount: null,
+    tripPattern: null,
+    confidence: 0,
+    detectedFields: [],
+    language: normalizeLanguage(selectedLanguage)
+  };
+
+  const rememberField = (field, value) => {
+    if (value === null || value === undefined || value === "") return;
+    parsed[field] = value;
+    if (!parsed.detectedFields.includes(field)) parsed.detectedFields.push(field);
+  };
+
+  const passengerCount = parseTicketPassengerCount(text);
+  if (passengerCount) rememberField("passengerCount", passengerCount);
+
+  const tripInfo = parseTicketTripInfo(text);
+  if (tripInfo.tripCount) rememberField("tripCount", tripInfo.tripCount);
+  if (tripInfo.tripPattern) rememberField("tripPattern", tripInfo.tripPattern);
+
+  if (segments.length >= 4 && !ticketDetailSegmentKind(segments[0]) && !ticketDetailSegmentKind(segments[1])) {
+    rememberField("originText", cleanTicketLocationText(segments[0]));
+    rememberField("destinationText", cleanTicketLocationText(segments[1]));
+    if (!parsed.passengerCount) {
+      const barePassenger = bareNumberValue(segments[2]);
+      if (barePassenger) rememberField("passengerCount", barePassenger);
+    }
+    if (!parsed.tripCount && !parsed.tripPattern) {
+      const segmentTrip = parseTicketTripInfo(segments.slice(3).join(" "));
+      if (segmentTrip.tripCount) rememberField("tripCount", segmentTrip.tripCount);
+      if (segmentTrip.tripPattern) rememberField("tripPattern", segmentTrip.tripPattern);
+    }
+  } else {
+    const locations = parseTicketLocations(rawText);
+    if (locations.originText && locations.destinationText) {
+      rememberField("originText", locations.originText);
+      rememberField("destinationText", locations.destinationText);
+    }
+  }
+
+  if (!parsed.passengerCount && !parsed.tripCount && !parsed.tripPattern) {
+    const barePassenger = bareNumberValue(text);
+    if (barePassenger && !previousDetails?.passengerCount) rememberField("passengerCount", barePassenger);
+  }
+
+  if (Number(parsed.tripCount) >= 2) rememberField("tripPattern", "multiple_trips");
+  if (Number(parsed.tripCount) === 1) rememberField("tripPattern", "single_trip");
+  parsed.confidence = Math.min(1, parsed.detectedFields.length * 0.25 + (/\b(?:to|from)\b|,/.test(text) ? 0.15 : 0));
+
+  console.log("[TICKET PARTIAL PARSE DEBUG]", {
+    rawText,
+    previousDetails,
+    parsedThisTurn: parsed,
+    detectedFields: parsed.detectedFields,
+    confidence: parsed.confidence
+  });
+
+  return parsed;
+}
+
+function mergeTicketDetails(previousDetails = {}, parsed = {}) {
+  const before = previousDetails && previousDetails.sourceFlow
+    ? previousDetails
+    : initialPendingTicketDetails();
+  const merged = { ...before };
+  for (const field of ["originText", "destinationText", "passengerCount", "tripCount", "tripPattern"]) {
+    if (parsed[field] !== null && parsed[field] !== undefined && parsed[field] !== "") {
+      merged[field] = parsed[field];
+    }
+  }
+  if (parsed.language) merged.language = parsed.language;
+  if (Number(merged.tripCount) >= 2) merged.tripPattern = "multiple_trips";
+  if (Number(merged.tripCount) === 1) merged.tripPattern = "single_trip";
+  merged.missingFields = computeMissingTicketFields(merged);
+
+  console.log("[TICKET DETAILS MERGE DEBUG]", {
+    before,
+    parsed,
+    after: merged,
+    missingFields: merged.missingFields
+  });
+
+  return merged;
+}
+
+function isAwaitingTicketDetails(session) {
+  const status = String(session.ticketFlowStatus || "");
+  const ticket = normalizeText(session.selectedTicket || "");
+  return status === "awaiting_ticket_trip_details"
+    || status === "pending_ticket_support"
+    || (status === "selecting_ticket" && ["unsure", "not sure", "i am not sure"].includes(ticket));
+}
+
+function ticketMissingFieldsReply(details, lang) {
+  const missingFields = details.missingFields || computeMissingTicketFields(details);
+  let promptType = "origin_destination";
+  let reply = ts("ticketNeedOriginDestination", lang);
+  const missingOrigins = missingFields.includes("originText") || missingFields.includes("destinationText");
+  const missingPassenger = missingFields.includes("passengerCount");
+  const missingTrip = missingFields.includes("tripPattern");
+
+  if (missingOrigins && !missingPassenger && !missingTrip) {
+    promptType = "origin_destination";
+    reply = ts("ticketNeedOriginDestination", lang);
+  } else if (!missingOrigins && missingPassenger && missingTrip) {
+    promptType = "passenger_and_trip";
+    reply = ts("ticketAckRouteAskPassengerTrip", lang, {
+      origin: displayPlace(details.originText),
+      destination: displayPlace(details.destinationText)
+    });
+  } else if (!missingOrigins && missingPassenger) {
+    promptType = "passenger";
+    reply = ts("ticketAskPassenger", lang);
+  } else if (!missingOrigins && missingTrip) {
+    promptType = "trip";
+    reply = ts("ticketAskTrip", lang);
+  }
+
+  const previousPromptKey = details.lastPromptKey || null;
+  const nextPromptKey = `ticket_${promptType}`;
+  console.log("[FRIENDLY FLOW DEBUG]", {
+    conversationState: "awaiting_ticket_trip_details",
+    userIntent: "ticket_support",
+    knownDetails: {
+      originText: details.originText || null,
+      destinationText: details.destinationText || null,
+      passengerCount: details.passengerCount || null,
+      tripCount: details.tripCount || null,
+      tripPattern: details.tripPattern || null
+    },
+    missingFields,
+    nextPromptKey
+  });
+  console.log("[PROMPT REPETITION DEBUG]", {
+    previousPromptKey,
+    nextPromptKey,
+    repeated: previousPromptKey === nextPromptKey
+  });
+  if (previousPromptKey === nextPromptKey && promptType === "origin_destination") {
+    console.warn("[BUG REPEATED LONG PROMPT]", { promptKey: nextPromptKey });
+  }
+  details.lastPromptKey = nextPromptKey;
+
+  return reply;
+}
+
+async function responseForPendingAmbiguousPlace({ session, message, lang, actionRole = "" }) {
+  const pending = session.pendingAmbiguousPlace;
+  const roleFromAction = ["origin", "destination"].includes(actionRole) ? actionRole : "";
+  if (!pending) {
+    if (!roleFromAction) return null;
+    return {
+      reply: ts("ambiguousPlaceLost", lang),
+      quickButtons: [],
+      routeResult: null
+    };
+  }
+
+  const placeText = pending.placeText;
+  const ticketMode = pending.source === "ticket_single_place_ambiguous";
+  const { role } = roleFromAction ? { role: roleFromAction } : interpretAmbiguousPlaceRole(message, pending, lang);
+  if (!role) {
+    return {
+      reply: ts("chooseStartOrGo", lang, { place: placeText }),
+      quickButtons: ambiguousPlaceButtons(placeText, lang, ticketMode),
+      routeResult: null
+    };
+  }
+
+  const resolvedPlace = pending.resolvedPlace || null;
+  const pendingRoute = {
+    originText: role === "origin" ? placeText : null,
+    origin: role === "origin" ? resolvedPlace : null,
+    destinationText: role === "destination" ? placeText : null,
+    destination: role === "destination" ? resolvedPlace : null,
+    requestedDateTime: pending.requestedDateTime || "now",
+    explicitDate: pending.explicitDate || "",
+    timeMode: normalizeTimeMode(pending.timeMode),
+    mode: role === "origin" ? "awaiting_destination" : "awaiting_origin",
+    source: pending.source,
+    createdAt: Date.now()
+  };
+
+  console.log("[AMBIGUOUS PLACE ROLE SELECTED DEBUG]", {
+    placeText,
+    role,
+    pendingRoute,
+    conversationState: ticketMode ? session.ticketFlowStatus : "route"
+  });
+
+  session.pendingAmbiguousPlace = null;
+  session.conversationState = role === "origin" ? "awaiting_destination" : "awaiting_origin";
+
+  if (ticketMode) {
+    const details = session.pendingTicketDetails || initialPendingTicketDetails(session);
+    if (role === "origin") details.originText = placeText;
+    if (role === "destination") details.destinationText = placeText;
+    details.missingFields = computeMissingTicketFields(details);
+    session.pendingTicketDetails = details;
+    session.ticketFlowStatus = "awaiting_ticket_trip_details";
+    return {
+      reply: ticketMissingFieldsReply(details, lang),
+      quickButtons: [],
+      routeResult: null
+    };
+  }
+
+  session.pendingRoute = pendingRoute;
+  session.route.start = pendingRoute.originText || "";
+  session.route.destination = pendingRoute.destinationText || "";
+  session.route.time = pendingRoute.requestedDateTime;
+  session.route.explicitDate = pendingRoute.explicitDate;
+  session.route.timeMode = pendingRoute.timeMode;
+  if (role === "origin") {
+    session.selectedLocations.start = resolvedPlace;
+    session.selectedLocations.destination = null;
+    session.fromCoords = resolvedPlace ? { lat: resolvedPlace.lat, lon: resolvedPlace.lon } : null;
+    return {
+      reply: ts("originConfirmedAskDestination", lang, { place: placeText }),
+      quickButtons: [],
+      routeResult: null
+    };
+  }
+
+  session.selectedLocations.start = null;
+  session.selectedLocations.destination = resolvedPlace;
+  session.fromCoords = null;
+  return {
+    reply: ts("destinationConfirmedAskOrigin", lang, { place: placeText }),
+    quickButtons: quickButtonsForMissing("start", lang),
+    routeResult: null
+  };
+}
+
+function exactAddressTicketFallbackMessage(addressText, lang = "en") {
+  const place = displayPlace(addressText || "that address");
+  return `${ts("exactAddressNotFound", lang)} ${place ? `(${place})` : ""}`.trim();
+}
+
+function displayPlace(value) {
+  return String(value || "")
+    .split(/\s+/)
+    .filter(Boolean)
+    .map(part => /^\d/.test(part) ? part : part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
+}
+
+function ticketDetailsSummary(details) {
+  const passengers = `${details.passengerCount || "unknown"} ${Number(details.passengerCount) === 1 ? "person" : "people"}`;
+  const trips = details.tripCount
+    ? `${details.tripCount} ${Number(details.tripCount) === 1 ? "trip" : "trips"}`
+    : String(details.tripPattern || "trip details").replace(/_/g, " ");
+  return `${displayPlace(details.originText)} to ${displayPlace(details.destinationText)}, ${passengers}, ${trips}`;
+}
+
+function passengerPhrase(count, lang = "en") {
+  const n = Number(count) || 1;
+  const messages = {
+    de: `${n} ${n === 1 ? "Person" : "Personen"}`,
+    ar: `${n} ${n === 1 ? "شخص" : "أشخاص"}`,
+    tr: `${n} kişi`,
+    uk: `${n} ${n === 1 ? "людина" : "людей"}`,
+    hi: `${n} ${n === 1 ? "व्यक्ति" : "लोग"}`,
+    en: `${n} ${n === 1 ? "person" : "people"}`
+  };
+  return messages[lang] || messages.en;
+}
+
+function tripPhrase(count, lang = "en") {
+  const n = Number(count) || 1;
+  const messages = {
+    de: `${n} ${n === 1 ? "Fahrt" : "Fahrten"}`,
+    ar: `${n} ${n === 1 ? "رحلة" : "رحلات"}`,
+    tr: `${n} ${n === 1 ? "yolculuk" : "yolculuk"}`,
+    uk: `${n} ${n === 1 ? "поїздка" : "поїздок"}`,
+    hi: `${n} ${n === 1 ? "यात्रा" : "यात्राएँ"}`,
+    en: `${n} ${n === 1 ? "trip" : "trips"}`
+  };
+  return messages[lang] || messages.en;
+}
+
+function buildTicketRecommendation(ticketContext = {}, routeContext = {}, selectedLanguage = "en") {
+  const passengerCount = Number(ticketContext.passengerCount) || null;
+  const tripCount = Number(ticketContext.tripCount) || null;
+  const tripPattern = ticketContext.tripPattern || "";
+  const selectedTicketOption = normalizeText(ticketContext.selectedTicketOption || "");
+  const isStudent = Boolean(ticketContext.isStudent)
+    || selectedTicketOption.includes("student")
+    || selectedTicketOption.includes("semester");
+  const userIsUnsure = ticketContext.userIsUnsure !== false;
+  const recommendedOptions = [];
+  const reasons = [];
+
+  if (isStudent) {
+    recommendedOptions.push("student");
+    reasons.push("student_ticket_context");
+  }
+
+  if (passengerCount >= 2) {
+    recommendedOptions.push("group", "day");
+    reasons.push("group_travel");
+  } else if (tripPattern === "return_trip") {
+    recommendedOptions.push("day", "single");
+    reasons.push("return_trip");
+  } else if (tripCount >= 4 || tripPattern === "multiple_trips") {
+    recommendedOptions.push("multi_trip", "day", "time_based", "student");
+    reasons.push("many_repeated_trips");
+  } else if (tripCount === 1 || tripPattern === "single_trip") {
+    recommendedOptions.push("single");
+    reasons.push("single_trip");
+  }
+
+  if (userIsUnsure) {
+    if (!recommendedOptions.includes("single")) recommendedOptions.push("single");
+    if (!recommendedOptions.includes("day")) recommendedOptions.push("day");
+    reasons.push("user_unsure");
+  }
+
+  const uniqueOptions = [...new Set(recommendedOptions)];
+  let text;
+  if (isStudent) {
+    text = ts("ticketStudentAdvice", selectedLanguage);
+  } else if (passengerCount >= 2) {
+    text = ts("ticketGroupAdvice", selectedLanguage, { passengers: passengerPhrase(passengerCount, selectedLanguage) });
+  } else if (tripCount >= 4 || tripPattern === "multiple_trips") {
+    text = ts("ticketManyTripsAdvice", selectedLanguage);
+  } else if (tripPattern === "return_trip") {
+    text = ts("ticketReturnAdvice", selectedLanguage);
+  } else {
+    text = ts("ticketSingleAdvice", selectedLanguage, {
+      passengers: passengerPhrase(passengerCount || 1, selectedLanguage),
+      trips: tripPhrase(tripCount || 1, selectedLanguage)
+    });
+  }
+
+  if (userIsUnsure && !(tripCount >= 4 || tripPattern === "multiple_trips")) {
+    text += ` ${ts("ticketUnsureCompare", selectedLanguage)}`;
+  }
+
+  const recommendation = {
+    title: ts("ticketRecommendationTitle", selectedLanguage),
+    text,
+    recommendedOptions: uniqueOptions,
+    caution: ts("ticketCaution", selectedLanguage),
+    quickReplies: [],
+    recommendationReason: reasons.join(",")
+  };
+  recommendation.quickReplies = ticketGuidanceButtons(selectedLanguage, recommendation, {
+    includeRouteRetry: routeContext.routeFailed === true
+  });
+
+  console.log("[TICKET RECOMMENDATION DEBUG]", {
+    passengerCount,
+    tripCount,
+    tripPattern,
+    selectedTicketOption: ticketContext.selectedTicketOption || "",
+    recommendedOptions: recommendation.recommendedOptions,
+    recommendationReason: recommendation.recommendationReason
+  });
+
+  return recommendation;
+}
+
+function formatTicketRecommendation(recommendation) {
+  return [
+    recommendation.title,
+    "",
+    recommendation.text,
+    "",
+    recommendation.caution
+  ].join("\n");
+}
+
+function ticketContextFromDetails(details, session = {}) {
+  const selectedTicketOption = session.selectedTicket || "";
+  return {
+    passengerCount: details.passengerCount,
+    tripCount: details.tripCount,
+    tripPattern: details.tripPattern,
+    selectedTicketOption,
+    userIsUnsure: normalizeText(selectedTicketOption || "") === "unsure" || isAwaitingTicketDetails(session),
+    isStudent: Boolean(session.context?.isStudent)
+  };
+}
+
+function ticketGuidanceForDetails(details, lang, options = {}) {
+  const routeContext = { routeFailed: options.routeFailed === true };
+  const recommendation = buildTicketRecommendation(options.ticketContext || details, routeContext, lang);
+  const summary = ticketDetailsSummary(details);
+  const routePrefix = options.routeFailed
+    ? `I could not fetch the live VBN route right now, but based on your details - ${summary} - you should compare repeated-trip or time-based ticket options rather than only checking a single ticket.`
+    : `Based on your details - ${summary} - here is what you should check.`;
+  return `${routePrefix}\n\n${formatTicketRecommendation(recommendation)}`;
+}
+
+function normalizeTicketStatusValue(value) {
+  const normalized = normalizeText(value);
+  if (["has_ticket", "ticket_has", "yes i have a ticket", "have ticket"].includes(normalized)) return "has_ticket";
+  if (["needs_ticket", "ticket_need", "no i need a ticket", "need ticket", "need a ticket"].includes(normalized)) return "needs_ticket";
+  if (["not_sure", "ticket_unsure", "i am not sure", "not sure", "unsure"].includes(normalized)) return "not_sure";
+  return "";
+}
+
+function ticketStatusValueFromMessage(message, lang = "en") {
+  const normalized = normalizeText(message);
+  const labels = [
+    [ts("yesHaveTicket", lang), "has_ticket"],
+    [ts("noNeedTicket", lang), "needs_ticket"],
+    [ts("notSure", lang), "not_sure"]
+  ];
+  for (const [label, value] of labels) {
+    if (normalizeText(label) === normalized) return value;
+  }
+  return normalizeTicketStatusValue(message);
+}
+
+function recentLastRouteContext(session, routeContextId = "") {
+  const context = session?.lastRouteContext || null;
+  if (!context) return null;
+  if (routeContextId && context.routeContextId && routeContextId !== context.routeContextId) return null;
+  const ageMs = Date.now() - Number(context.createdAt || 0);
+  return ageMs >= 0 && ageMs <= 30 * 60 * 1000 ? context : null;
+}
+
+function existingRouteTicketButtons(lang) {
+  return [
+    { label: ts("singleTicketInfo", lang), value: "single", action: "ticket_option" },
+    { label: ts("dayTicketInfo", lang), value: "day", action: "ticket_option" },
+    { label: ts("studentTicketInfo", lang), value: "student", action: "ticket_option" },
+    { label: ts("groupTicketInfo", lang), value: "group", action: "ticket_option" },
+    { label: ts("officialVbnTicketInfo", lang), value: "https://www.vbn.de/tickets", url: "https://www.vbn.de/tickets", external: true },
+    { label: ts("continueTicketPage", lang), value: "selected", action: "ticket_continue" }
+  ];
+}
+
+function buildTicketAdviceForExistingRoute(session, lastRoute, ticketStatus, lang) {
+  const origin = displayPlace(lastRoute.originText || "your start");
+  const destination = displayPlace(lastRoute.destinationText || "your destination");
+  const ticketContext = {
+    passengerCount: lastRoute.passengerCount || null,
+    tripCount: lastRoute.tripCount || null,
+    tripPattern: lastRoute.tripPattern || "",
+    selectedTicketOption: ticketStatus,
+    userIsUnsure: ticketStatus === "not_sure",
+    isStudent: Boolean(session.context?.isStudent)
+  };
+  const recommendation = buildTicketRecommendation(ticketContext, { routeContext: lastRoute }, lang);
+  const recommendedOptions = recommendation.recommendedOptions || [];
+  console.log("[EXISTING ROUTE TICKET ADVICE DEBUG]", {
+    originText: lastRoute.originText,
+    destinationText: lastRoute.destinationText,
+    ticketStatus,
+    recommendedOptions
+  });
+
+  if (ticketStatus === "has_ticket") {
+    session.ticketFlowStatus = "none";
+    session.selectedTicket = "";
+    return {
+      reply: `${ts("ticketRouteHasIntro", lang)}\n\n${ts("ticketStudentAdvice", lang)}`,
+      quickButtons: continuationTicketButtons(lang),
+      routeResult: null
+    };
+  }
+
+  session.ticketFlowStatus = "selecting_ticket";
+  session.selectedTicket = ticketStatus === "needs_ticket" ? "needs_ticket" : "unsure";
+  session.context.needsTicketHelp = true;
+
+  const intro = ticketStatus === "needs_ticket"
+    ? ts("ticketRouteNeedIntro", lang, { origin, destination })
+    : ts("ticketRouteUnsureIntro", lang);
+  const routeCheck = ts("ticketRouteCheckExisting", lang, { origin, destination });
+  const studentAdvice = ts("ticketStudentAdvice", lang);
+
+  return {
+    reply: [
+      intro,
+      "",
+      routeCheck,
+      "",
+      recommendation.text,
+      "",
+      studentAdvice,
+      "",
+      recommendation.caution
+    ].join("\n"),
+    quickButtons: existingRouteTicketButtons(lang),
+    routeResult: null
+  };
+}
+
+function continuationTicketButtons(lang) {
+  return [
+    { label: ts("officialVbnTicketInfo", lang), value: "https://www.vbn.de/tickets", url: "https://www.vbn.de/tickets", external: true }
+  ];
+}
+
+function startTicketDetailsCollection(session, ticketStatus, lang) {
+  session.ticketFlowStatus = "awaiting_ticket_trip_details";
+  session.selectedTicket = ticketStatus === "needs_ticket" ? "needs_ticket" : "unsure";
+  session.pendingTicketDetails = initialPendingTicketDetails(session);
+  session.context.needsTicketHelp = true;
+  return {
+    reply: ts(ticketStatus === "not_sure" ? "ticketUnsureStart" : "ticketStartHelp", lang),
+    quickButtons: ticketQuickButtons(lang),
+    routeResult: null
+  };
+}
+
+function responseForTicketStatusResponse({ session, message, body = {}, lang }) {
+  const value = normalizeTicketStatusValue(body.value || body.ticketStatus || body.actionValue)
+    || ticketStatusValueFromMessage(message, lang);
+  if (!value) return null;
+
+  const lastRoute = recentLastRouteContext(session, String(body.routeContextId || ""));
+  console.log("[TICKET STATUS AFTER ROUTE DEBUG]", {
+    userChoice: value,
+    hasLastRouteContext: Boolean(lastRoute),
+    lastRouteContext: lastRoute,
+    action: lastRoute
+      ? "use_existing_route_for_ticket_advice"
+      : "ask_for_route_details"
+  });
+
+  if (lastRoute) {
+    return buildTicketAdviceForExistingRoute(session, lastRoute, value, lang);
+  }
+
+  return startTicketDetailsCollection(session, value, lang);
 }
 
 function dbIceTicketMessage(lang) {
@@ -4960,16 +6089,18 @@ function clearRouteMemory(session) {
   session.fromCoords = null;
   session.pendingLocation = null;
   session.pendingRoute = null;
+  session.pendingAmbiguousPlace = null;
   session.selectedLocations = { start: null, destination: null };
 }
 
 function clearTicketFlow(session) {
   session.ticketFlowStatus = "none";
   session.selectedTicket = "";
+  session.pendingTicketDetails = null;
 }
 
 function syncTicketFlowFromBody(session, body) {
-  const allowed = new Set(["none", "asking_ticket", "selecting_ticket", "payment_started", "payment_completed"]);
+  const allowed = new Set(["none", "asking_ticket", "selecting_ticket", "awaiting_ticket_trip_details", "payment_started", "payment_completed"]);
   const status = String(body.ticketFlowStatus || "").trim();
   if (allowed.has(status)) session.ticketFlowStatus = status;
   if (typeof body.selectedTicket === "string") session.selectedTicket = body.selectedTicket.slice(0, 120);
@@ -4989,9 +6120,12 @@ function memoryPayload(session) {
     context: session.context,
     pendingLocation: session.pendingLocation,
     pendingRoute: session.pendingRoute,
+    pendingAmbiguousPlace: session.pendingAmbiguousPlace,
     selectedLocations: session.selectedLocations,
     ticketFlowStatus: session.ticketFlowStatus,
-    selectedTicket: session.selectedTicket
+    selectedTicket: session.selectedTicket,
+    pendingTicketDetails: session.pendingTicketDetails || null,
+    lastRouteContext: session.lastRouteContext || null
   };
 }
 
@@ -5132,18 +6266,25 @@ async function handleStandalonePlaceMessage(message, lang, session) {
   const resolution = await resolveSupportedLocation(message, { allowAmbiguous: true });
   if (resolution.ok) {
     session.pendingLocation = null;
-    session.route.start = resolution.place.name;
-    session.route.destination = "";
-    session.route.time = "";
-    session.selectedLocations.start = selectedPlaceFromPayload(locationChoice(resolution.place)?.locationSelection) || null;
-    session.selectedLocations.destination = null;
-    session.fromCoords = {
-      lat: resolution.place.lat,
-      lon: resolution.place.lon
-    };
+    const display = formatAmbiguousPlaceName(message, resolution.place);
+    const pending = rememberPendingAmbiguousPlace(session, {
+      placeText: display,
+      resolvedPlace: resolution.place,
+      route: { requestedDateTime: "now", explicitDate: "", timeMode: TIME_MODE.DEPART_AT },
+      source: "single_place_ambiguous"
+    });
+    console.log("[AMBIGUOUS SINGLE PLACE DEBUG]", {
+      rawText: message,
+      normalizedText: normalizeText(message),
+      resolvedPlace: pending.resolvedPlace,
+      requestedDateTime: pending.requestedDateTime,
+      timeMode: pending.timeMode,
+      conversationState: "route",
+      action: "ask_origin_or_destination"
+    });
     return {
-      reply: foundStartMessage(resolution.place, lang),
-      quickButtons: []
+      reply: ts("ambiguousPlaceQuestion", lang, { place: display }),
+      quickButtons: ambiguousPlaceButtons(display, lang)
     };
   }
 
@@ -5541,9 +6682,9 @@ async function routeResponseFromSession({ session, message, lang, arriveBy = fal
     session.pendingLocation = null;
     session.pendingRoute = null;
     session.ticketFlowStatus = routeResult.walkRecommended ? "none" : "asking_ticket";
-    session.lastRouteResult = routeResult;
+    saveLastRouteContext(session, routeResult, lang);
     reply = routeReplyForResult(routeResult, message, lang, session.context);
-    quickButtons = routeButtonsForResult(routeResult, lang);
+    quickButtons = routeButtonsForResult(routeResult, lang, session);
   } else if (routeResult.error === "past_time") {
     session.pendingLocation = null;
     const clarification = pastTimeClarificationResponse(routeResult, session, lang);
@@ -5568,9 +6709,154 @@ async function routeResponseFromSession({ session, message, lang, arriveBy = fal
         choices: routeResult.knownPlaceChoices
       };
     }
+    quickButtons = routeErrorButtonsForResult(routeResult, lang, quickButtons);
   }
 
   return { reply, quickButtons, routeResult };
+}
+
+async function responseForTicketDetailsReply({ session, message, lang }) {
+  if (!isAwaitingTicketDetails(session)) return null;
+
+  const routeFromMessage = extractTripDetails(message, lang);
+  const ambiguousTicketPlace = await responseForAmbiguousSinglePlace({
+    session,
+    message,
+    route: routeFromMessage,
+    lang,
+    ticketMode: true
+  });
+  if (ambiguousTicketPlace) {
+    return ambiguousTicketPlace;
+  }
+
+  const previousDetails = session.pendingTicketDetails || initialPendingTicketDetails(session);
+  const parsedThisTurn = parsePartialTicketDetails(message, previousDetails, lang);
+  const details = mergeTicketDetails(previousDetails, parsedThisTurn);
+  details.selectedTicketOption = session.selectedTicket || details.selectedTicketOption || null;
+  details.userIsUnsure = details.userIsUnsure !== false;
+  details.missingFields = computeMissingTicketFields(details);
+  session.pendingTicketDetails = details;
+
+  if (details.missingFields.length) {
+    session.ticketFlowStatus = "awaiting_ticket_trip_details";
+    return {
+      reply: ticketMissingFieldsReply(details, lang),
+      quickButtons: [],
+      routeResult: null
+    };
+  }
+
+  console.log("[TICKET COMPLETE DETAILS DEBUG]", {
+    originText: details.originText,
+    destinationText: details.destinationText,
+    passengerCount: details.passengerCount,
+    tripCount: details.tripCount,
+    tripPattern: details.tripPattern
+  });
+  const completionAck = details.tripPattern === "multiple_trips" || Number(details.tripCount) >= 2
+    ? ts("ticketSeveralTripsAck", lang)
+    : ts("ticketCompleteAck", lang);
+
+  session.pendingTicketDetails = details;
+  session.context.needsTicketHelp = true;
+  session.ticketFlowStatus = "awaiting_ticket_trip_details";
+  session.route.start = details.originText;
+  session.route.destination = details.destinationText;
+  session.route.time = "now";
+  session.route.explicitDate = "";
+  session.route.timeMode = TIME_MODE.DEPART_AT;
+  session.fromCoords = null;
+  session.selectedLocations.start = null;
+  session.selectedLocations.destination = null;
+  const sourceFlow = "ticket_support";
+  const ticketContext = ticketContextFromDetails(details, session);
+
+  console.log("[TICKET CONTEXT PRESERVED DEBUG]", {
+    sourceFlow,
+    wantsTicketAdvice: true,
+    originText: details.originText,
+    destinationText: details.destinationText,
+    passengerCount: details.passengerCount,
+    tripCount: details.tripCount,
+    tripPattern: details.tripPattern,
+    ticketContext
+  });
+
+  const routeResult = await planRoute(
+    session.route,
+    null,
+    routeOptionsFromSession(session, false, message)
+  ).catch(error => ({
+    ok: false,
+    status: 503,
+    error: "vbn_fetch_error",
+    message: error.message,
+    details: { ...session.route }
+  }));
+
+  if (routeResult.ok) {
+    session.pendingLocation = null;
+    session.pendingRoute = null;
+    saveLastRouteContext(session, routeResult, lang);
+    session.ticketFlowStatus = "selecting_ticket";
+    const ticketSuggestion = buildTicketRecommendation(ticketContext, { routeResult }, lang);
+    console.log("[ROUTE PLUS TICKET RESPONSE DEBUG]", {
+      routeFound: Boolean(routeResult),
+      ticketSuggestionAdded: Boolean(ticketSuggestion),
+      sourceFlow
+    });
+    return {
+      reply: `${completionAck}\n\n${routeReplyForResult(routeResult, message, lang, session.context)}\n\n${formatTicketRecommendation(ticketSuggestion)}`,
+      quickButtons: ticketSuggestion.quickReplies,
+      routeResult
+    };
+  }
+
+  if (routeResult.error === "ambiguous_supported_place" && routeResult.choices?.length) {
+    session.pendingLocation = {
+      role: routeResult.locationRole || "destination",
+      choices: routeResult.choices
+    };
+    return {
+      reply: routeErrorMessage(routeResult.error, lang, choicesForRouteResult(routeResult)),
+      quickButtons: quickButtonsForChoices(routeResult.choices),
+      routeResult
+    };
+  }
+
+  if (routeResult.error === "exact_address_not_found") {
+    const ticketSuggestion = buildTicketRecommendation(ticketContext, { routeFailed: true, routeResult }, lang);
+    console.log("[ROUTE PLUS TICKET RESPONSE DEBUG]", {
+      routeFound: false,
+      ticketSuggestionAdded: Boolean(ticketSuggestion),
+      sourceFlow
+    });
+    return {
+      reply: `${completionAck}\n\n${exactAddressTicketFallbackMessage(routeResult.details?.destination || details.destinationText, lang)}\n\n${formatTicketRecommendation(ticketSuggestion)}`,
+      quickButtons: [
+        { label: ts("useThisStreet", lang), value: ts("useThisStreet", lang) },
+        { label: ts("useNearbyStop", lang), value: ts("useNearbyStop", lang) },
+        { label: ts("enterAnotherAddress", lang), value: ts("enterAnotherAddress", lang) },
+        ...ticketSuggestion.quickReplies
+      ],
+      routeResult
+    };
+  }
+
+  session.ticketFlowStatus = "selecting_ticket";
+  const ticketSuggestion = buildTicketRecommendation(ticketContext, { routeFailed: true, routeResult }, lang);
+  console.log("[ROUTE PLUS TICKET RESPONSE DEBUG]", {
+    routeFound: false,
+    ticketSuggestionAdded: Boolean(ticketSuggestion),
+    sourceFlow
+  });
+  const summary = ticketDetailsSummary(details);
+  return {
+    reply: `${completionAck}\n\n${ts("ticketRouteFailedPrefix", lang, { summary })}\n\n${formatTicketRecommendation(ticketSuggestion)}`,
+    quickButtons: ticketSuggestion.quickReplies,
+    routeResult
+  };
 }
 
 async function responseForDestinationOnlyRoute({ session, route, message, lang }) {
@@ -5625,6 +6911,79 @@ async function responseForDestinationOnlyRoute({ session, route, message, lang }
     quickButtons: quickButtonsForMissing("start", lang),
     routeResult: null
   };
+}
+
+async function responseForExplicitOriginOnly({ session, message, lang }) {
+  const originText = explicitOriginOnlyText(message);
+  if (!originText || session.route.destination) return null;
+  const resolution = await resolveSupportedLocation(originText, { allowAmbiguous: true });
+  const place = resolution.ok ? resolution.place : null;
+  const display = formatAmbiguousPlaceName(originText, place);
+  session.pendingAmbiguousPlace = null;
+  session.pendingLocation = null;
+  session.route.start = display;
+  session.route.destination = "";
+  session.route.time = "now";
+  session.route.explicitDate = "";
+  session.route.timeMode = TIME_MODE.DEPART_AT;
+  session.selectedLocations.start = selectedPlacePayloadFromPlace(place);
+  session.selectedLocations.destination = null;
+  session.fromCoords = place ? { lat: place.lat, lon: place.lon } : null;
+  session.pendingRoute = {
+    mode: "awaiting_destination",
+    originText: display,
+    origin: session.selectedLocations.start,
+    destinationText: null,
+    destination: null,
+    requestedDateTime: "now",
+    explicitDate: "",
+    timeMode: TIME_MODE.DEPART_AT,
+    source: "explicit_origin_only",
+    createdAt: Date.now()
+  };
+  return {
+    reply: ts("originConfirmedAskDestination", lang, { place: display }),
+    quickButtons: [],
+    routeResult: null
+  };
+}
+
+async function responseForPendingDestination({ session, message, lang }) {
+  const pending = session.pendingRoute;
+  if (!pending || pending.mode !== "awaiting_destination") return null;
+
+  const routeFromMessage = extractTripDetails(message, lang);
+  if (routeFromMessage.start && routeFromMessage.destination) {
+    session.pendingRoute = null;
+    clearRouteMemory(session);
+    mergeRouteState(session, routeFromMessage, message);
+    return routeResponseFromSession({
+      session,
+      message,
+      lang,
+      arriveBy: arriveByForRoute(routeFromMessage, message)
+    });
+  }
+
+  const destination = cleanRoutePlaceName(normalizeStationReference(routeFromMessage.destination || message, message))
+    .replace(/^(?:to|go\s+to|destination)\s+/i, "")
+    .trim();
+  if (!destination) return null;
+
+  session.route.start = pending.originText || session.route.start;
+  session.route.destination = destination;
+  session.route.time = pending.requestedDateTime || session.route.time || "now";
+  session.route.explicitDate = pending.explicitDate || "";
+  session.route.timeMode = normalizeTimeMode(pending.timeMode || session.route.timeMode);
+  session.selectedLocations.start = pending.origin || session.selectedLocations.start;
+  session.pendingRoute = null;
+
+  return routeResponseFromSession({
+    session,
+    message,
+    lang,
+    arriveBy: session.route.timeMode === TIME_MODE.ARRIVE_BY
+  });
 }
 
 function originTextFromPendingReply(message, lang) {
@@ -5926,6 +7285,7 @@ function responseForPlaceCorrection(session, routeResult, lang) {
 
 function routeErrorMessage(error, lang, suggestions = []) {
   if (error === "missing_api_key") return ts("missingApiKey", lang);
+  if (error === "arrive_by_no_route") return ts("noArriveByRoute", lang);
   if (error === "exact_address_not_found") return ts("exactAddressNotFound", lang);
   if (error === "unknown_supported_place") {
     return suggestions?.length ? exactPlaceNotFoundMessage(lang) : ts("noPlaceSuggestions", lang);
@@ -5933,6 +7293,24 @@ function routeErrorMessage(error, lang, suggestions = []) {
   if (error === "outside_supported_area") return locationOutsideMessage(lang);
   if (error === "ambiguous_supported_place") return locationAmbiguousMessage(lang);
   return ts("vbnFetchError", lang);
+}
+
+function routeErrorButtonsForResult(routeResult, lang, fallbackButtons = []) {
+  if (routeResult?.error === "exact_address_not_found") {
+    return [
+      { label: ts("useThisStreet", lang), value: ts("useThisStreet", lang) },
+      { label: ts("useNearbyStop", lang), value: ts("useNearbyStop", lang) },
+      { label: ts("enterAnotherAddress", lang), value: ts("enterAnotherAddress", lang) }
+    ];
+  }
+  if (routeResult?.error === "vbn_fetch_error" || routeResult?.status === 503) {
+    return [
+      { label: ts("tryRouteAgain", lang), value: ts("tryRouteAgain", lang) },
+      { label: ts("continueTicketHelp", lang), value: ts("continueTicketHelp", lang), action: "ticket_unsure" },
+      { label: ts("officialVbnTicketInfo", lang), value: "https://www.vbn.de/tickets", url: "https://www.vbn.de/tickets", external: true }
+    ];
+  }
+  return fallbackButtons;
 }
 
 // Builds the "X has already passed" clarification reply and stores the
@@ -6079,10 +7457,10 @@ async function responseAfterSelectedLocation({ session, place, role, message, la
     session.pendingLocation = null;
     session.pendingRoute = null;
     session.ticketFlowStatus = routeResult.walkRecommended ? "none" : "asking_ticket";
-    session.lastRouteResult = routeResult;
+    saveLastRouteContext(session, routeResult, lang);
     return {
       reply: routeReplyForResult(routeResult, message, lang, session.context),
-      quickButtons: routeButtonsForResult(routeResult, lang),
+      quickButtons: routeButtonsForResult(routeResult, lang, session),
       routeResult
     };
   }
@@ -6110,9 +7488,9 @@ async function responseAfterSelectedLocation({ session, place, role, message, la
 
   return {
     reply: routeErrorMessage(routeResult.error, lang, choicesForRouteResult(routeResult)),
-    quickButtons: quickButtonsForChoices(
+    quickButtons: routeErrorButtonsForResult(routeResult, lang, quickButtonsForChoices(
       routeResult.choices?.length ? routeResult.choices : (routeResult.knownPlaceChoices || [])
-    ),
+    )),
     routeResult
   };
 }
@@ -6146,10 +7524,10 @@ async function responseAfterRouteSelection({ session, routeSelection, message, l
 
   if (routeResult.ok) {
     session.ticketFlowStatus = routeResult.walkRecommended ? "none" : "asking_ticket";
-    session.lastRouteResult = routeResult;
+    saveLastRouteContext(session, routeResult, lang);
     return {
       reply: `${usingPrefix}\n\n${routeReplyForResult(routeResult, message, lang, session.context)}`,
-      quickButtons: routeButtonsForResult(routeResult, lang),
+      quickButtons: routeButtonsForResult(routeResult, lang, session),
       routeResult
     };
   }
@@ -6165,9 +7543,9 @@ async function responseAfterRouteSelection({ session, routeSelection, message, l
 
   return {
     reply: routeErrorMessage(routeResult.error, lang, choicesForRouteResult(routeResult)),
-    quickButtons: quickButtonsForChoices(
+    quickButtons: routeErrorButtonsForResult(routeResult, lang, quickButtonsForChoices(
       routeResult.choices?.length ? routeResult.choices : (routeResult.knownPlaceChoices || [])
-    ),
+    )),
     routeResult
   };
 }
@@ -6208,10 +7586,10 @@ async function responseAfterCurrentLocation({ session, coords, message, lang }) 
     session.pendingLocation = null;
     session.pendingRoute = null;
     session.ticketFlowStatus = routeResult.walkRecommended ? "none" : "asking_ticket";
-    session.lastRouteResult = routeResult;
+    saveLastRouteContext(session, routeResult, lang);
     return {
       reply: routeReplyForResult(routeResult, message, lang, session.context),
-      quickButtons: routeButtonsForResult(routeResult, lang),
+      quickButtons: routeButtonsForResult(routeResult, lang, session),
       routeResult
     };
   }
@@ -6313,6 +7691,48 @@ async function handleChatRequest(req, res) {
     if (!message) {
       sendBotJson(400, { error: "empty_message", sessionId });
       return;
+    }
+
+    const ticketStatusResponse = responseForTicketStatusResponse({
+      session,
+      message,
+      body,
+      lang
+    });
+    if (ticketStatusResponse) {
+      rememberMessage(session, "user", message);
+      rememberMessage(session, "assistant", ticketStatusResponse.reply);
+      sendBotJson(200, {
+        sessionId,
+        reply: ticketStatusResponse.reply,
+        quickButtons: ticketStatusResponse.quickButtons,
+        routeSummary: "",
+        lastRouteResult: null,
+        memory: memoryPayload(session)
+      });
+      return;
+    }
+
+    if (body.action === "set_ambiguous_place_role") {
+      const ambiguousPlaceResponse = await responseForPendingAmbiguousPlace({
+        session,
+        message,
+        lang,
+        actionRole: body.role
+      });
+      if (ambiguousPlaceResponse) {
+        rememberMessage(session, "user", message);
+        rememberMessage(session, "assistant", ambiguousPlaceResponse.reply);
+        sendBotJson(200, {
+          sessionId,
+          reply: ambiguousPlaceResponse.reply,
+          quickButtons: ambiguousPlaceResponse.quickButtons,
+          routeSummary: ambiguousPlaceResponse.routeResult?.ok ? routeSummaryForDemo(ambiguousPlaceResponse.routeResult, lang) : "",
+          lastRouteResult: ambiguousPlaceResponse.routeResult?.ok ? ambiguousPlaceResponse.routeResult : null,
+          memory: memoryPayload(session)
+        });
+        return;
+      }
     }
 
     const deterministicRoute = extractTripDetails(message, lang);
@@ -6459,6 +7879,27 @@ async function handleChatRequest(req, res) {
       }
     }
 
+    if (session.pendingAmbiguousPlace) {
+      const ambiguousPlaceResponse = await responseForPendingAmbiguousPlace({
+        session,
+        message,
+        lang
+      });
+      if (ambiguousPlaceResponse) {
+        rememberMessage(session, "user", message);
+        rememberMessage(session, "assistant", ambiguousPlaceResponse.reply);
+        sendBotJson(200, {
+          sessionId,
+          reply: ambiguousPlaceResponse.reply,
+          quickButtons: ambiguousPlaceResponse.quickButtons,
+          routeSummary: ambiguousPlaceResponse.routeResult?.ok ? routeSummaryForDemo(ambiguousPlaceResponse.routeResult, lang) : "",
+          lastRouteResult: ambiguousPlaceResponse.routeResult?.ok ? ambiguousPlaceResponse.routeResult : null,
+          memory: memoryPayload(session)
+        });
+        return;
+      }
+    }
+
     if (session.pendingRoute?.mode === "awaiting_place_correction") {
       const pendingPlaceCorrectionResponse = await responseForPendingPlaceCorrection({
         session,
@@ -6474,6 +7915,48 @@ async function handleChatRequest(req, res) {
           quickButtons: pendingPlaceCorrectionResponse.quickButtons,
           routeSummary: pendingPlaceCorrectionResponse.routeResult?.ok ? routeSummaryForDemo(pendingPlaceCorrectionResponse.routeResult, lang) : "",
           lastRouteResult: pendingPlaceCorrectionResponse.routeResult?.ok ? pendingPlaceCorrectionResponse.routeResult : null,
+          memory: memoryPayload(session)
+        });
+        return;
+      }
+    }
+
+    if (isAwaitingTicketDetails(session)) {
+      const ticketDetailsResponse = await responseForTicketDetailsReply({
+        session,
+        message,
+        lang
+      });
+      if (ticketDetailsResponse) {
+        rememberMessage(session, "user", message);
+        rememberMessage(session, "assistant", ticketDetailsResponse.reply);
+        sendBotJson(200, {
+          sessionId,
+          reply: ticketDetailsResponse.reply,
+          quickButtons: ticketDetailsResponse.quickButtons,
+          routeSummary: ticketDetailsResponse.routeResult?.ok ? routeSummaryForDemo(ticketDetailsResponse.routeResult, lang) : "",
+          lastRouteResult: ticketDetailsResponse.routeResult?.ok ? ticketDetailsResponse.routeResult : null,
+          memory: memoryPayload(session)
+        });
+        return;
+      }
+    }
+
+    if (session.pendingRoute?.mode === "awaiting_destination") {
+      const pendingDestinationResponse = await responseForPendingDestination({
+        session,
+        message,
+        lang
+      });
+      if (pendingDestinationResponse) {
+        rememberMessage(session, "user", message);
+        rememberMessage(session, "assistant", pendingDestinationResponse.reply);
+        sendBotJson(200, {
+          sessionId,
+          reply: pendingDestinationResponse.reply,
+          quickButtons: pendingDestinationResponse.quickButtons,
+          routeSummary: pendingDestinationResponse.routeResult?.ok ? routeSummaryForDemo(pendingDestinationResponse.routeResult, lang) : "",
+          lastRouteResult: pendingDestinationResponse.routeResult?.ok ? pendingDestinationResponse.routeResult : null,
           memory: memoryPayload(session)
         });
         return;
@@ -6500,6 +7983,45 @@ async function handleChatRequest(req, res) {
         });
         return;
       }
+    }
+
+    const explicitOriginOnlyResponse = await responseForExplicitOriginOnly({
+      session,
+      message,
+      lang
+    });
+    if (explicitOriginOnlyResponse) {
+      rememberMessage(session, "user", message);
+      rememberMessage(session, "assistant", explicitOriginOnlyResponse.reply);
+      sendBotJson(200, {
+        sessionId,
+        reply: explicitOriginOnlyResponse.reply,
+        quickButtons: explicitOriginOnlyResponse.quickButtons,
+        routeSummary: "",
+        lastRouteResult: null,
+        memory: memoryPayload(session)
+      });
+      return;
+    }
+
+    const ambiguousSinglePlaceResponse = await responseForAmbiguousSinglePlace({
+      session,
+      message,
+      route: deterministicRoute,
+      lang
+    });
+    if (ambiguousSinglePlaceResponse) {
+      rememberMessage(session, "user", message);
+      rememberMessage(session, "assistant", ambiguousSinglePlaceResponse.reply);
+      sendBotJson(200, {
+        sessionId,
+        reply: ambiguousSinglePlaceResponse.reply,
+        quickButtons: ambiguousSinglePlaceResponse.quickButtons,
+        routeSummary: "",
+        lastRouteResult: null,
+        memory: memoryPayload(session)
+      });
+      return;
     }
 
     if (isDestinationOnlyRoute(deterministicRoute)) {
@@ -6530,6 +8052,11 @@ async function handleChatRequest(req, res) {
       const reply = isDbOrIceTicketQuestion(message)
         ? dbIceTicketMessage(lang)
         : ticketFallbackWithContext(lang, session.context);
+      if (!isDbOrIceTicketQuestion(message)) {
+        session.ticketFlowStatus = "awaiting_ticket_trip_details";
+        session.selectedTicket = "unsure";
+        session.pendingTicketDetails = initialPendingTicketDetails(session);
+      }
       rememberMessage(session, "user", message);
       rememberMessage(session, "assistant", reply);
       sendBotJson(200, {
@@ -6573,9 +8100,9 @@ async function handleChatRequest(req, res) {
         session.pendingLocation = null;
         session.pendingRoute = null;
         session.ticketFlowStatus = routeResult.walkRecommended ? "none" : "asking_ticket";
-        session.lastRouteResult = routeResult;
+        saveLastRouteContext(session, routeResult, lang);
         reply = routeReplyForResult(routeResult, message, lang, session.context);
-        quickButtons = routeButtonsForResult(routeResult, lang);
+        quickButtons = routeButtonsForResult(routeResult, lang, session);
       } else if (routeResult.error === "past_time") {
         session.pendingLocation = null;
         const clarification = pastTimeClarificationResponse(routeResult, session, lang);
@@ -6600,6 +8127,7 @@ async function handleChatRequest(req, res) {
             choices: routeResult.knownPlaceChoices
           };
         }
+        quickButtons = routeErrorButtonsForResult(routeResult, lang, quickButtons);
       }
 
       rememberMessage(session, "user", message);
@@ -6686,6 +8214,9 @@ async function handleChatRequest(req, res) {
     } else if ((wantsTicketInfo || session.context.needsTicketHelp) && !wantsRouteInfo) {
       reply = ticketFallbackWithContext(lang, session.context);
       quickButtons = ticketQuickButtons(lang);
+      session.ticketFlowStatus = "awaiting_ticket_trip_details";
+      session.selectedTicket = "unsure";
+      session.pendingTicketDetails = initialPendingTicketDetails(session);
     } else if (wantsRouteInfo && missing) {
       if (missing === "start" && session.route.destination) {
         rememberPendingDestinationRoute(session, session.route, message, session.selectedLocations?.destination || null);
@@ -6731,9 +8262,9 @@ async function handleChatRequest(req, res) {
         if (routeResult.ok) {
           session.pendingLocation = null;
           session.ticketFlowStatus = routeResult.walkRecommended ? "none" : "asking_ticket";
-          session.lastRouteResult = routeResult;
+          saveLastRouteContext(session, routeResult, lang);
           reply = routeReplyForResult(routeResult, message, lang, session.context);
-          quickButtons = routeButtonsForResult(routeResult, lang);
+          quickButtons = routeButtonsForResult(routeResult, lang, session);
         } else if (routeResult.error === "past_time") {
           session.pendingLocation = null;
           const clarification = pastTimeClarificationResponse(routeResult, session, lang);
@@ -6758,6 +8289,7 @@ async function handleChatRequest(req, res) {
             }
           }
           reply = routeErrorMessage(routeResult.error, lang, choicesForRouteResult(routeResult));
+          quickButtons = routeErrorButtonsForResult(routeResult, lang, quickButtons);
           if (wantsTicketInfo || session.context.needsTicketHelp || session.context.isStudent) {
             reply += `\n\n${ticketRouteNote(lang, session.context.isStudent)}`;
             quickButtons.push(...ticketQuickButtons(lang));
@@ -6900,6 +8432,11 @@ if (require.main === module) {
 module.exports = {
   TIME_MODE,
   extractTripDetails,
+  parseTicketDetailsReply,
+  parsePartialTicketDetails,
+  mergeTicketDetails,
+  computeMissingTicketFields,
+  buildTicketRecommendation,
   normalizeTimeMode,
   inferTimeModeFromText,
   validateRequestedTime,

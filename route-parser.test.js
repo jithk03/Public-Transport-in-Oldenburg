@@ -7,6 +7,10 @@ const { Readable, Writable } = require("node:stream");
 const {
   TIME_MODE,
   extractTripDetails,
+  parseTicketDetailsReply,
+  parsePartialTicketDetails,
+  mergeTicketDetails,
+  buildTicketRecommendation,
   validateRequestedTime,
   aliasQueriesForPlace,
   resolveKnownPlace,
@@ -31,6 +35,255 @@ const {
 } = require("./server");
 
 const fixedBerlinNow = new Date("2026-06-22T16:14:00.000Z"); // 18:14 Europe/Berlin
+
+test("ticket detail parser handles compact comma and to answer", () => {
+  const parsed = parseTicketDetailsReply("hauptbahnhof, to melkbrink 60, 1 person, 10 trips", "en");
+
+  assert.equal(parsed.originText, "hauptbahnhof");
+  assert.equal(parsed.destinationText, "melkbrink 60");
+  assert.equal(parsed.passengerCount, 1);
+  assert.equal(parsed.tripCount, 10);
+  assert.equal(parsed.tripPattern, "multiple_trips");
+  assert.ok(parsed.confidence >= 0.7);
+  assert.deepEqual(parsed.missingFields, []);
+});
+
+test("ticket detail parser handles short examples without full sentences", () => {
+  const cases = [
+    ["hauptbahnhof to melkbrink 60, 1 person, 10 trips", "hauptbahnhof", "melkbrink 60", 1, 10, "multiple_trips"],
+    ["from hauptbahnhof to melkbrink 60, 1 person, 10 trips", "hauptbahnhof", "melkbrink 60", 1, 10, "multiple_trips"],
+    ["hauptbahnhof, melkbrink 60, 1 person, 10 trips", "hauptbahnhof", "melkbrink 60", 1, 10, "multiple_trips"],
+    ["hbf to lappan, 2 people, return trip", "hbf", "lappan", 2, null, "return_trip"],
+    ["postenweg 20 to uni wechloy, 1 person, one trip", "postenweg 20", "uni wechloy", 1, 1, "single_trip"],
+    ["bremen hbf to oldenburg hbf, 3 people, day trip", "bremen hbf", "oldenburg hbf", 3, null, "day_trip"]
+  ];
+
+  for (const [input, origin, destination, passengers, trips, pattern] of cases) {
+    const parsed = parseTicketDetailsReply(input, "en");
+    assert.equal(parsed.originText, origin, input);
+    assert.equal(parsed.destinationText, destination, input);
+    assert.equal(parsed.passengerCount, passengers, input);
+    assert.equal(parsed.tripCount, trips, input);
+    assert.equal(parsed.tripPattern, pattern, input);
+    assert.ok(parsed.confidence >= 0.7, input);
+  }
+});
+
+test("ticket support context continues from compact details answer", async () => {
+  const sessionId = "ticket-details-compact-answer";
+  const first = await sendChatMessage({
+    sessionId,
+    selectedLanguage: "en",
+    message: "I need ticket information"
+  });
+
+  assert.equal(first.status, 200);
+  assert.equal(first.body.memory.ticketFlowStatus, "awaiting_ticket_trip_details");
+
+  const second = await sendChatMessage({
+    sessionId,
+    selectedLanguage: "en",
+    message: "hauptbahnhof, to lappan, 1 person, 10 trips",
+    ticketFlowStatus: first.body.memory.ticketFlowStatus,
+    selectedTicket: first.body.memory.selectedTicket
+  });
+
+  assert.equal(second.status, 200);
+  assert.match(second.body.reply, /Ticket suggestion/i);
+  assert.match(second.body.reply, /Since you plan several trips/i);
+  assert.doesNotMatch(second.body.reply, /^Ticket support\s+I can help/i);
+  assert.equal(second.body.memory.pendingTicketDetails.originText, "hauptbahnhof");
+  assert.equal(second.body.memory.pendingTicketDetails.destinationText, "lappan");
+  assert.equal(second.body.memory.pendingTicketDetails.passengerCount, 1);
+  assert.equal(second.body.memory.pendingTicketDetails.tripCount, 10);
+  assert.ok(second.body.quickButtons.some(button => /Single ticket info/i.test(button.label)));
+  assert.ok(second.body.quickButtons.some(button => /Day ticket info/i.test(button.label)));
+  assert.ok(second.body.quickButtons.some(button => /Student ticket info/i.test(button.label)));
+  assert.ok(second.body.quickButtons.some(button => /Open VBN ticket info/i.test(button.label)));
+});
+
+test("ticket recommendation suggests repeated-trip options for one person and ten trips", () => {
+  const recommendation = buildTicketRecommendation({
+    passengerCount: 1,
+    tripCount: 10,
+    tripPattern: "multiple_trips",
+    selectedTicketOption: "unsure",
+    userIsUnsure: true
+  }, {}, "en");
+
+  assert.equal(recommendation.title, "Ticket suggestion");
+  assert.match(recommendation.text, /Since you plan several trips/i);
+  assert.match(recommendation.text, /don't only check single tickets/i);
+  assert.ok(recommendation.recommendedOptions.includes("multi_trip"));
+  assert.ok(recommendation.recommendedOptions.includes("day"));
+  assert.ok(recommendation.recommendedOptions.includes("time_based"));
+  assert.ok(recommendation.recommendedOptions.includes("student"));
+  assert.ok(recommendation.quickReplies.some(button => /Weekly\/monthly ticket info/i.test(button.label)));
+  assert.ok(recommendation.quickReplies.some(button => /Open VBN ticket info/i.test(button.label)));
+});
+
+test("ticket partial parser detects origin and destination only", () => {
+  const parsed = parsePartialTicketDetails("postenweg to pferdemarkt", {}, "en");
+
+  assert.equal(parsed.originText, "postenweg");
+  assert.equal(parsed.destinationText, "pferdemarkt");
+  assert.deepEqual(parsed.detectedFields, ["originText", "destinationText"]);
+});
+
+test("ticket details merge preserves origin destination and accepts passenger trip follow-up", () => {
+  const first = mergeTicketDetails({}, parsePartialTicketDetails("postenweg to pferdemarkt", {}, "en"));
+  const second = mergeTicketDetails(first, parsePartialTicketDetails("1 person, 10 trips", first, "en"));
+
+  assert.equal(second.originText, "postenweg");
+  assert.equal(second.destinationText, "pferdemarkt");
+  assert.equal(second.passengerCount, 1);
+  assert.equal(second.tripCount, 10);
+  assert.equal(second.tripPattern, "multiple_trips");
+  assert.deepEqual(second.missingFields, []);
+});
+
+test("ticket detail parser handles bare numeric comma details", () => {
+  const parsed = parseTicketDetailsReply("postenweg, lappan, 1, 10 trip", "en");
+
+  assert.equal(parsed.originText, "postenweg");
+  assert.equal(parsed.destinationText, "lappan");
+  assert.equal(parsed.passengerCount, 1);
+  assert.equal(parsed.tripCount, 10);
+  assert.equal(parsed.tripPattern, "multiple_trips");
+  assert.deepEqual(parsed.missingFields, []);
+});
+
+test("ticket support asks only missing passenger and trip after origin destination", async () => {
+  const sessionId = "ticket-partial-origin-destination";
+  const first = await sendChatMessage({
+    sessionId,
+    selectedLanguage: "en",
+    message: "I need ticket information"
+  });
+
+  const second = await sendChatMessage({
+    sessionId,
+    selectedLanguage: "en",
+    message: "postenweg to pferdemarkt",
+    ticketFlowStatus: first.body.memory.ticketFlowStatus,
+    selectedTicket: first.body.memory.selectedTicket
+  });
+
+  assert.equal(second.status, 200);
+  assert.equal(second.body.memory.pendingTicketDetails.originText, "postenweg");
+  assert.equal(second.body.memory.pendingTicketDetails.destinationText, "pferdemarkt");
+  assert.deepEqual(second.body.memory.pendingTicketDetails.missingFields, ["passengerCount", "tripPattern"]);
+  assert.equal(second.body.reply, "Got it - Postenweg to Pferdemarkt. How many people are travelling, and is it one trip or several trips?");
+  assert.doesNotMatch(second.body.reply, /Please tell me your origin, destination/);
+});
+
+test("ticket support asks whether a single place is start or destination", async () => {
+  const sessionId = "ticket-single-place-ambiguous";
+  const first = await sendChatMessage({
+    sessionId,
+    selectedLanguage: "en",
+    message: "I need ticket information"
+  });
+
+  const second = await sendChatMessage({
+    sessionId,
+    selectedLanguage: "en",
+    message: "postenweg",
+    ticketFlowStatus: first.body.memory.ticketFlowStatus,
+    selectedTicket: first.body.memory.selectedTicket
+  });
+
+  assert.equal(second.status, 200);
+  assert.equal(second.body.reply, "Is Postenweg your starting point or your destination?");
+  assert.ok(second.body.quickButtons.some(button => button.label === "Starting point" && button.role === "origin"));
+  assert.ok(second.body.quickButtons.some(button => button.label === "Destination" && button.role === "destination"));
+  assert.equal(second.body.memory.ticketFlowStatus, "awaiting_ticket_trip_details");
+  assert.equal(second.body.memory.pendingAmbiguousPlace.source, "ticket_single_place_ambiguous");
+
+  const third = await sendChatMessage({
+    sessionId,
+    selectedLanguage: "en",
+    message: "Destination",
+    ticketFlowStatus: second.body.memory.ticketFlowStatus,
+    selectedTicket: second.body.memory.selectedTicket
+  });
+
+  assert.equal(third.status, 200);
+  assert.equal(third.body.memory.pendingTicketDetails.destinationText, "Postenweg");
+  assert.equal(third.body.memory.pendingAmbiguousPlace, null);
+});
+
+test("ticket support merges passenger-only then trip-only follow-ups", async () => {
+  const sessionId = "ticket-partial-passenger-then-trip";
+  const first = await sendChatMessage({
+    sessionId,
+    selectedLanguage: "en",
+    message: "I need ticket information"
+  });
+
+  const second = await sendChatMessage({
+    sessionId,
+    selectedLanguage: "en",
+    message: "postenweg to pferdemarkt",
+    ticketFlowStatus: first.body.memory.ticketFlowStatus,
+    selectedTicket: first.body.memory.selectedTicket
+  });
+
+  const third = await sendChatMessage({
+    sessionId,
+    selectedLanguage: "en",
+    message: "1 people",
+    ticketFlowStatus: second.body.memory.ticketFlowStatus,
+    selectedTicket: second.body.memory.selectedTicket
+  });
+
+  assert.equal(third.body.memory.pendingTicketDetails.passengerCount, 1);
+  assert.deepEqual(third.body.memory.pendingTicketDetails.missingFields, ["tripPattern"]);
+  assert.equal(third.body.reply, "Thanks. Is it one trip, a return trip, or several trips?");
+
+  const fourth = await sendChatMessage({
+    sessionId,
+    selectedLanguage: "en",
+    message: "10 trips",
+    ticketFlowStatus: third.body.memory.ticketFlowStatus,
+    selectedTicket: third.body.memory.selectedTicket
+  });
+
+  assert.equal(fourth.status, 200);
+  assert.equal(fourth.body.memory.pendingTicketDetails.originText, "postenweg");
+  assert.equal(fourth.body.memory.pendingTicketDetails.destinationText, "pferdemarkt");
+  assert.equal(fourth.body.memory.pendingTicketDetails.passengerCount, 1);
+  assert.equal(fourth.body.memory.pendingTicketDetails.tripCount, 10);
+  assert.equal(fourth.body.memory.pendingTicketDetails.tripPattern, "multiple_trips");
+  assert.match(fourth.body.reply, /Thanks\. Since that's several trips/i);
+  assert.match(fourth.body.reply, /Ticket suggestion/i);
+});
+
+test("ticket support completes numeric comma details without asking passenger again", async () => {
+  const sessionId = "ticket-numeric-comma-full-details";
+  const first = await sendChatMessage({
+    sessionId,
+    selectedLanguage: "en",
+    message: "I need ticket information"
+  });
+
+  const second = await sendChatMessage({
+    sessionId,
+    selectedLanguage: "en",
+    message: "postenweg, lappan, 1, 10 trip",
+    ticketFlowStatus: first.body.memory.ticketFlowStatus,
+    selectedTicket: first.body.memory.selectedTicket
+  });
+
+  assert.equal(second.status, 200);
+  assert.equal(second.body.memory.pendingTicketDetails.originText, "postenweg");
+  assert.equal(second.body.memory.pendingTicketDetails.destinationText, "lappan");
+  assert.equal(second.body.memory.pendingTicketDetails.passengerCount, 1);
+  assert.equal(second.body.memory.pendingTicketDetails.tripCount, 10);
+  assert.equal(second.body.memory.pendingTicketDetails.tripPattern, "multiple_trips");
+  assert.doesNotMatch(second.body.reply, /How many people are travelling\?/);
+  assert.match(second.body.reply, /Ticket suggestion/i);
+});
 
 async function sendChatMessage(payload) {
   const req = Readable.from([JSON.stringify(payload)]);
@@ -521,6 +774,89 @@ test("go-to place pairs parse known stop aliases", () => {
   assert.equal(parsed.timeMode, TIME_MODE.DEPART_AT);
 });
 
+test("short origin-to-destination route parses known stop aliases", () => {
+  for (const input of [
+    "postenweg to pferdemarkt",
+    "hauptbahnhof to lappan",
+    "hbf to uni wechloy",
+    "uni campus haarentor to uni campus wechloy",
+    "bremen hbf to oldenburg hbf"
+  ]) {
+    const parsed = extractTripDetails(input, "en");
+    assert.ok(parsed.originText, input);
+    assert.ok(parsed.destinationText, input);
+    assert.equal(parsed.requestedDateTime, "now", input);
+    assert.equal(parsed.timeMode, TIME_MODE.DEPART_AT, input);
+  }
+
+  const postenweg = extractTripDetails("postenweg to pferdemarkt", "en");
+  assert.equal(postenweg.originText, "postenweg");
+  assert.equal(postenweg.destinationText, "pferdemarkt");
+});
+
+test("short origin-to-destination route preserves time and arrival mode", () => {
+  const now = extractTripDetails("postenweg to pferdemarkt now", "en");
+  assert.equal(now.originText, "postenweg");
+  assert.equal(now.destinationText, "pferdemarkt");
+  assert.equal(now.requestedDateTime, "now");
+  assert.equal(now.timeMode, TIME_MODE.DEPART_AT);
+
+  const atTen = extractTripDetails("postenweg to pferdemarkt at 10am", "en");
+  assert.equal(atTen.originText, "postenweg");
+  assert.equal(atTen.destinationText, "pferdemarkt");
+  assert.equal(atTen.requestedDateTime, "10:00 AM");
+  assert.equal(atTen.timeMode, TIME_MODE.DEPART_AT);
+
+  const tomorrowNoon = extractTripDetails("postenweg to pferdemarkt at 12pm tomorrow", "en");
+  assert.equal(tomorrowNoon.requestedDateTime, "tomorrow 12:00 PM");
+  assert.equal(tomorrowNoon.explicitDate, "tomorrow");
+  assert.equal(tomorrowNoon.timeMode, TIME_MODE.DEPART_AT);
+
+  const arriveBy = extractTripDetails("postenweg to pferdemarkt arrive by 10am", "en");
+  assert.equal(arriveBy.originText, "postenweg");
+  assert.equal(arriveBy.destinationText, "pferdemarkt");
+  assert.equal(arriveBy.requestedDateTime, "10:00 AM");
+  assert.equal(arriveBy.timeMode, TIME_MODE.ARRIVE_BY);
+});
+
+test("short origin-to-be-in destination route is parsed as ARRIVE_BY", () => {
+  const parsed = extractTripDetails("postenweg to be in pferdemarkt tomorrow at 8 am", "en");
+
+  assert.equal(parsed.originText, "postenweg");
+  assert.equal(parsed.destinationText, "pferdemarkt");
+  assert.equal(parsed.requestedDateTime, "tomorrow 8:00 AM");
+  assert.equal(parsed.explicitDate, "tomorrow");
+  assert.equal(parsed.timeMode, TIME_MODE.ARRIVE_BY);
+});
+
+test("from-origin need-to-be-in destination route is parsed as ARRIVE_BY", () => {
+  const parsed = extractTripDetails("from postenweg I need to be in pferdemarkt tomorrow at 8 am", "en");
+
+  assert.equal(parsed.originText, "postenweg");
+  assert.equal(parsed.destinationText, "pferdemarkt");
+  assert.equal(parsed.requestedDateTime, "tomorrow 8:00 AM");
+  assert.equal(parsed.explicitDate, "tomorrow");
+  assert.equal(parsed.timeMode, TIME_MODE.ARRIVE_BY);
+});
+
+test("short origin-to-destination departure wording remains DEPART_AT", () => {
+  const parsed = extractTripDetails("postenweg to pferdemarkt tomorrow at 8 am", "en");
+
+  assert.equal(parsed.originText, "postenweg");
+  assert.equal(parsed.destinationText, "pferdemarkt");
+  assert.equal(parsed.requestedDateTime, "tomorrow 8:00 AM");
+  assert.equal(parsed.timeMode, TIME_MODE.DEPART_AT);
+});
+
+test("be-at noon with trailing origin preserves noon and ARRIVE_BY", () => {
+  const parsed = extractTripDetails("i want to be at lappan at 12pm tomorrow from postenweg", "en");
+
+  assert.equal(parsed.originText, "postenweg");
+  assert.match(parsed.destinationText, /lappan/i);
+  assert.equal(parsed.requestedDateTime, "tomorrow 12:00 PM");
+  assert.equal(parsed.timeMode, TIME_MODE.ARRIVE_BY);
+});
+
 test("street-to-street parser supports from and bare address forms", () => {
   for (const input of [
     "i want to go from salbeistraße 24 to postenweg 20 now",
@@ -536,6 +872,7 @@ test("street-to-street parser supports from and bare address forms", () => {
 
 test("destination-only go-to forms remain destination-only", () => {
   for (const [input, destination] of [
+    ["lappan", /Oldenburg\(Oldb\) Lappan|lappan/i],
     ["i want to go to lappan now", /lappan/i],
     ["i want to go to uni campus haarentor now", /uni campus haarentor/i]
   ]) {
@@ -947,6 +1284,30 @@ test("index.html chip handling supports routeSelection payloads", () => {
   assert.match(html, /routeSelection:\s*storedItem\.routeSelection/);
 });
 
+test("index.html chip handling sends ambiguous place action payloads before generic actions", () => {
+  const html = fs.readFileSync(path.join(__dirname, "index.html"), "utf8");
+  const ambiguousActionIndex = html.indexOf('storedItem.action === "set_ambiguous_place_role"');
+  const demoTicketActionIndex = html.indexOf("handleDemoTicketAction(storedItem)");
+
+  assert.notEqual(ambiguousActionIndex, -1);
+  assert.notEqual(demoTicketActionIndex, -1);
+  assert.ok(ambiguousActionIndex < demoTicketActionIndex);
+  assert.match(html, /action:\s*storedItem\.action/);
+  assert.match(html, /role:\s*storedItem\.role/);
+  assert.match(html, /placeText:\s*storedItem\.placeText/);
+});
+
+test("index.html chip handling sends route ticket status payloads before generic actions", () => {
+  const html = fs.readFileSync(path.join(__dirname, "index.html"), "utf8");
+  const ticketStatusActionIndex = html.indexOf('storedItem.action === "ticket_status_response"');
+  const demoTicketActionIndex = html.indexOf("handleDemoTicketAction(storedItem)");
+
+  assert.notEqual(ticketStatusActionIndex, -1);
+  assert.notEqual(demoTicketActionIndex, -1);
+  assert.ok(ticketStatusActionIndex < demoTicketActionIndex);
+  assert.match(html, /routeContextId:\s*storedItem\.routeContextId/);
+});
+
 // --- End-to-end chat flow -----------------------------------------------
 
 function startTestServer() {
@@ -1050,16 +1411,319 @@ test("end-to-end: destination-only query asks for starting point and shows locat
       selectedLanguage: "en"
     });
 
-    assert.match(response.reply, /Lappan/i);
-    assert.match(response.reply, /starting point/i);
+    assert.equal(response.reply, "I can help with that. Where are you starting from?");
 
     const locationBtn = response.quickButtons.find(b => b.value === "__current_location__");
     assert.ok(locationBtn, "expected a 'Use my current location' button");
     assert.equal(locationBtn.label, ts("useCurrentLoc", "en"));
 
     const manualBtn = response.quickButtons.find(b => b.value === "__type_location_manually__");
-    assert.ok(manualBtn, "expected an 'Enter location manually' button");
+    assert.ok(manualBtn, "expected a 'Type starting point' button");
     assert.equal(manualBtn.label, ts("typeLocManually", "en"));
+  } finally {
+    server.close();
+  }
+});
+
+test("end-to-end: bare single place asks whether origin or destination", async () => {
+  const server = await startTestServer();
+  const baseUrl = `http://127.0.0.1:${server.address().port}`;
+  try {
+    const response = await postChat(baseUrl, {
+      message: "postenweg",
+      selectedLanguage: "en"
+    });
+
+    assert.equal(response.reply, "Do you want to start from Postenweg or go to Postenweg?");
+    assert.ok(response.quickButtons.some(button => button.label === "Start from Postenweg" && button.action === "set_ambiguous_place_role" && button.role === "origin" && button.placeText === "Postenweg"));
+    assert.ok(response.quickButtons.some(button => button.label === "Go to Postenweg" && button.action === "set_ambiguous_place_role" && button.role === "destination" && button.placeText === "Postenweg"));
+    assert.equal(response.memory.pendingAmbiguousPlace.placeText, "Postenweg");
+    assert.equal(response.memory.pendingAmbiguousPlace.conversationStateBefore, "single_place_ambiguous");
+    assert.ok(response.memory.pendingAmbiguousPlace.createdAt);
+  } finally {
+    server.close();
+  }
+});
+
+test("end-to-end: ambiguous place start action asks for destination", async () => {
+  const server = await startTestServer();
+  const baseUrl = `http://127.0.0.1:${server.address().port}`;
+  try {
+    const first = await postChat(baseUrl, {
+      message: "postenweg",
+      selectedLanguage: "en"
+    });
+    const response = await postChat(baseUrl, {
+      sessionId: first.sessionId,
+      selectedLanguage: "en",
+      message: "Start from Postenweg",
+      action: "set_ambiguous_place_role",
+      role: "origin",
+      placeText: "Postenweg"
+    });
+
+    assert.equal(response.reply, "Got it - you're starting from Postenweg. Where do you want to go?");
+    assert.equal(response.memory.pendingRoute.mode, "awaiting_destination");
+    assert.equal(response.memory.pendingRoute.originText, "Postenweg");
+    assert.equal(response.memory.pendingAmbiguousPlace, null);
+
+    const routeResponse = await postChat(baseUrl, {
+      sessionId: first.sessionId,
+      selectedLanguage: "en",
+      message: "pferdemarkt"
+    });
+    assert.match(routeResponse.reply, /Got it - from Postenweg to Pferdemarkt\. I'll check the route\./i);
+  } finally {
+    server.close();
+  }
+});
+
+test("end-to-end: ambiguous place destination role asks for origin", async () => {
+  const server = await startTestServer();
+  const baseUrl = `http://127.0.0.1:${server.address().port}`;
+  try {
+    const first = await postChat(baseUrl, {
+      message: "postenweg",
+      selectedLanguage: "en"
+    });
+    const response = await postChat(baseUrl, {
+      sessionId: first.sessionId,
+      selectedLanguage: "en",
+      message: "Go to Postenweg",
+      action: "set_ambiguous_place_role",
+      role: "destination",
+      placeText: "Postenweg"
+    });
+
+    assert.equal(response.reply, "Got it - you want to go to Postenweg. Where are you starting from?");
+    assert.equal(response.memory.pendingRoute.mode, "awaiting_origin");
+    assert.equal(response.memory.pendingRoute.destinationText, "Postenweg");
+    assert.ok(response.quickButtons.some(button => button.value === "__current_location__"));
+    assert.ok(response.quickButtons.some(button => button.value === "__type_location_manually__"));
+  } finally {
+    server.close();
+  }
+});
+
+test("end-to-end: ambiguous place action without pending state asks to type again", async () => {
+  const server = await startTestServer();
+  const baseUrl = `http://127.0.0.1:${server.address().port}`;
+  try {
+    const response = await postChat(baseUrl, {
+      message: "Start from Postenweg",
+      selectedLanguage: "en",
+      action: "set_ambiguous_place_role",
+      role: "origin",
+      placeText: "Postenweg"
+    });
+
+    assert.equal(response.reply, "I lost that place. Please type it again.");
+    assert.deepEqual(response.quickButtons, []);
+  } finally {
+    server.close();
+  }
+});
+
+test("end-to-end: clear origin-only phrase asks for destination without ambiguity", async () => {
+  const server = await startTestServer();
+  const baseUrl = `http://127.0.0.1:${server.address().port}`;
+  try {
+    const response = await postChat(baseUrl, {
+      message: "from postenweg",
+      selectedLanguage: "en"
+    });
+
+    assert.equal(response.reply, "Got it - you're starting from Postenweg. Where do you want to go?");
+    assert.equal(response.memory.pendingAmbiguousPlace, null);
+    assert.equal(response.memory.pendingRoute.mode, "awaiting_destination");
+  } finally {
+    server.close();
+  }
+});
+
+test("end-to-end: ambiguous single place preserves time after destination role", async () => {
+  const server = await startTestServer();
+  const baseUrl = `http://127.0.0.1:${server.address().port}`;
+  try {
+    const first = await postChat(baseUrl, {
+      message: "postenweg at 10am tomorrow",
+      selectedLanguage: "en"
+    });
+    assert.equal(first.reply, "Do you want to start from Postenweg or go to Postenweg?");
+    assert.equal(first.memory.pendingAmbiguousPlace.requestedDateTime, "tomorrow 10:00 AM");
+
+    const second = await postChat(baseUrl, {
+      sessionId: first.sessionId,
+      selectedLanguage: "en",
+      message: "destination"
+    });
+    assert.equal(second.memory.pendingRoute.mode, "awaiting_origin");
+    assert.equal(second.memory.pendingRoute.requestedDateTime, "tomorrow 10:00 AM");
+    assert.equal(second.memory.pendingRoute.explicitDate, "tomorrow");
+  } finally {
+    server.close();
+  }
+});
+
+test("end-to-end: yes after ambiguous place repeats role choices", async () => {
+  const server = await startTestServer();
+  const baseUrl = `http://127.0.0.1:${server.address().port}`;
+  try {
+    const first = await postChat(baseUrl, {
+      message: "lappan",
+      selectedLanguage: "en"
+    });
+    const response = await postChat(baseUrl, {
+      sessionId: first.sessionId,
+      selectedLanguage: "en",
+      message: "yes"
+    });
+
+    assert.equal(response.reply, "Please choose one: start from Lappan or go to Lappan.");
+    assert.ok(response.quickButtons.some(button => button.label === "Start from Lappan"));
+    assert.ok(response.quickButtons.some(button => button.label === "Go to Lappan"));
+  } finally {
+    server.close();
+  }
+});
+
+test("end-to-end: complete short route acknowledges origin and destination", async () => {
+  const server = await startTestServer();
+  const baseUrl = `http://127.0.0.1:${server.address().port}`;
+  try {
+    const response = await postChat(baseUrl, {
+      message: "postenweg to pferdemarkt",
+      selectedLanguage: "en"
+    });
+
+    assert.match(response.reply, /Got it - from Postenweg to Pferdemarkt\. I'll check the route\./i);
+    assert.doesNotMatch(response.reply, /Where are you starting from/i);
+  } finally {
+    server.close();
+  }
+});
+
+test("end-to-end: ticket unsure after a route uses previous route context", async () => {
+  const server = await startTestServer();
+  const baseUrl = `http://127.0.0.1:${server.address().port}`;
+  try {
+    const first = await postChat(baseUrl, {
+      message: "postenweg to pferdemarkt",
+      selectedLanguage: "en"
+    });
+    assert.ok(first.memory.lastRouteContext, "expected route context to be saved");
+
+    const response = await postChat(baseUrl, {
+      sessionId: first.sessionId,
+      selectedLanguage: "en",
+      message: "I am not sure",
+      action: "ticket_status_response",
+      value: "not_sure",
+      routeContextId: first.memory.lastRouteContext.routeContextId
+    });
+
+    assert.match(response.reply, /No problem\. I'll help with the ticket for this route\./);
+    assert.match(response.reply, /from Postenweg to Pferdemarkt/i);
+    assert.doesNotMatch(response.reply, /Where are you travelling from and to/i);
+    assert.ok(response.quickButtons.some(button => button.action === "ticket_option" && button.value === "single"));
+    assert.ok(response.quickButtons.some(button => button.action === "ticket_option" && button.value === "day"));
+    assert.ok(response.quickButtons.some(button => button.action === "ticket_option" && button.value === "student"));
+    assert.ok(response.quickButtons.some(button => button.action === "ticket_option" && button.value === "group"));
+    assert.ok(response.quickButtons.some(button => button.action === "ticket_continue"));
+  } finally {
+    server.close();
+  }
+});
+
+test("end-to-end: no-need-ticket after a route uses previous route context", async () => {
+  const server = await startTestServer();
+  const baseUrl = `http://127.0.0.1:${server.address().port}`;
+  try {
+    const first = await postChat(baseUrl, {
+      message: "postenweg to pferdemarkt",
+      selectedLanguage: "en"
+    });
+    const response = await postChat(baseUrl, {
+      sessionId: first.sessionId,
+      selectedLanguage: "en",
+      message: "No, I need a ticket",
+      action: "ticket_status_response",
+      value: "needs_ticket",
+      routeContextId: first.memory.lastRouteContext.routeContextId
+    });
+
+    assert.match(response.reply, /Okay\. For this route from Postenweg to Pferdemarkt/i);
+    assert.doesNotMatch(response.reply, /Where are you travelling from and to/i);
+  } finally {
+    server.close();
+  }
+});
+
+test("end-to-end: has-ticket after a route gives validity reminder", async () => {
+  const server = await startTestServer();
+  const baseUrl = `http://127.0.0.1:${server.address().port}`;
+  try {
+    const first = await postChat(baseUrl, {
+      message: "postenweg to pferdemarkt",
+      selectedLanguage: "en"
+    });
+    const response = await postChat(baseUrl, {
+      sessionId: first.sessionId,
+      selectedLanguage: "en",
+      message: "Yes, I have a ticket",
+      action: "ticket_status_response",
+      value: "has_ticket",
+      routeContextId: first.memory.lastRouteContext.routeContextId
+    });
+
+    assert.match(response.reply, /Please make sure your ticket is valid for this route and time/i);
+    assert.doesNotMatch(response.reply, /Where are you travelling from and to/i);
+  } finally {
+    server.close();
+  }
+});
+
+test("end-to-end: ticket unsure without route context starts normal ticket flow", async () => {
+  const server = await startTestServer();
+  const baseUrl = `http://127.0.0.1:${server.address().port}`;
+  try {
+    const response = await postChat(baseUrl, {
+      message: "I am not sure",
+      selectedLanguage: "en"
+    });
+
+    assert.match(response.reply, /Where are you travelling from and to/i);
+    assert.equal(response.memory.lastRouteContext, null);
+  } finally {
+    server.close();
+  }
+});
+
+test("end-to-end: ticket unsure after second route uses newest route context", async () => {
+  const server = await startTestServer();
+  const baseUrl = `http://127.0.0.1:${server.address().port}`;
+  try {
+    const first = await postChat(baseUrl, {
+      message: "postenweg to lappan",
+      selectedLanguage: "en"
+    });
+    const second = await postChat(baseUrl, {
+      sessionId: first.sessionId,
+      selectedLanguage: "en",
+      message: "postenweg to pferdemarkt"
+    });
+    const response = await postChat(baseUrl, {
+      sessionId: first.sessionId,
+      selectedLanguage: "en",
+      message: "I am not sure",
+      action: "ticket_status_response",
+      value: "not_sure",
+      routeContextId: second.memory.lastRouteContext.routeContextId
+    });
+
+    assert.match(response.reply, /Pferdemarkt/i);
+    assert.doesNotMatch(response.reply, /from Postenweg to Lappan/i);
+    assert.notEqual(first.memory.lastRouteContext.routeContextId, second.memory.lastRouteContext.routeContextId);
   } finally {
     server.close();
   }
@@ -1095,7 +1759,7 @@ test("end-to-end: ambiguous noon destination selection preserves ARRIVE_BY and s
       locationRole: "destination"
     });
 
-    assert.match(second.reply, /starting point/i);
+    assert.equal(second.reply, "I can help with that. Where are you starting from?");
     assert.equal(second.lastRouteResult, null);
     assert.equal(second.routeSummary, "");
     assert.equal(second.memory.route.start, "");
@@ -1132,7 +1796,7 @@ test("end-to-end: pending origin preserves tomorrow ARRIVE_BY deadline", async (
       selectedLanguage: "en"
     });
 
-    assert.match(first.reply, /starting point/i);
+    assert.equal(first.reply, "I can help with that. Where are you starting from?");
     assert.equal(first.memory.pendingRoute.mode, "awaiting_origin");
     assert.equal(first.memory.pendingRoute.requestedDateTime.toLowerCase(), "tomorrow 8:30 am");
     assert.equal(first.memory.pendingRoute.explicitDate, "tomorrow");
@@ -1167,7 +1831,7 @@ test("end-to-end: destination-only then geolocation coords plans the route witho
     });
 
     assert.ok(first.sessionId, "expected a session ID");
-    assert.match(first.reply, /Lappan/i);
+    assert.equal(first.reply, "I can help with that. Where are you starting from?");
 
     const second = await postChat(baseUrl, {
       message: "Use my current location",

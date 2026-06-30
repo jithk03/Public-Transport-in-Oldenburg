@@ -2061,6 +2061,22 @@
             showAlternativeRoute(storedItem.itineraryIndex);
             return;
           }
+          if (storedItem.action === "set_ambiguous_place_role") {
+            sendMessage(storedItem.value || storedItem.label, {
+              action: storedItem.action,
+              role: storedItem.role,
+              placeText: storedItem.placeText
+            });
+            return;
+          }
+          if (storedItem.action === "ticket_status_response") {
+            sendMessage(storedItem.label || storedItem.value, {
+              action: storedItem.action,
+              value: storedItem.value,
+              routeContextId: storedItem.routeContextId
+            });
+            return;
+          }
           if (storedItem.action) {
             handleDemoTicketAction(storedItem);
             return;
@@ -2140,7 +2156,7 @@
       ticketStudentInfo: { en: "Student ticket",                        de: "Studierendenticket",              ar: "تذكرة الطلاب",            tr: "Öğrenci bileti",              uk: "Студентський квиток",             hi: "छात्र टिकट" },
       ticketNotSure:     { en: "I am not sure",                         de: "Ich bin nicht sicher",            ar: "لست متأكداً",             tr: "Emin değilim",                uk: "Я не впевнений",                  hi: "मुझे यकीन नहीं है" },
       chooseTicketType:  { en: "Choose ticket type",                    de: "Ticketart auswählen",             ar: "اختر نوع التذكرة",         tr: "Bilet türü seç",              uk: "Вибрати тип квитка",             hi: "टिकट प्रकार चुनें" },
-      officialVbnTicketInfo: { en: "Official VBN ticket information",   de: "Offizielle VBN-Ticketinformationen", ar: "معلومات تذاكر VBN الرسمية", tr: "Resmi VBN bilet bilgisi",   uk: "Офіційна інформація VBN",         hi: "आधिकारिक VBN टिकट जानकारी" },
+      officialVbnTicketInfo: { en: "Open VBN ticket info",              de: "VBN-Ticketinfo öffnen",        ar: "افتح معلومات تذاكر VBN", tr: "VBN bilet bilgisini aç",   uk: "Відкрити інформацію VBN",        hi: "VBN टिकट जानकारी खोलें" },
       continueTicketPage:{ en: "Continue to ticket page",               de: "Weiter zur Ticketseite",           ar: "المتابعة إلى صفحة التذاكر", tr: "Bilet sayfasına devam et",   uk: "Перейти на сторінку квитків",    hi: "टिकट पेज पर जारी रखें" },
       planAnotherTrip:   { en: "Plan another trip",                     de: "Weitere Fahrt planen",            ar: "تخطيط رحلة أخرى",         tr: "Başka bir yolculuk planla",   uk: "Спланувати ще одну поїздку",      hi: "दूसरी यात्रा की योजना बनाएं" },
       ticketInfo:        { en: "Ticket information",                    de: "Ticketinformationen",             ar: "معلومات التذاكر",          tr: "Bilet bilgisi",               uk: "Інформація про квитки",           hi: "टिकट जानकारी" },
@@ -2155,15 +2171,28 @@
       welcomeBack:       { en: "Welcome back. Would you like to plan another trip?", de: "Willkommen zurück. Möchten Sie eine weitere Fahrt planen?", ar: "مرحباً بعودتك. هل تريد تخطيط رحلة أخرى؟", tr: "Tekrar hoş geldiniz. Başka bir yolculuk planlamak ister misiniz?", uk: "Ласкаво просимо назад. Хочете спланувати ще одну поїздку?", hi: "वापस आने पर स्वागत है। क्या आप एक और यात्रा की योजना बनाना चाहते हैं?" },
       whereStart:        { en: "Where are you starting from and where do you want to go?", de: "Von wo möchten Sie starten und wohin wollen Sie fahren?", ar: "من أين تبدأ وإلى أين تريد الذهاب؟", tr: "Nereden başlıyorsunuz ve nereye gitmek istiyorsunuz?", uk: "Звідки ви хочете їхати і куди?", hi: "आप कहाँ से शुरू करना चाहते हैं और कहाँ जाना चाहते हैं?" },
       ticketHasMsg:      { en: "Great. Keep your valid ticket ready before boarding. You can continue with the route steps above.", de: "Prima. Halten Sie Ihr gültiges Ticket bereit. Sie können mit den Routenschritten oben fortfahren.", ar: "ممتاز. احتفظ بتذكرتك الصالحة جاهزة قبل الصعود.", tr: "Harika. Biletinizi hazır bulundurun. Yukarıdaki rota adımlarına devam edebilirsiniz.", uk: "Чудово. Тримайте дійсний квиток готовим. Ви можете продовжити за кроками маршруту вище.", hi: "बढ़िया। चढ़ने से पहले वैध टिकट तैयार रखें। आप ऊपर दिए मार्ग के चरण जारी रख सकते हैं।" },
-      ticketUnsureMsg:   { en: "If you are not sure, check your existing ticket or semester ticket rules before boarding. You can also select a ticket type below.", de: "Wenn Sie unsicher sind, prüfen Sie Ihr Ticket vor dem Einsteigen. Sie können auch unten einen Tickettyp auswählen.", ar: "إذا لم تكن متأكداً، تحقق من تذكرتك قبل الصعود. يمكنك أيضاً اختيار نوع تذكرة.", tr: "Emin değilseniz biletinizi kontrol edin. Aşağıdan bir bilet türü de seçebilirsiniz.", uk: "Якщо не впевнені, перевірте квиток. Можна вибрати тип квитка нижче.", hi: "यदि निश्चित नहीं हैं, चढ़ने से पहले टिकट जाँचें। नीचे एक प्रकार भी चुन सकते हैं।" },
+      ticketUnsureMsg:   { en: "No problem. I can help you narrow it down.", de: "Kein Problem. Ich helfe Ihnen, es einzugrenzen.", ar: "لا مشكلة. يمكنني مساعدتك في تضييق الخيارات.", tr: "Sorun değil. Seçenekleri daraltmanıza yardım ederim.", uk: "Без проблем. Я допоможу звузити вибір.", hi: "कोई बात नहीं। मैं विकल्प कम करने में मदद करूंगा।" },
       selectTicket:      { en: "Select the ticket type you want to check.", de: "Wählen Sie die Ticketart, die Sie prüfen möchten.", ar: "اختر نوع التذكرة الذي تريد التحقق منه.", tr: "Kontrol etmek istediğiniz bilet türünü seçin.", uk: "Виберіть тип квитка, який хочете перевірити.", hi: "जिस टिकट प्रकार को जांचना चाहते हैं उसे चुनें।" },
+      ticketPageOpened:  { en: "Ticket page opened. If you come back without buying, you can continue here." },
+      ticketReturnQuestion: { en: "Welcome back. Did you manage to get the ticket, or should we continue here?" },
+      gotTicket:         { en: "I got the ticket" },
+      helpChooseAgain:   { en: "Help me choose again" },
+      checkTickets:      { en: "Check tickets" },
+      accessibilityHelp: { en: "Accessibility help" },
+      backToRoute:       { en: "Back to route" },
+      openVbnAgain:      { en: "Open VBN ticket info again" },
+      ticketGotConfirm:  { en: "Great. Please make sure it is valid before boarding. Have a safe trip." },
+      ticketCheckPrompt: { en: "No problem. What ticket would you like to check?" },
+      accessibilityPrompt: { en: "I can help with accessibility. Do you need step-free access, less walking, or support with stops?" },
+      routeContextIntro: { en: "Here is the route we were using: {route}." },
+      noRouteContext:    { en: "I do not have a recent route saved here. Tell me where you are travelling from and to, and I will plan it again." },
       ticketSingleExplanation: { en: "A single ticket is usually for one one-way journey. The route planner uses VBN data, but official ticket prices and validity rules should be checked on the VBN website." },
       ticketDayExplanation: { en: "A day ticket is useful for multiple trips on the same day. The route planner uses VBN data, but official ticket prices and validity rules should be checked on the VBN website." },
       ticketStudentExplanation: { en: "Students should check whether their semester ticket or Deutschlandsemesterticket is valid before buying another ticket. The route planner uses VBN data, but official ticket prices and validity rules should be checked on the VBN website." },
       ticketGroupExplanation: { en: "A group ticket may be useful when several people travel together. The route planner uses VBN data, but official ticket prices and validity rules should be checked on the VBN website." },
-      ticketUnsureExplanation: { en: "Please tell me your origin, destination, number of people, and whether you plan only one trip or multiple trips. The route planner uses VBN data, but official ticket prices and validity rules should be checked on the VBN website." },
+      ticketUnsureExplanation: { en: "Sure. I'll help you choose the right ticket. Where are you travelling from and to?", de: "Gern. Ich helfe Ihnen, das passende Ticket zu finden. Von wo nach wo fahren Sie?", ar: "أكيد. سأساعدك في اختيار التذكرة المناسبة. من أين إلى أين تسافر؟", tr: "Tabii. Doğru bileti seçmenize yardım ederim. Nereden nereye gidiyorsunuz?", uk: "Звісно. Я допоможу вибрати правильний квиток. Звідки і куди ви їдете?", hi: "ज़रूर। मैं सही टिकट चुनने में मदद करूंगा। आप कहाँ से कहाँ जा रहे हैं?" },
       useCurrentLoc:     { en: "Use my current location",               de: "Meinen Standort nutzen",          ar: "استخدام موقعي الحالي",     tr: "Mevcut konumumu kullan",      uk: "Використати мою локацію",         hi: "मेरा वर्तमान स्थान उपयोग करें" },
-      typeManually:      { en: "Enter starting address",                de: "Startadresse eingeben",           ar: "أدخل عنوان البداية",       tr: "Başlangıç adresini gir",      uk: "Ввести адресу початку",           hi: "शुरुआती पता दर्ज करें" },
+      typeManually:      { en: "Type starting point",                   de: "Startpunkt eingeben",             ar: "اكتب نقطة البداية",        tr: "Başlangıç noktasını yaz",     uk: "Ввести початкову точку",          hi: "शुरुआती स्थान लिखें" },
       serverDown:        { en: "The server is not reachable right now. Please check that the app is running and try again.", de: "Der Server ist gerade nicht erreichbar. Bitte prüfe, ob die App läuft, und versuche es erneut.", ar: "الخادم غير متاح الآن. يرجى التأكد من تشغيل التطبيق والمحاولة مجدداً.", tr: "Sunucu şu anda erişilemiyor. Uygulamanın çalıştığını kontrol edin ve tekrar deneyin.", uk: "Сервер зараз недоступний. Перевірте, чи запущений застосунок, і спробуйте знову.", hi: "सर्वर अभी पहुँच योग्य नहीं है। ऐप चल रही है यह जाँचें और फिर कोशिश करें।" },
       findingBestRoute:  { en: "Finding the best route...", de: "Ich suche die beste Route...", ar: "جارٍ البحث عن أفضل مسار...", tr: "En iyi rota aranıyor...", uk: "Шукаю найкращий маршрут...", hi: "सबसे अच्छा मार्ग खोजा जा रहा है..." },
       stillSearchingRoute: { en: "Still searching. The transport service is taking longer than usual...", de: "Ich suche noch. Der Verkehrsdienst braucht länger als üblich...", ar: "ما زال البحث جارياً. خدمة النقل تستغرق وقتاً أطول من المعتاد...", tr: "Hala aranıyor. Ulaşım servisi normalden uzun sürüyor...", uk: "Ще шукаю. Транспортний сервіс відповідає довше, ніж зазвичай...", hi: "अभी भी खोज रहा हूँ। परिवहन सेवा सामान्य से अधिक समय ले रही है..." },
@@ -2179,6 +2208,10 @@
       }
       return dict[currentLang()] || dict.en;
     }
+
+	    function formatChatString(key, params = {}) {
+	      return ct(key).replace(/\{(\w+)\}/g, (_, name) => params[name] ?? "");
+	    }
 
 	    function ticketOptionButtons() {
 	      return [
@@ -2212,6 +2245,26 @@
 	      ];
 	    }
 
+	    function postTicketActionButtons() {
+	      return [
+	        { label: ct("planAnotherTrip"), value: ct("planAnotherTrip"), action: "ticket_post_plan" },
+	        { label: ct("checkTickets"), value: ct("checkTickets"), action: "ticket_post_check" },
+	        { label: ct("accessibilityHelp"), value: ct("accessibilityHelp"), action: "ticket_post_accessibility" },
+	        { label: ct("backToRoute"), value: ct("backToRoute"), action: "ticket_post_back_route" },
+	        { label: ct("openVbnAgain"), value: "https://www.vbn.de/tickets", action: "ticket_open_vbn_again" },
+	        { label: ct("continueTicketPage"), value: selectedTicket || demoTicketState.ticketType || "selected", action: "ticket_continue_reopen" }
+	      ];
+	    }
+
+	    function postTicketReturnButtons() {
+	      return [
+	        { label: ct("gotTicket"), value: "got_ticket", action: "ticket_return_got" },
+	        { label: ct("helpChooseAgain"), value: "help_choose_again", action: "ticket_return_choose_again" },
+	        { label: ct("planAnotherTrip"), value: ct("planAnotherTrip"), action: "ticket_post_plan" },
+	        { label: ct("backToRoute"), value: ct("backToRoute"), action: "ticket_post_back_route" }
+	      ];
+	    }
+
 	    function setTicketFlow(status, ticket = selectedTicket) {
 	      ticketFlowStatus = status;
 	      selectedTicket = ticket || "";
@@ -2226,6 +2279,10 @@
 	      selectedTicket = "";
 	      demoTicketState.ticketType = "";
 	      paymentReturnPromptShown = false;
+	      sessionStorage.removeItem("ticketPageOpened");
+	      sessionStorage.removeItem("lastTicketContext");
+	      sessionStorage.removeItem("postTicketActionsShown");
+	      sessionStorage.removeItem("postTicketReturnPromptShown");
 	      saveChatState();
 	    }
 
@@ -2235,12 +2292,92 @@
 
 	    function showPaymentReturnPrompt(force = false) {
 	      if (!["payment_started", "payment_completed"].includes(ticketFlowStatus)) return;
+	      if (ticketFlowStatus === "payment_started" && sessionStorage.getItem("ticketPageOpened") === "true") {
+	        showTicketReturnQuestion(force);
+	        return;
+	      }
 	      if (paymentReturnPromptShown && !force) return;
 	      paymentReturnPromptShown = true;
 	      removeChips(true);  // preserve ticket-option rows so user can select a different ticket
 	      addMessage(ct("welcomeBack"), "bot");
 	      addChips(continuationButtons());
 	      saveChatState();
+	    }
+
+	    function buildLastTicketContext(ticketType = selectedTicket || demoTicketState.ticketType) {
+	      const memory = currentServerMemory || {};
+	      const ticketDetails = memory.pendingTicketDetails || {};
+	      const routeContext = memory.lastRouteContext || {};
+	      return {
+	        selectedTicketType: ticketType || "",
+	        lastRouteContext: routeContext || null,
+	        originText: ticketDetails.originText || routeContext.originText || lastRouteResult?.query?.requestedStart || lastRouteResult?.query?.start || "",
+	        destinationText: ticketDetails.destinationText || routeContext.destinationText || lastRouteResult?.query?.requestedDestination || lastRouteResult?.query?.destination || "",
+	        passengerCount: ticketDetails.passengerCount || routeContext.passengerCount || null,
+	        tripCount: ticketDetails.tripCount || routeContext.tripCount || null,
+	        tripPattern: ticketDetails.tripPattern || routeContext.tripPattern || "",
+	        createdAt: Date.now(),
+	        ticketPageOpened: true
+	      };
+	    }
+
+	    function rememberTicketPageOpened(ticketType = selectedTicket || demoTicketState.ticketType) {
+	      const lastTicketContext = buildLastTicketContext(ticketType);
+	      currentServerMemory = {
+	        ...(currentServerMemory || {}),
+	        lastTicketContext
+	      };
+	      sessionStorage.setItem("ticketPageOpened", "true");
+	      sessionStorage.setItem("lastTicketContext", JSON.stringify(lastTicketContext));
+	      sessionStorage.removeItem("postTicketActionsShown");
+	      sessionStorage.removeItem("postTicketReturnPromptShown");
+	      saveChatScrollBeforeTicketPage();
+	      saveChatState();
+	      return lastTicketContext;
+	    }
+
+	    function showTicketPageOpenedActions(force = false) {
+	      if (sessionStorage.getItem("postTicketActionsShown") === "true" && !force) return;
+	      sessionStorage.setItem("postTicketActionsShown", "true");
+	      removeChips(true);
+	      addMessage(ct("ticketPageOpened"), "bot");
+	      addChips(postTicketActionButtons());
+	      saveChatState();
+	    }
+
+	    function showTicketReturnQuestion(force = false) {
+	      if (ticketFlowStatus === "payment_completed") return;
+	      if (sessionStorage.getItem("postTicketReturnPromptShown") === "true" && !force) return;
+	      if (sessionStorage.getItem("ticketPageOpened") !== "true" && !force) return;
+	      sessionStorage.setItem("postTicketReturnPromptShown", "true");
+	      removeChips(true);
+	      addMessage(ct("ticketReturnQuestion"), "bot");
+	      addChips(postTicketReturnButtons());
+	      saveChatState();
+	    }
+
+	    function handleReturnFromTicketPage(force = false) {
+	      if (document.hidden && !force) return;
+	      showTicketReturnQuestion(force);
+	    }
+
+	    function showLastRouteContext() {
+	      const context = currentServerMemory?.lastRouteContext
+	        || safeJsonParse(sessionStorage.getItem("lastTicketContext"), {})?.lastRouteContext
+	        || null;
+	      const summary = context?.routeSummary || demoTicketState.routeSummary || "";
+	      const origin = context?.originText || lastRouteResult?.query?.requestedStart || lastRouteResult?.query?.start || "";
+	      const destination = context?.destinationText || lastRouteResult?.query?.requestedDestination || lastRouteResult?.query?.destination || "";
+	      const routeText = summary || [origin, destination].filter(Boolean).join(" to ");
+	      if (!routeText) {
+	        addMessage(ct("noRouteContext"), "bot");
+	        return;
+	      }
+	      const routeMessage = addMessage(formatChatString("routeContextIntro", { route: routeText }), "bot");
+	      if (lastRouteResult && routeMessage) {
+	        attachRouteToMessage(routeMessage, lastRouteResult);
+	        renderRouteSummary(routeMessage, lastRouteResult);
+	      }
 	    }
 
 	    function startAnotherTrip() {
@@ -2301,6 +2438,7 @@
 	      });
 	      const ticketUrl = `mock-payment.html?${params.toString()}`;
 	      console.log("Opening ticket page without leaving chatbot", ticketUrl);
+	      rememberTicketPageOpened(ticketType);
 	      ticketFlowStatus = "payment_started";
 	      paymentReturnPromptShown = false;
 	      saveChatState();
@@ -2343,6 +2481,8 @@
 	        selectedTicket = item.value || item.label;
 	        demoTicketState.ticketType = item.label || selectedTicket;
 	        setTicketFlow("selecting_ticket", selectedTicket);
+	        sessionStorage.removeItem("postTicketActionsShown");
+	        sessionStorage.removeItem("postTicketReturnPromptShown");
 	        addMessage(ticketExplanation(selectedTicket), "bot");
 	        addChips(continueToTicketPageButton());
 	        return;
@@ -2351,10 +2491,56 @@
 	      if (item.action === "ticket_continue") {
 	        setTicketFlow("payment_started", selectedTicket || item.value || demoTicketState.ticketType);
 	        openMockPayment(selectedTicket || demoTicketState.ticketType || item.value);
+	        showTicketPageOpenedActions(true);
+	        return;
+	      }
+
+	      if (item.action === "ticket_continue_reopen") {
+	        setTicketFlow("payment_started", selectedTicket || item.value || demoTicketState.ticketType);
+	        openMockPayment(selectedTicket || demoTicketState.ticketType || item.value);
+	        showTicketPageOpenedActions(false);
+	        return;
+	      }
+
+	      if (item.action === "ticket_post_check" || item.action === "ticket_return_choose_again") {
+	        setTicketFlow("selecting_ticket", selectedTicket || "unsure");
+	        addMessage(ct("ticketCheckPrompt"), "bot");
+	        addChips(ticketOptionButtons());
+	        return;
+	      }
+
+	      if (item.action === "ticket_post_accessibility") {
+	        addMessage(ct("accessibilityPrompt"), "bot");
+	        return;
+	      }
+
+	      if (item.action === "ticket_post_back_route") {
+	        showLastRouteContext();
+	        addChips(postTicketActionButtons());
+	        return;
+	      }
+
+	      if (item.action === "ticket_open_vbn_again") {
+	        rememberTicketPageOpened(selectedTicket || demoTicketState.ticketType || item.value);
+	        window.open("https://www.vbn.de/tickets", "_blank", "noopener,noreferrer");
+	        showTicketPageOpenedActions(false);
+	        return;
+	      }
+
+	      if (item.action === "ticket_return_got") {
+	        setTicketFlow("none", "");
+	        sessionStorage.setItem("ticketPageOpened", "false");
+	        addMessage(ct("ticketGotConfirm"), "bot");
+	        addChips(continuationButtons());
 	        return;
 	      }
 
 	      if (item.action === "plan_another_trip") {
+	        startAnotherTrip();
+	        return;
+	      }
+
+	      if (item.action === "ticket_post_plan") {
 	        startAnotherTrip();
 	        return;
 	      }
@@ -2597,20 +2783,20 @@
 	          currentLocationFound: "I found your location. I’ll use the nearest suitable stop and guide you from there.",
 	          currentLocationLowAccuracy: "Your location was detected, but it may be approximate. You can continue or enter your starting point manually.",
 	          geoPermissionDenied: "Location permission is blocked. Please allow location in your browser settings or enter your starting point manually.",
-	          geoPositionUnavailable: "Your browser could not determine the current location right now. Please try again or enter your starting point manually.",
-	          geoAndroidPositionUnavailable: "Your Android phone could not determine the current location right now. Please try again or enter your starting point manually.",
-	          geoIosPositionUnavailable: "Your iPhone could not determine the current location right now. Please try again or enter your starting point manually.",
-	          geoMacPositionUnavailable: "Your Mac/browser could not determine the current location right now. Please try again or enter your starting point manually.",
-	          geoChromeAndroidFailed: "Chrome on Android could not provide your current location right now. Please try again or enter your starting point manually.",
-	          geoTimeout: "Getting your current location took too long. Please try again or enter your starting point manually.",
-	          geoAndroidTimeout: "Getting your Android location took too long. Please try again outdoors/near a window, or enter your starting point manually.",
-	          geoNotSecure: "Current location is blocked because the page is not opened securely. Please use the HTTPS link or enter your starting point manually.",
-	          geoNotSupported: "This browser does not support current location. Please enter your starting point manually.",
-	          geoInvalidCoordinates: "Current location could not be read correctly. Please enter your starting point manually.",
-	          geoUnknownError: "Current location could not be found. Please try again or enter your starting point manually.",
-	          geoRouteFailedAfterCoords: "I received your current location, but the route service could not calculate a route from it. Please enter your starting point manually.",
+	          geoPositionUnavailable: "Your device couldn't find your location right now. No problem - you can type your starting point instead.",
+	          geoAndroidPositionUnavailable: "Your Android phone couldn't find your location right now. No problem - you can type your starting point instead.",
+	          geoIosPositionUnavailable: "Your iPhone couldn't find your location right now. No problem - you can type your starting point instead.",
+	          geoMacPositionUnavailable: "Your Mac/browser couldn't find your location right now. No problem - you can type your starting point instead.",
+	          geoChromeAndroidFailed: "Chrome on Android couldn't provide your location right now. No problem - you can type your starting point instead.",
+	          geoTimeout: "Finding your location took too long. No problem - you can type your starting point instead.",
+	          geoAndroidTimeout: "Finding your Android location took too long. No problem - you can type your starting point instead.",
+	          geoNotSecure: "Current location is blocked because the page is not opened securely. No problem - you can type your starting point instead.",
+	          geoNotSupported: "This browser does not support current location. No problem - you can type your starting point instead.",
+	          geoInvalidCoordinates: "Your location could not be read correctly. No problem - you can type your starting point instead.",
+	          geoUnknownError: "Your device couldn't find your location right now. No problem - you can type your starting point instead.",
+	          geoRouteFailedAfterCoords: "I received your current location, but the route service could not calculate a route from it. You can type your starting point instead.",
 	          geoAddressNameUnavailable: "Your current location was detected, but I could not name the address. I can still use your coordinates for routing.",
-	          tryCurrentLocationAgain: "Try current location again",
+	          tryCurrentLocationAgain: "Try location again",
 	          continueDetectedLocation: "Continue with detected location",
 	          openWalkingMap: "Open walking map",
 	          walkingMapUnavailable: "Map not available for this walking section.",
@@ -2624,7 +2810,7 @@
 	          aroundMeters: "around {meters} m",
 	          publicTransportOption: "You can also take public transport",
 	          youCanAlsoTakePublicTransport: "You can also take public transport",
-	          validTicketQ: "Do you already have a valid ticket for this trip?",
+	          validTicketQ: "Do you already have a ticket that might cover this trip?",
 	          allowExtraTime: "allow extra time",
 	          showOtherBusesForThisPart: "Other buses for this part",
 	          hideOtherBusesForThisPart: "Hide other buses",
@@ -2832,7 +3018,10 @@
 	        localStorage.setItem(LAST_ROUTE_RESULT_KEY, JSON.stringify(lastRouteResult));
 	      }
 	      if (response.memory) {
-	        currentServerMemory = response.memory;
+	        currentServerMemory = {
+	          ...response.memory,
+	          lastTicketContext: currentServerMemory?.lastTicketContext || response.memory.lastTicketContext || null
+	        };
 	        if (response.memory.ticketFlowStatus) ticketFlowStatus = response.memory.ticketFlowStatus;
 	        selectedTicket = response.memory.selectedTicket || selectedTicket || "";
 	      }
@@ -3566,7 +3755,9 @@
 	        ticketFlowStatus = "payment_completed";
 	        paymentReturnPromptShown = false;
 	        showPaymentReturnPrompt(false);
+	        return;
 	      }
+	      handleReturnFromTicketPage(false);
 	    });
 
 	    window.addEventListener("storage", event => {
@@ -3582,7 +3773,7 @@
 	      if (event.persisted) {
 	        // Restored from bfcache (e.g. browser back button) — re-render needed.
 	        restoreChatFromLocalStorage();
-	        showPaymentReturnPrompt(false);
+	        handleReturnFromTicketPage(false);
 	        scrollChatToBottom();
 	      }
 	    });
@@ -3597,7 +3788,9 @@
 	        ticketFlowStatus = "payment_completed";
 	        paymentReturnPromptShown = false;
 	        showPaymentReturnPrompt(false);
+	        return;
 	      }
+	      handleReturnFromTicketPage(false);
 	    });
 
     input.addEventListener("keydown", e => {
@@ -3624,6 +3817,7 @@
 	    }
 		    logGeoBrowserDebug();
 	    showPaymentReturnPrompt(false);
+	    handleReturnFromTicketPage(false);
 	    forceScrollChatToBottom();
 
     if ("serviceWorker" in navigator && location.protocol !== "file:") {
