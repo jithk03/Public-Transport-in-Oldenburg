@@ -2212,6 +2212,13 @@
             input.focus();
             return;
           }
+          if (storedItem.action === "enter_destination") {
+            removeChips();
+            addMessage(ct("typeDestinationPrompt"), "bot");
+            saveChatState();
+            input.focus();
+            return;
+          }
           if (storedItem.action) {
             handleDemoTicketAction(storedItem);
             return;
@@ -2271,6 +2278,8 @@
       clearChat:         { en: "Clear chat",                            de: "Chat löschen",                   ar: "مسح المحادثة",             tr: "Sohbeti temizle",             uk: "Очистити чат",                    hi: "चैट साफ़ करें" },
       typeLocationPrompt:{ en: "Enter your starting address, nearby stop, landmark, or building name.", de: "Geben Sie Ihre Startadresse, eine nahe Haltestelle, ein Wahrzeichen oder einen Gebäudenamen ein.", ar: "أدخل عنوان البداية أو محطة قريبة أو معلماً أو اسم مبنى.", tr: "Başlangıç adresinizi, yakın bir durağı, yer işaretini veya bina adını girin.", uk: "Введіть адресу початку, найближчу зупинку, орієнтир або назву будівлі.", hi: "अपना शुरुआती पता, पास का स्टॉप, स्थलचिह्न या इमारत का नाम दर्ज करें।" },
       typeStartingPointPrompt:{ en: "Okay. Type your starting point.", de: "Okay. Geben Sie Ihren Startpunkt ein.", ar: "حسناً. اكتب نقطة البداية.", tr: "Tamam. Başlangıç noktanızı yazın.", uk: "Добре. Введіть початкову точку.", hi: "ठीक है। अपना शुरुआती स्थान लिखें।" },
+      typeDestination:       { en: "Type destination", de: "Ziel eingeben", ar: "اكتب الوجهة", tr: "Hedef yaz", uk: "Ввести пункт призначення", hi: "गंतव्य लिखें" },
+      typeDestinationPrompt: { en: "Okay. Type where you want to go.", de: "Okay. Wohin möchten Sie gehen?", ar: "حسناً. اكتب إلى أين تريد الذهاب.", tr: "Tamam. Nereye gitmek istediğinizi yazın.", uk: "Добре. Введіть, куди ви хочете поїхати.", hi: "ठीक है। आप कहाँ जाना चाहते हैं वह लिखें।" },
       typeNearbyStop:        { en: "Type nearby stop",              de: "Haltestelle eingeben",            ar: "اكتب محطة قريبة",          tr: "Yakındaki durağı yaz",        uk: "Ввести найближчу зупинку",        hi: "पास का स्टॉप लिखें" },
       enterAddressManually:  { en: "Enter address manually",        de: "Adresse manuell eingeben",        ar: "أدخل العنوان يدوياً",       tr: "Adresi manuel girin",         uk: "Ввести адресу вручну",            hi: "पता मैन्युअल दर्ज करें" },
       typeNearbyStopPrompt:  { en: "Okay. Type the stop or landmark near you, for example Postenweg, Lappan, or Hauptbahnhof.", de: "Okay. Geben Sie die nahe Haltestelle oder das Wahrzeichen ein, z. B. Postenweg, Lappan oder Hauptbahnhof.", ar: "حسناً. اكتب المحطة أو المعلم القريب منك، مثل Postenweg أو Lappan أو Hauptbahnhof.", tr: "Tamam. Yakınızdaki durak veya yer işaretini yazın, örneğin Postenweg, Lappan veya Hauptbahnhof.", uk: "Добре. Введіть найближчу зупинку або орієнтир, наприклад Postenweg, Lappan або Hauptbahnhof.", hi: "ठीक है। अपने पास का स्टॉप या स्थलचिह्न लिखें, जैसे Postenweg, Lappan, या Hauptbahnhof।" },

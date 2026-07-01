@@ -97,6 +97,9 @@ const serverStrings = {
   noTransferLabel:   { en: "No transfer", de: "Kein Umstieg", ar: "بدون تبديل", tr: "Aktarmasız", uk: "Без пересадки", hi: "कोई बदलाव नहीं" },
   walkRoute:         { en: "Walking route", de: "Fußweg", ar: "طريق مشي", tr: "Yürüme rotası", uk: "Пішохідний маршрут", hi: "पैदल रूट" },
   foundLocAskDest:   { en: "I found your location. Where do you want to go? You can type a street, stop, landmark, or building name.", de: "Ich habe Ihren Standort gefunden. Wohin möchten Sie? Straße, Haltestelle, Wahrzeichen oder Gebäude.", ar: "لقد وجدت موقعك. إلى أين تريد الذهاب؟ يمكنك كتابة شارع أو محطة أو معلم.", tr: "Konumunuzu buldum. Nereye gitmek istiyorsunuz? Sokak, durak veya bina adı yazabilirsiniz.", uk: "Я знайшов вашу локацію. Куди ви хочете поїхати? Вулиця, зупинка або будівля.", hi: "मुझे आपका स्थान मिल गया। आप कहाँ जाना चाहते हैं? सड़क, स्टॉप या स्थलचिह्न का नाम लिखें।" },
+  currentLocationFoundAskDestination: { en: "I found your location. I'll use the nearest suitable stop: {stopName}, about {walkingMinutes} minutes away. Where do you want to go?", de: "Ich habe Ihren Standort gefunden. Ich verwende die nächste geeignete Haltestelle: {stopName}, etwa {walkingMinutes} Minuten entfernt. Wohin möchten Sie?", ar: "لقد وجدت موقعك. سأستخدم أقرب محطة مناسبة: {stopName}، على بُعد {walkingMinutes} دقائق تقريباً. إلى أين تريد الذهاب؟", tr: "Konumunuzu buldum. En yakın uygun durağı kullanacağım: {stopName}, yaklaşık {walkingMinutes} dakika uzakta. Nereye gitmek istiyorsunuz?", uk: "Я знайшов вашу локацію. Я використаю найближчу підходящу зупинку: {stopName}, приблизно {walkingMinutes} хвилин ходьби. Куди ви хочете поїхати?", hi: "मुझे आपका स्थान मिल गया। मैं निकटतम उपयुक्त स्टॉप का उपयोग करूंगा: {stopName}, लगभग {walkingMinutes} मिनट दूर। आप कहाँ जाना चाहते हैं?" },
+  typeDestination:   { en: "Type destination", de: "Ziel eingeben", ar: "اكتب الوجهة", tr: "Hedef yaz", uk: "Ввести пункт призначення", hi: "गंतव्य लिखें" },
+  typeDestinationPrompt: { en: "Okay. Type where you want to go.", de: "Okay. Wohin möchten Sie gehen?", ar: "حسناً. اكتب إلى أين تريد الذهاب.", tr: "Tamam. Nereye gitmek istediğinizi yazın.", uk: "Добре. Введіть, куди ви хочете поїхати.", hi: "ठीक है। आप कहाँ जाना चाहते हैं वह लिखें।" },
   noWorriesStart:    { en: "No worries. Should I use your current location as the starting point?", de: "Kein Problem. Soll ich Ihren Standort als Startpunkt nutzen?", ar: "لا داعي للقلق. هل أستخدم موقعك كنقطة انطلاق؟", tr: "Sorun değil. Başlangıç için mevcut konumunuzu kullanayım mı?", uk: "Нічого страшного. Чи використати вашу локацію як відправну точку?", hi: "चिंता न करें। क्या मैं आपके वर्तमान स्थान को शुरुआती बिंदु के रूप में उपयोग करूँ?" },
   noWorriesDest:     { en: "No worries. What is the name or street of your dorm or destination?", de: "Kein Problem. Wie heißt Ihr Ziel oder Wohnheim?", ar: "لا داعي للقلق. ما اسم وجهتك؟", tr: "Sorun değil. Hedefinizin adı nedir?", uk: "Нічого страшного. Яка назва місця призначення?", hi: "चिंता न करें। आपके गंतव्य का नाम क्या है?" },
   noWorriesTime:     { en: "No worries. What time do you want to travel?", de: "Kein Problem. Um wie viel Uhr möchten Sie reisen?", ar: "لا داعي للقلق. في أي وقت تريد السفر؟", tr: "Sorun değil. Ne zaman seyahat etmek istiyorsunuz?", uk: "Нічого страшного. О якій годині ви хочете їхати?", hi: "चिंता न करें। आप किस समय यात्रा करना चाहते हैं?" },
@@ -7864,12 +7867,10 @@ async function responseForPendingDestination({ session, message, lang }) {
     })
     : routeToPlan.origin || session.selectedLocations.start;
   session.pendingRoute = null;
-  console.log("[AWAITING DESTINATION HANDLER DEBUG]", {
+  console.log("[AWAITING DESTINATION DIRECT INPUT DEBUG]", {
     rawText: message,
-    conversationState: "awaiting_destination",
+    pendingOrigin: pending.originText,
     destinationText: destination,
-    pendingRouteBefore: pending,
-    pendingRouteAfter: null,
     routePlanningStarted: true
   });
 
@@ -8899,14 +8900,25 @@ async function responseAfterCurrentLocation({ session, coords, message, lang }) 
       createdAt: Date.now()
     };
     session.conversationState = "awaiting_destination";
-    const stopPrefix = originStop
-      ? (accessPrefs.accessibilityRequired || accessPrefs.wheelchairRequired
-        ? `${ts("nearestSuitableStop", lang)} ${originStop.name}, about ${originStop.walkingMinutes || Math.max(1, Math.round((originStop.distanceMeters || 0) / 80))} minutes away.`
-        : `I found your location. The nearest suitable stop seems to be ${originStop.name}, about ${originStop.walkingMinutes || Math.max(1, Math.round((originStop.distanceMeters || 0) / 80))} minutes away.`)
-      : "";
+    const walkingMinutes = originStop
+      ? (originStop.walkingMinutes || Math.max(1, Math.round((originStop.distanceMeters || 0) / 80)))
+      : 0;
+    const locationSuccessReply = originStop
+      ? ts("currentLocationFoundAskDestination", lang, { stopName: originStop.name, walkingMinutes })
+      : ts("foundLocAskDest", lang);
+    const destinationQuickReplies = [
+      { label: ts("typeDestination", lang), action: "enter_destination" }
+    ];
+    console.log("[CURRENT LOCATION SUCCESS DESTINATION PROMPT DEBUG]", {
+      conversationState: session.conversationState,
+      originText: session.pendingRoute?.originText,
+      originStop: session.pendingRoute?.originStop,
+      destinationText: session.pendingRoute?.destinationText,
+      quickReplies: destinationQuickReplies
+    });
     return {
-      reply: [stopPrefix, ts("foundLocAskDest", lang)].filter(Boolean).join("\n\n"),
-      quickButtons: mergeQuickReplies([], lang, { responseType: "location_found_ask_dest" }),
+      reply: locationSuccessReply,
+      quickButtons: mergeQuickReplies(destinationQuickReplies, lang, { responseType: "location_found_ask_dest" }),
       routeResult: null
     };
   }
@@ -9200,6 +9212,28 @@ async function handleChatRequest(req, res) {
         sessionId,
         reply: changeTimeResponse.reply,
         quickButtons: changeTimeResponse.quickButtons,
+        routeSummary: "",
+        lastRouteResult: null,
+        memory: memoryPayload(session)
+      });
+      return;
+    }
+
+    if (body.action === "enter_destination") {
+      const previousConversationState = effectiveConversationState(session);
+      const pendingRoute = session.pendingRoute ? { ...session.pendingRoute } : null;
+      console.log("[ENTER DESTINATION ACTION DEBUG]", {
+        previousConversationState,
+        nextConversationState: "awaiting_destination",
+        pendingRoute
+      });
+      const reply = ts("typeDestinationPrompt", lang);
+      rememberMessage(session, "user", message);
+      rememberMessage(session, "assistant", reply);
+      sendBotJson(200, {
+        sessionId,
+        reply,
+        quickButtons: mergeQuickReplies([], lang, { responseType: "awaiting_destination_prompt" }),
         routeSummary: "",
         lastRouteResult: null,
         memory: memoryPayload(session)
