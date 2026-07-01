@@ -166,14 +166,14 @@ const serverStrings = {
   chooseDepartureTime: { en: "Choose departure time", de: "Abfahrtszeit wählen", ar: "اختر وقت المغادرة", tr: "Kalkış saatini seç", uk: "Оберіть час відправлення", hi: "रवानगी का समय चुनें" },
   arriveByATime:     { en: "Arrive by a time", de: "Ankunft bis zu einer Zeit", ar: "الوصول بحلول وقت معين", tr: "Belirli saatte var", uk: "Прибути до певного часу", hi: "एक समय तक पहुँचें" },
   tomorrow:          { en: "Tomorrow", de: "Morgen", ar: "غداً", tr: "Yarın", uk: "Завтра", hi: "कल" },
-  whatDepartureTime: { en: "What departure time should I use? You can type something like 'today at 5 pm' or 'tomorrow at 9 am'.", de: "Welche Abfahrtszeit soll ich verwenden? Sie können z. B. 'heute um 17 Uhr' oder 'morgen um 9 Uhr' eingeben.", ar: "ما وقت المغادرة الذي يجب استخدامه؟ يمكنك كتابة شيء مثل 'اليوم الساعة 5 مساءً' أو 'غداً الساعة 9 صباحاً'.", tr: "Hangi kalkış saatini kullanayım? 'Bugün saat 17:00' veya 'Yarın saat 9:00' gibi yazabilirsiniz.", uk: "Який час відправлення використовувати? Ви можете написати, наприклад, 'сьогодні о 17:00' або 'завтра о 9:00'.", hi: "मुझे कौन सा रवानगी का समय उपयोग करना चाहिए? आप कुछ ऐसा टाइप कर सकते हैं जैसे 'आज शाम 5 बजे' या 'कल सुबह 9 बजे'।" },
-  whatArrivalTime:   { en: "What time do you need to arrive by? You can type something like 'tomorrow at 8:30 am' or 'today at 12 pm'.", de: "Bis wann müssen Sie ankommen? Sie können z. B. 'morgen um 8:30 Uhr' oder 'heute um 12 Uhr' eingeben.", ar: "بأي وقت تحتاج للوصول؟ يمكنك كتابة شيء مثل 'غداً الساعة 8:30 صباحاً' أو 'اليوم الساعة 12 ظهراً'.", tr: "Ne zamana kadar varmanız gerekiyor? 'Yarın saat 8:30' veya 'Bugün öğlen 12:00' gibi yazabilirsiniz.", uk: "До якого часу вам потрібно прибути? Ви можете написати, наприклад, 'завтра о 8:30' або 'сьогодні о 12:00'.", hi: "आपको कितने बजे तक पहुँचना है? आप कुछ ऐसा टाइप कर सकते हैं जैसे 'कल सुबह 8:30 बजे' या 'आज दोपहर 12 बजे'।" },
+  whatDepartureTime: { en: "What departure time should I use? You can type something like 'today at 17:00' or 'tomorrow at 09:00'.", de: "Welche Abfahrtszeit soll ich verwenden? Sie können z. B. 'heute um 17:00' oder 'morgen um 09:00' eingeben.", ar: "ما وقت المغادرة الذي يجب استخدامه؟ يمكنك كتابة شيء مثل 'اليوم الساعة 17:00' أو 'غداً الساعة 09:00'.", tr: "Hangi kalkış saatini kullanayım? 'Bugün saat 17:00' veya 'Yarın saat 09:00' gibi yazabilirsiniz.", uk: "Який час відправлення використовувати? Ви можете написати, наприклад, 'сьогодні о 17:00' або 'завтра о 09:00'.", hi: "मुझे कौन सा रवानगी का समय उपयोग करना चाहिए? आप कुछ ऐसा टाइप कर सकते हैं जैसे 'आज 17:00' या 'कल 09:00'।" },
+  whatArrivalTime:   { en: "What time do you need to arrive by? You can type something like 'tomorrow at 08:30' or 'today at 12:00'.", de: "Bis wann müssen Sie ankommen? Sie können z. B. 'morgen um 08:30 Uhr' oder 'heute um 12:00 Uhr' eingeben.", ar: "بأي وقت تحتاج للوصول؟ يمكنك كتابة شيء مثل 'غداً الساعة 08:30' أو 'اليوم الساعة 12:00'.", tr: "Ne zamana kadar varmanız gerekiyor? 'Yarın saat 08:30' veya 'Bugün öğlen 12:00' gibi yazabilirsiniz.", uk: "До якого часу вам потрібно прибути? Ви можете написати, наприклад, 'завтра о 08:30' або 'сьогодні о 12:00'.", hi: "आपको कितने बजे तक पहुँचना है? आप कुछ ऐसा टाइप कर सकते हैं जैसे 'कल 08:30' या 'आज 12:00'।" },
   whatTimeTomorrow:  { en: "What time tomorrow?", de: "Um wie viel Uhr morgen?", ar: "في أي وقت غداً؟", tr: "Yarın saat kaçta?", uk: "О котрій завтра?", hi: "कल किस समय?" },
   typeAnotherTime:   { en: "Type another time", de: "Andere Zeit eingeben", ar: "اكتب وقتاً آخر", tr: "Başka bir saat girin", uk: "Ввести інший час", hi: "दूसरा समय टाइप करें" },
-  typeAnotherTimePrompt: { en: "Sure. Type the time, for example 7:30 AM or 11:15 AM.", de: "Kein Problem. Geben Sie die Zeit ein, zum Beispiel 7:30 Uhr oder 11:15 Uhr.", ar: "حسناً. اكتب الوقت، مثلاً 7:30 صباحاً أو 11:15 صباحاً.", tr: "Tabii. Zamanı yazın, örneğin 7:30 veya 11:15.", uk: "Звичайно. Введіть час, наприклад 7:30 або 11:15.", hi: "ज़रूर। समय टाइप करें, उदाहरण के लिए 7:30 AM या 11:15 AM।" },
-  eightAm:           { en: "8:00 AM", de: "8:00 Uhr", ar: "8:00 صباحاً", tr: "08:00", uk: "8:00", hi: "सुबह 8:00" },
-  nineAm:            { en: "9:00 AM", de: "9:00 Uhr", ar: "9:00 صباحاً", tr: "09:00", uk: "9:00", hi: "सुबह 9:00" },
-  tenAm:             { en: "10:00 AM", de: "10:00 Uhr", ar: "10:00 صباحاً", tr: "10:00", uk: "10:00", hi: "सुबह 10:00" },
+  typeAnotherTimePrompt: { en: "Sure. Type the time, for example 07:30 or 11:15.", de: "Kein Problem. Geben Sie die Zeit ein, zum Beispiel 07:30 Uhr oder 11:15 Uhr.", ar: "حسناً. اكتب الوقت، مثلاً 07:30 أو 11:15.", tr: "Tabii. Zamanı yazın, örneğin 07:30 veya 11:15.", uk: "Звичайно. Введіть час, наприклад 07:30 або 11:15.", hi: "ज़रूर। समय टाइप करें, उदाहरण के लिए 07:30 या 11:15।" },
+  eightAm:           { en: "08:00", de: "08:00", ar: "08:00", tr: "08:00", uk: "08:00", hi: "08:00" },
+  nineAm:            { en: "09:00", de: "09:00", ar: "09:00", tr: "09:00", uk: "09:00", hi: "09:00" },
+  tenAm:             { en: "10:00", de: "10:00", ar: "10:00", tr: "10:00", uk: "10:00", hi: "10:00" },
   lostRouteContext:  { en: "I lost the route we were changing. Please tell me your starting point and destination again.", de: "Ich habe die Route verloren, die wir ändern wollten. Bitte nennen Sie mir erneut Start und Ziel.", ar: "فقدت المسار الذي كنا نغيره. يرجى إخباري بنقطة البداية والوجهة مرة أخرى.", tr: "Değiştirdiğimiz rotayı kaybettim. Lütfen başlangıç noktanızı ve hedefinizi tekrar söyleyin.", uk: "Я загубив маршрут, який ми змінювали. Будь ласка, вкажіть початкову точку та пункт призначення ще раз.", hi: "मैं वह रूट भूल गया जो हम बदल रहे थे। कृपया अपना शुरुआती बिंदु और गंतव्य फिर से बताएं।" },
   timeTodayLater:    { en: "Today later", de: "Heute später", ar: "لاحقاً اليوم", tr: "Bugün daha sonra", uk: "Сьогодні пізніше", hi: "आज बाद में" },
   timeTomorrowMorning: { en: "Tomorrow morning", de: "Morgen früh", ar: "غداً صباحاً", tr: "Yarın sabah", uk: "Завтра вранці", hi: "कल सुबह" },
@@ -3127,6 +3127,42 @@ function addDaysToDateParts(parts, days) {
   return { year: shifted.getUTCFullYear(), month: shifted.getUTCMonth() + 1, day: shifted.getUTCDate() };
 }
 
+function getTomorrowDateEuropeBerlin() {
+  const now = new Date();
+  return addDaysToDateParts(zonedDateParts(now, ROUTE_TIMEZONE), 1);
+}
+
+function buildBerlinDateTimeForSelectedDate(baseDate, hour, minute = 0) {
+  const utcMs = zonedWallClockToUtcMs(
+    { year: baseDate.year, month: baseDate.month, day: baseDate.day, hour, minute, second: 0 },
+    ROUTE_TIMEZONE
+  );
+  return new Date(utcMs);
+}
+
+// Parses a bare time string in the context of the "tomorrow time" flow.
+// Accepts: "17", "07", "7", "17:30", "7:30", "5 pm", "8 am"
+// Returns { hour, minute } or null.
+function parseBareTimeForTomorrow(text) {
+  const t = String(text || "").trim().toLowerCase();
+  const amPmMatch = t.match(/^([0-2]?\d)(?::([0-5]\d))?\s*(am|pm)$/);
+  if (amPmMatch) {
+    let h = Number(amPmMatch[1]);
+    const m = Number(amPmMatch[2] || 0);
+    if (amPmMatch[3] === "pm" && h < 12) h += 12;
+    if (amPmMatch[3] === "am" && h === 12) h = 0;
+    if (h >= 0 && h <= 23) return { hour: h, minute: m };
+  }
+  const colonMatch = t.match(/^([0-2]?\d):([0-5]\d)$/);
+  if (colonMatch) {
+    const h = Number(colonMatch[1]);
+    if (h >= 0 && h <= 23) return { hour: h, minute: Number(colonMatch[2]) };
+  }
+  const bareMatch = t.match(/^(0?[0-9]|1[0-9]|2[0-3])$/);
+  if (bareMatch) return { hour: Number(bareMatch[1]), minute: 0 };
+  return null;
+}
+
 function formatDateForOtp(date) {
   const parts = zonedDateParts(date, ROUTE_TIMEZONE);
   return `${pad2(parts.month)}-${pad2(parts.day)}-${parts.year}`;
@@ -3875,10 +3911,8 @@ function routeModeIcon(mode) {
 
 function formatClock(value, lang = "en") {
   if (!value) return "";
-  const localeMap = { de: "de-DE", ar: "ar-SA", tr: "tr-TR", uk: "uk-UA", hi: "hi-IN", en: "en-US" };
-  const hour12 = lang !== "de" && lang !== "tr" && lang !== "uk" && lang !== "hi";
-  return new Intl.DateTimeFormat(localeMap[lang] || "en-US", {
-    hour: "numeric", minute: "2-digit", hour12, timeZone: "Europe/Berlin"
+  return new Intl.DateTimeFormat("de-DE", {
+    hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "Europe/Berlin"
   }).format(new Date(value));
 }
 
@@ -8458,7 +8492,8 @@ const CHANGE_TIME_MODES = new Set([
   "awaiting_route_time_change",
   "awaiting_departure_time_for_existing_route",
   "awaiting_arrival_time_for_existing_route",
-  "awaiting_tomorrow_time_for_existing_route"
+  "awaiting_tomorrow_time_for_existing_route",
+  "awaiting_custom_tomorrow_time_for_existing_route"
 ]);
 
 async function responseForRouteTimeChange({ session, message, lang }) {
@@ -8525,14 +8560,20 @@ async function responseForRouteTimeChange({ session, message, lang }) {
     // "Tomorrow"
     if (normalized === normalizeText(ts("tomorrow", lang))) {
       const tomorrowButtons = routeChangeTomorrowButtons(lang);
-      session.pendingRoute = { ...pending, mode: "awaiting_tomorrow_time_for_existing_route" };
+      const tomorrowBaseDate = getTomorrowDateEuropeBerlin();
+      session.pendingRoute = {
+        ...pending,
+        mode: "awaiting_tomorrow_time_for_existing_route",
+        selectedDate: "tomorrow",
+        baseDate: tomorrowBaseDate,
+        pendingTimeMode: TIME_MODE.DEPART_AT
+      };
       session.conversationState = "awaiting_tomorrow_time_for_existing_route";
-      console.log("[CHANGE TIME FLOW DEBUG]", {
-        action: "tomorrow",
+      console.log("[CHANGE TIME STATE DEBUG]", {
+        action: "tomorrow_selected",
         conversationStateBefore,
         conversationStateAfter: "awaiting_tomorrow_time_for_existing_route",
-        lastRouteContext: session.lastRouteContext,
-        quickReplies: tomorrowButtons
+        pendingTimeChange: { selectedDate: "tomorrow", baseDate: tomorrowBaseDate, timeMode: TIME_MODE.DEPART_AT }
       });
       return { reply: ts("whatTimeTomorrow", lang), quickButtons: tomorrowButtons, routeResult: null };
     }
@@ -8586,77 +8627,312 @@ async function responseForRouteTimeChange({ session, message, lang }) {
 
   // ── LEVEL 2b: awaiting_arrival_time_for_existing_route ───────────────────
   if (mode === "awaiting_arrival_time_for_existing_route") {
-    const parsed = extractTripDetails(message, lang);
-    const routeTimeText = routeTimeTextFromChangeReply(message, lang) || parsed.requestedDateTime || parsed.time || "";
-
-    console.log("[CHANGE TIME PARSE DEBUG]", {
+    // PART H: State debug log
+    console.log("[ARRIVE BY TIME STATE DEBUG]", {
       rawText: message,
       conversationState: mode,
-      parsedDateTime: routeTimeText,
-      explicitDate: parsed.explicitDate || detectExplicitDate(routeTimeText),
-      timeMode: TIME_MODE.ARRIVE_BY,
-      originText: pending.originText,
-      destinationText: pending.destinationText
+      pendingTimeChange: { originText: pending.originText, destinationText: pending.destinationText, timeMode: "ARRIVE_BY" },
+      hasLastRouteContext: Boolean(session.lastRouteContext)
     });
+
+    // Handle "Leave now" → recalculate as depart-at now (not arrive-by)
+    if (normalized === normalizeText(ts("leaveNow", lang))) {
+      return recalculateRouteWithTime({ session, lang, pending, routeTimeText: "now", timeMode: TIME_MODE.DEPART_AT, explicitDate: "" });
+    }
+
+    // Handle "Choose another time" → re-ask
+    if (/^(choose\s+(another|a\s+different)\s+time|another\s+time|different\s+time)$/i.test(normalized)) {
+      return { reply: ts("whatArrivalTime", lang), quickButtons: [], routeResult: null };
+    }
+
+    const hasTomorrowPrefix = /\b(tomorrow|morgen)\b/i.test(message);
+
+    let routeTimeText = "";
+    let parsedHour = null;
+    let parsedMinute = null;
+    let explicitDate = "";
+    let isPastToday = false;
+
+    if (hasTomorrowPrefix) {
+      // Strip "tomorrow"/"morgen" and connective words, then parse bare time
+      const timePart = message.toLowerCase()
+        .replace(/\b(tomorrow|morgen)\b/g, "")
+        .replace(/\b(at|um|ab|around|by)\b/g, "")
+        .trim();
+      const bareTime = parseBareTimeForTomorrow(timePart);
+      if (bareTime) {
+        parsedHour = bareTime.hour;
+        parsedMinute = bareTime.minute;
+        routeTimeText = `tomorrow ${pad2(parsedHour)}:${pad2(parsedMinute)}`;
+        explicitDate = "tomorrow";
+      } else {
+        // General parser for "tomorrow at 09:00", etc.
+        const parsed = extractTripDetails(message, lang);
+        routeTimeText = parsed.time || "";
+        explicitDate = parsed.explicitDate || "tomorrow";
+      }
+    } else {
+      // Try bare-time parse first: "9", "17", "9:30", "09:00", "5 pm"
+      const bareTime = parseBareTimeForTomorrow(normalized);
+      if (bareTime) {
+        parsedHour = bareTime.hour;
+        parsedMinute = bareTime.minute;
+        const nowParts = zonedDateParts(new Date(), ROUTE_TIMEZONE);
+        isPastToday = parsedHour < nowParts.hour || (parsedHour === nowParts.hour && parsedMinute <= nowParts.minute);
+        if (!isPastToday) {
+          routeTimeText = `today ${pad2(parsedHour)}:${pad2(parsedMinute)}`;
+          explicitDate = "today";
+        }
+        // if isPastToday: routeTimeText stays "" → past-time branch below
+      } else {
+        // General parser — use parsed.time only (NOT parsed.requestedDateTime which always falls back to "now")
+        const parsed = extractTripDetails(message, lang);
+        const parsedTime = parsed.time || "";
+        const fromChangeReply = routeTimeTextFromChangeReply(message, lang);
+        // Only accept fromChangeReply if it isn't the generic "now" fallback
+        routeTimeText = (fromChangeReply && fromChangeReply !== "now") ? fromChangeReply : parsedTime;
+        explicitDate = parsed.explicitDate || detectExplicitDate(routeTimeText);
+      }
+    }
+
+    // PART H: Short-time parse debug log
+    console.log("[ARRIVE BY SHORT TIME PARSE DEBUG]", {
+      rawText: message,
+      parsedHour,
+      parsedMinute,
+      explicitDate,
+      requestedDateTime: routeTimeText,
+      isPastToday,
+      nextAction: isPastToday ? "ask_tomorrow_clarification" : (routeTimeText ? "recalculate" : "ask_again")
+    });
+
+    // PART C: Past-time handling — bare time already passed today
+    if (isPastToday && parsedHour !== null) {
+      const timeDisplay = `${pad2(parsedHour)}:${pad2(parsedMinute)}`;
+      const tomorrowTimeValue = `tomorrow ${timeDisplay}`;
+      return {
+        reply: `${timeDisplay} today has already passed. Do you mean tomorrow at ${timeDisplay} or a different time?`,
+        quickButtons: [
+          { label: `Tomorrow at ${timeDisplay}`, value: tomorrowTimeValue },
+          { label: "Choose another time", value: "Choose another time" },
+          { label: ts("leaveNow", lang), value: ts("leaveNow", lang) }
+        ],
+        routeResult: null
+      };
+    }
 
     if (!routeTimeText) {
       return { reply: ts("whatArrivalTime", lang), quickButtons: [], routeResult: null };
     }
 
+    const isForTomorrow = hasTomorrowPrefix || routeTimeText.startsWith("tomorrow");
+    const timeDisplayStr = parsedHour !== null
+      ? `${pad2(parsedHour)}:${pad2(parsedMinute)}`
+      : routeTimeText.replace(/^(today|tomorrow)\s+/i, "");
+
+    // PART H: Route request debug log
+    console.log("[ARRIVE BY ROUTE REQUEST DEBUG]", {
+      originText: pending.originText,
+      destinationText: pending.destinationText,
+      requestedDateTime: routeTimeText,
+      requestedTimeDisplay: timeDisplayStr,
+      timeMode: TIME_MODE.ARRIVE_BY,
+      arriveBy: true
+    });
+
     // Only override to DEPART_AT if user explicitly typed depart phrasing
     const explicitDepart = /\b(?:leave|depart|start)\s+at\b/i.test(message);
     const timeMode = explicitDepart ? TIME_MODE.DEPART_AT : TIME_MODE.ARRIVE_BY;
-    const explicitDate = parsed.explicitDate || detectExplicitDate(routeTimeText);
-    return recalculateRouteWithTime({ session, lang, pending, routeTimeText, timeMode, explicitDate });
+
+    const routeResponse = await recalculateRouteWithTime({ session, lang, pending, routeTimeText, timeMode, explicitDate });
+
+    // PART F: Validation debug
+    if (timeMode === TIME_MODE.ARRIVE_BY && routeResponse.routeResult) {
+      const finalArrival = routeResponse.routeResult.route?.endTime;
+      const nowMs = Date.now();
+      console.log("[ARRIVE BY RESULT VALIDATION DEBUG]", {
+        requestedArrival: routeTimeText,
+        finalArrival,
+        routeAccepted: !finalArrival || Number(finalArrival) <= nowMs + 24 * 60 * 60 * 1000
+      });
+      if (finalArrival) {
+        console.warn("[BUG ARRIVE_BY_ROUTE_LATE]", { requestedArrival: routeTimeText, finalArrival });
+      }
+    }
+
+    // PART E: Confirmation message prepended to route reply
+    const confirmReply = isForTomorrow
+      ? `Got it — I'll find a route that gets you there tomorrow by ${timeDisplayStr}.`
+      : `Got it — I'll find a route that gets you there by ${timeDisplayStr}.`;
+
+    return { ...routeResponse, reply: `${confirmReply}\n\n${routeResponse.reply}` };
   }
 
   // ── LEVEL 2c: awaiting_tomorrow_time_for_existing_route ──────────────────
   if (mode === "awaiting_tomorrow_time_for_existing_route") {
-    // "Type another time" button — ask user to free-type
+    // "Type another time" button → transition to free-text state, preserving tomorrow context
     if (normalized === normalizeText(ts("typeAnotherTime", lang))) {
-      console.log("[CHANGE TIME FLOW DEBUG]", {
+      session.pendingRoute = { ...pending, mode: "awaiting_custom_tomorrow_time_for_existing_route" };
+      session.conversationState = "awaiting_custom_tomorrow_time_for_existing_route";
+      console.log("[CHANGE TIME STATE DEBUG]", {
         action: "type_another_time",
         conversationStateBefore,
-        conversationStateAfter: mode,
-        lastRouteContext: session.lastRouteContext,
-        quickReplies: []
+        conversationStateAfter: "awaiting_custom_tomorrow_time_for_existing_route",
+        pendingTimeChange: {
+          selectedDate: pending.selectedDate,
+          baseDate: pending.baseDate,
+          timeMode: pending.pendingTimeMode
+        }
       });
       return { reply: ts("typeAnotherTimePrompt", lang), quickButtons: [], routeResult: null };
     }
 
-    // Map named AM buttons to explicit time strings
+    // Named quick-pick buttons
     let routeTimeText = "";
+    let displayTime = "";
     if (normalized === normalizeText(ts("eightAm", lang)) || /^8:?00\s*(am)?$/i.test(normalized)) {
       routeTimeText = "tomorrow 8:00 AM";
+      displayTime = "08:00";
     } else if (normalized === normalizeText(ts("nineAm", lang)) || /^9:?00\s*(am)?$/i.test(normalized)) {
       routeTimeText = "tomorrow 9:00 AM";
+      displayTime = "09:00";
     } else if (normalized === normalizeText(ts("tenAm", lang)) || /^10:?00\s*(am)?$/i.test(normalized)) {
       routeTimeText = "tomorrow 10:00 AM";
+      displayTime = "10:00";
     } else {
-      // Free-text time input — parse it and prepend "tomorrow" if no date given
-      const parsed = extractTripDetails(message, lang);
-      const rawTime = routeTimeTextFromChangeReply(message, lang) || parsed.requestedDateTime || parsed.time || "";
-      if (rawTime) {
-        const hasDate = !!detectExplicitDate(rawTime);
-        routeTimeText = hasDate ? rawTime : `tomorrow ${rawTime}`;
+      // Try bare-hour parse first (handles "17", "7", "17:30", "5 pm", "8 am")
+      const bareTime = parseBareTimeForTomorrow(normalized);
+      if (bareTime) {
+        routeTimeText = `tomorrow ${pad2(bareTime.hour)}:${pad2(bareTime.minute)}`;
+        displayTime = `${pad2(bareTime.hour)}:${pad2(bareTime.minute)}`;
+        const baseDate = pending.baseDate || getTomorrowDateEuropeBerlin();
+        const debugDate = buildBerlinDateTimeForSelectedDate(baseDate, bareTime.hour, bareTime.minute);
+        console.log("[TIME BUILD DEBUG]", {
+          selectedDate: pending.selectedDate || "tomorrow",
+          baseDate,
+          inputHour: bareTime.hour,
+          inputMinute: bareTime.minute,
+          berlinLocalDisplay: displayTime,
+          iso: debugDate.toISOString(),
+          timeZone: "Europe/Berlin"
+        });
+      } else {
+        // Fall back to general parser, but never accept "now" as a time for this state
+        const parsed = extractTripDetails(message, lang);
+        const rawTime = parsed.time || "";
+        if (rawTime && rawTime !== "now") {
+          const hasDate = !!detectExplicitDate(rawTime);
+          routeTimeText = hasDate ? rawTime : `tomorrow ${rawTime}`;
+          displayTime = rawTime;
+        }
       }
     }
 
-    console.log("[CHANGE TIME PARSE DEBUG]", {
+    const resolvedTimeMode = normalizeTimeMode(pending.pendingTimeMode || TIME_MODE.DEPART_AT);
+
+    console.log("[BARE TIME PARSE DEBUG]", {
       rawText: message,
       conversationState: mode,
-      parsedDateTime: routeTimeText,
-      explicitDate: "tomorrow",
-      timeMode: TIME_MODE.DEPART_AT,
-      originText: pending.originText,
-      destinationText: pending.destinationText
+      selectedDate: pending.selectedDate,
+      baseDate: pending.baseDate,
+      requestedDateTime: routeTimeText,
+      timeMode: resolvedTimeMode
     });
 
     if (!routeTimeText) {
       return { reply: ts("whatTimeTomorrow", lang), quickButtons: routeChangeTomorrowButtons(lang), routeResult: null };
     }
 
-    return recalculateRouteWithTime({ session, lang, pending, routeTimeText, timeMode: TIME_MODE.DEPART_AT, explicitDate: "tomorrow" });
+    console.log("[CHANGE TIME ROUTE REQUEST DEBUG]", {
+      originText: pending.originText,
+      destinationText: pending.destinationText,
+      requestedDateTime: routeTimeText,
+      requestedTimeDisplay: displayTime,
+      timeMode: resolvedTimeMode,
+      selectedDate: pending.selectedDate
+    });
+
+    const routeResponse = await recalculateRouteWithTime({
+      session, lang, pending, routeTimeText,
+      timeMode: resolvedTimeMode,
+      explicitDate: "tomorrow"
+    });
+
+    const confirmReply = resolvedTimeMode === TIME_MODE.ARRIVE_BY
+      ? `Got it — I'll find a route that gets you there by tomorrow at ${displayTime}.`
+      : `Got it — I'll check the same route for tomorrow at ${displayTime}.`;
+
+    return { ...routeResponse, reply: `${confirmReply}\n\n${routeResponse.reply}` };
+  }
+
+  // ── LEVEL 2d: awaiting_custom_tomorrow_time_for_existing_route ────────────
+  if (mode === "awaiting_custom_tomorrow_time_for_existing_route") {
+    let routeTimeText = "";
+    let displayTime = "";
+    const baseDate = pending.baseDate || getTomorrowDateEuropeBerlin();
+
+    // Bare-hour parse handles "17", "7", "17:30", "5 pm", "8 am"
+    const bareTime = parseBareTimeForTomorrow(normalized);
+    if (bareTime) {
+      routeTimeText = `tomorrow ${pad2(bareTime.hour)}:${pad2(bareTime.minute)}`;
+      displayTime = `${pad2(bareTime.hour)}:${pad2(bareTime.minute)}`;
+      const debugDate = buildBerlinDateTimeForSelectedDate(baseDate, bareTime.hour, bareTime.minute);
+      console.log("[TIME BUILD DEBUG]", {
+        selectedDate: pending.selectedDate || "tomorrow",
+        baseDate,
+        inputHour: bareTime.hour,
+        inputMinute: bareTime.minute,
+        berlinLocalDisplay: displayTime,
+        iso: debugDate.toISOString(),
+        timeZone: "Europe/Berlin"
+      });
+    } else {
+      const parsed = extractTripDetails(message, lang);
+      const rawTime = parsed.time || "";
+      if (rawTime && rawTime !== "now") {
+        const hasDate = !!detectExplicitDate(rawTime);
+        routeTimeText = hasDate ? rawTime : `tomorrow ${rawTime}`;
+        displayTime = rawTime;
+      }
+    }
+
+    const resolvedTimeMode = normalizeTimeMode(pending.pendingTimeMode || TIME_MODE.DEPART_AT);
+
+    console.log("[BARE TIME PARSE DEBUG]", {
+      rawText: message,
+      conversationState: mode,
+      selectedDate: pending.selectedDate,
+      baseDate: pending.baseDate,
+      parsedHour: bareTime?.hour,
+      parsedMinute: bareTime?.minute,
+      requestedDateTime: routeTimeText,
+      timeMode: resolvedTimeMode
+    });
+
+    if (!routeTimeText) {
+      return { reply: ts("typeAnotherTimePrompt", lang), quickButtons: [], routeResult: null };
+    }
+
+    console.log("[CHANGE TIME ROUTE REQUEST DEBUG]", {
+      originText: pending.originText,
+      destinationText: pending.destinationText,
+      requestedDateTime: routeTimeText,
+      requestedTimeDisplay: displayTime,
+      timeMode: resolvedTimeMode,
+      selectedDate: pending.selectedDate
+    });
+
+    const routeResponse = await recalculateRouteWithTime({
+      session, lang, pending, routeTimeText,
+      timeMode: resolvedTimeMode,
+      explicitDate: "tomorrow"
+    });
+
+    const confirmReply = resolvedTimeMode === TIME_MODE.ARRIVE_BY
+      ? `Got it — I'll find a route that gets you there by tomorrow at ${displayTime}.`
+      : `Got it — I'll check the same route for tomorrow at ${displayTime}.`;
+
+    return { ...routeResponse, reply: `${confirmReply}\n\n${routeResponse.reply}` };
   }
 
   return null;
@@ -9458,7 +9734,7 @@ async function handleChatRequest(req, res) {
       }
     }
 
-    if (CHANGE_TIME_MODES.has(session.pendingRoute?.mode)) {
+    if (CHANGE_TIME_MODES.has(session.pendingRoute?.mode) || CHANGE_TIME_MODES.has(effectiveConversationState(session))) {
       const routeTimeChangeResponse = await responseForRouteTimeChange({
         session,
         message,

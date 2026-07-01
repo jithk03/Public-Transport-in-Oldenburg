@@ -2750,11 +2750,8 @@
 
 	    function formatRouteClock(value) {
 	      if (!value) return "";
-	      const lang = activeSelectedLanguage();
-	      const localeMap = { de: "de-DE", ar: "ar-SA", tr: "tr-TR", uk: "uk-UA", hi: "hi-IN", en: "en-US" };
-	      const hour12 = lang !== "de" && lang !== "tr" && lang !== "uk" && lang !== "hi";
-	      return new Intl.DateTimeFormat(localeMap[lang] || "en-US", {
-	        hour: "numeric", minute: "2-digit", hour12
+	      return new Intl.DateTimeFormat("de-DE", {
+	        hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "Europe/Berlin"
 	      }).format(new Date(value));
 	    }
 
