@@ -1995,6 +1995,56 @@
 	      };
 	    }
 
+	    function createPlanTripPendingRoute() {
+	      return {
+	        mode: "awaiting_origin",
+	        originText: null,
+	        origin: null,
+	        destinationText: null,
+	        destination: null,
+	        requestedDateTime: "now",
+	        explicitDate: "",
+	        timeMode: "DEPART_AT",
+	        sourceFlow: "plan_trip_button",
+	        createdAt: Date.now()
+	      };
+	    }
+
+	    function setPlanTripAwaitingOrigin() {
+	      const conversationStateBefore = currentServerMemory?.conversationState || currentServerMemory?.pendingRoute?.mode || "neutral";
+	      const pendingRouteBefore = currentServerMemory?.pendingRoute || null;
+	      const pendingRouteAfter = createPlanTripPendingRoute();
+	      currentServerMemory = {
+	        ...(currentServerMemory || {}),
+	        route: { start: "", destination: "", time: pendingRouteAfter.requestedDateTime, explicitDate: "", timeMode: "DEPART_AT" },
+	        pendingRoute: pendingRouteAfter,
+	        pendingLocation: null,
+	        pendingAmbiguousPlace: null,
+	        selectedLocations: { start: null, destination: null },
+	        conversationState: "awaiting_origin",
+	        selectedLanguage: currentLang()
+	      };
+	      console.log("[PLAN TRIP BUTTON DEBUG]", {
+	        conversationStateBefore,
+	        pendingRouteBefore,
+	        action: "plan_trip",
+	        conversationStateAfter: "awaiting_origin",
+	        pendingRouteAfter
+	      });
+	      return pendingRouteAfter;
+	    }
+
+	    function ensureAwaitingOriginForManualEntry() {
+	      if (currentServerMemory?.pendingRoute?.mode === "awaiting_origin") {
+	        currentServerMemory = {
+	          ...currentServerMemory,
+	          conversationState: "awaiting_origin"
+	        };
+	        return currentServerMemory.pendingRoute;
+	      }
+	      return setPlanTripAwaitingOrigin();
+	    }
+
 	    function cancelPendingResponses() {
 	      pendingResponseTimers.forEach(item => {
 	        const timer = typeof item === "object" ? item.timer : item;
@@ -2035,6 +2085,15 @@
 	      }
 	    }
 
+    function mainActionChips(lang) {
+      const l = ui[lang] || ui.en;
+      return (l.chips || []).map((label, index) => ({
+        label,
+        value: welcomeQuickActions[index]?.message || label,
+        action: welcomeQuickActions[index]?.action || ""
+      }));
+    }
+
     function addChips(labels, afterNode = null, persist = true) {
       if (!Array.isArray(labels) || labels.length === 0) return null;
       const box = document.createElement("div");
@@ -2050,6 +2109,22 @@
         btn.dataset.item = JSON.stringify(storedItem);
         if (storedItem.welcomeAction) btn.dataset.welcomeAction = storedItem.welcomeAction;
         btn.addEventListener("click", () => {
+          if (storedItem.welcomeAction === "plan_trip") {
+            startPlanTripFlow(storedItem.label || storedItem.value || ct("planAnotherTrip"));
+            return;
+          }
+          if (storedItem.welcomeAction === "accessibility") {
+            sendMessage(storedItem.label || storedItem.value, { action: "accessibility" });
+            return;
+          }
+          if (storedItem.welcomeAction === "tickets") {
+            sendMessage(storedItem.label || storedItem.value, { action: "tickets" });
+            return;
+          }
+          if (storedItem.welcomeAction === "delay_help") {
+            sendMessage(storedItem.label || storedItem.value, { action: "delay_help" });
+            return;
+          }
           if (storedItem.welcomeAction) return;
           if (storedItem.type === "alternative_route") {
             const matchingSummary = [...chat.querySelectorAll(`.alternative-route-card[data-itinerary-index="${storedItem.itineraryIndex}"] .alternative-route-summary`)].pop();
@@ -2077,8 +2152,26 @@
             });
             return;
           }
-          if (storedItem.action) {
-            handleDemoTicketAction(storedItem);
+          if (storedItem.action === "route_change_time") {
+            sendMessage(storedItem.label || storedItem.value, {
+              action: storedItem.action
+            });
+            return;
+          }
+          if (storedItem.action === "plan_trip") {
+            sendMessage(storedItem.label || storedItem.value, { action: "plan_trip" });
+            return;
+          }
+          if (storedItem.action === "tickets") {
+            sendMessage(storedItem.label || storedItem.value, { action: "tickets" });
+            return;
+          }
+          if (storedItem.action === "accessibility" && !storedItem.welcomeAction) {
+            sendMessage(storedItem.label || storedItem.value, { action: "accessibility" });
+            return;
+          }
+          if (storedItem.action === "delay_help") {
+            sendMessage(storedItem.label || storedItem.value, { action: "delay_help" });
             return;
           }
           if (storedItem.locationSelection) {
@@ -2093,7 +2186,7 @@
             if (storedItem.url) window.open(storedItem.url, "_blank", "noopener,noreferrer");
             return;
           }
-          if (storedItem.value === "__current_location__") {
+          if (storedItem.action === "use_current_location" || storedItem.value === "__current_location__") {
             useCurrentLocation();
             return;
           }
@@ -2101,11 +2194,26 @@
             continueWithDetectedLocation();
             return;
           }
-          if (storedItem.value === "__type_location_manually__") {
+          if (storedItem.action === "type_nearby_stop" || storedItem.value === "__type_nearby_stop__") {
             pendingDetectedLocation = null;
             removeChips();
-            addMessage(ct("typeLocationPrompt"), "bot");
+            ensureAwaitingOriginForManualEntry();
+            addMessage(ct("typeNearbyStopPrompt"), "bot");
+            saveChatState();
             input.focus();
+            return;
+          }
+          if (storedItem.action === "enter_origin" || storedItem.value === "__type_location_manually__") {
+            pendingDetectedLocation = null;
+            removeChips();
+            ensureAwaitingOriginForManualEntry();
+            addMessage(ct("typeStartingPointPrompt"), "bot");
+            saveChatState();
+            input.focus();
+            return;
+          }
+          if (storedItem.action) {
+            handleDemoTicketAction(storedItem);
             return;
           }
           sendMessage(storedItem.value);
@@ -2162,6 +2270,10 @@
       ticketInfo:        { en: "Ticket information",                    de: "Ticketinformationen",             ar: "معلومات التذاكر",          tr: "Bilet bilgisi",               uk: "Інформація про квитки",           hi: "टिकट जानकारी" },
       clearChat:         { en: "Clear chat",                            de: "Chat löschen",                   ar: "مسح المحادثة",             tr: "Sohbeti temizle",             uk: "Очистити чат",                    hi: "चैट साफ़ करें" },
       typeLocationPrompt:{ en: "Enter your starting address, nearby stop, landmark, or building name.", de: "Geben Sie Ihre Startadresse, eine nahe Haltestelle, ein Wahrzeichen oder einen Gebäudenamen ein.", ar: "أدخل عنوان البداية أو محطة قريبة أو معلماً أو اسم مبنى.", tr: "Başlangıç adresinizi, yakın bir durağı, yer işaretini veya bina adını girin.", uk: "Введіть адресу початку, найближчу зупинку, орієнтир або назву будівлі.", hi: "अपना शुरुआती पता, पास का स्टॉप, स्थलचिह्न या इमारत का नाम दर्ज करें।" },
+      typeStartingPointPrompt:{ en: "Okay. Type your starting point.", de: "Okay. Geben Sie Ihren Startpunkt ein.", ar: "حسناً. اكتب نقطة البداية.", tr: "Tamam. Başlangıç noktanızı yazın.", uk: "Добре. Введіть початкову точку.", hi: "ठीक है। अपना शुरुआती स्थान लिखें।" },
+      typeNearbyStop:        { en: "Type nearby stop",              de: "Haltestelle eingeben",            ar: "اكتب محطة قريبة",          tr: "Yakındaki durağı yaz",        uk: "Ввести найближчу зупинку",        hi: "पास का स्टॉप लिखें" },
+      enterAddressManually:  { en: "Enter address manually",        de: "Adresse manuell eingeben",        ar: "أدخل العنوان يدوياً",       tr: "Adresi manuel girin",         uk: "Ввести адресу вручну",            hi: "पता मैन्युअल दर्ज करें" },
+      typeNearbyStopPrompt:  { en: "Okay. Type the stop or landmark near you, for example Postenweg, Lappan, or Hauptbahnhof.", de: "Okay. Geben Sie die nahe Haltestelle oder das Wahrzeichen ein, z. B. Postenweg, Lappan oder Hauptbahnhof.", ar: "حسناً. اكتب المحطة أو المعلم القريب منك، مثل Postenweg أو Lappan أو Hauptbahnhof.", tr: "Tamam. Yakınızdaki durak veya yer işaretini yazın, örneğin Postenweg, Lappan veya Hauptbahnhof.", uk: "Добре. Введіть найближчу зупинку або орієнтир, наприклад Postenweg, Lappan або Hauptbahnhof.", hi: "ठीक है। अपने पास का स्टॉप या स्थलचिह्न लिखें, जैसे Postenweg, Lappan, या Hauptbahnhof।" },
       routeSelected:     { en: "Route selected in chatbot",             de: "Im Chatbot ausgewählte Route",    ar: "المسار المحدد في المساعد",  tr: "Chatbot'ta seçilen rota",     uk: "Маршрут, вибраний у чатботі",      hi: "चैटबॉट में चुना गया मार्ग" },
       selectedTicket:    { en: "Selected ticket",                       de: "Ausgewähltes Ticket",            ar: "التذكرة المحددة",          tr: "Seçilen bilet",              uk: "Вибраний квиток",                 hi: "चुना गया टिकट" },
       missingAltRoute:   { en: "I cannot find that saved alternative route anymore. Please ask for the route again.", de: "Ich finde diese gespeicherte alternative Route nicht mehr. Bitte frage die Route erneut an.", ar: "لم أعد أجد هذا المسار البديل المحفوظ. يرجى طلب المسار مرة أخرى.", tr: "Kaydedilen alternatif rotayı artık bulamıyorum. Lütfen rotayı tekrar isteyin.", uk: "Я більше не можу знайти цей збережений альтернативний маршрут. Запитайте маршрут ще раз.", hi: "मैं वह सहेजा गया वैकल्पिक मार्ग अब नहीं ढूंढ पा रहा हूँ। कृपया मार्ग फिर से पूछें।" },
@@ -2169,7 +2281,7 @@
       couldNotProcessRequest: { en: "Sorry, I could not process that request. Please try again with a start and destination.", de: "Entschuldigung, ich konnte diese Anfrage nicht verarbeiten. Bitte versuchen Sie es mit Start und Ziel erneut.", ar: "عذراً، لم أتمكن من معالجة هذا الطلب. يرجى المحاولة مع نقطة بداية ووجهة.", tr: "Üzgünüm, bu isteği işleyemedim. Lütfen başlangıç ve hedef ile tekrar deneyin.", uk: "Вибачте, я не зміг обробити цей запит. Спробуйте ще раз із початком і пунктом призначення.", hi: "माफ करें, मैं यह अनुरोध संसाधित नहीं कर पाया। कृपया शुरुआत और गंतव्य के साथ फिर कोशिश करें।" },
       routeProcessingError: { en: "Sorry, something went wrong while planning that route. Please try again.", de: "Entschuldigung, bei der Routenplanung ist etwas schiefgelaufen. Bitte versuchen Sie es erneut.", ar: "عذراً، حدث خطأ أثناء تخطيط المسار. يرجى المحاولة مرة أخرى.", tr: "Üzgünüm, rota planlanırken bir şeyler ters gitti. Lütfen tekrar deneyin.", uk: "Вибачте, під час планування маршруту сталася помилка. Спробуйте ще раз.", hi: "माफ करें, मार्ग योजना बनाते समय कुछ गलत हुआ। कृपया फिर कोशिश करें।" },
       welcomeBack:       { en: "Welcome back. Would you like to plan another trip?", de: "Willkommen zurück. Möchten Sie eine weitere Fahrt planen?", ar: "مرحباً بعودتك. هل تريد تخطيط رحلة أخرى؟", tr: "Tekrar hoş geldiniz. Başka bir yolculuk planlamak ister misiniz?", uk: "Ласкаво просимо назад. Хочете спланувати ще одну поїздку?", hi: "वापस आने पर स्वागत है। क्या आप एक और यात्रा की योजना बनाना चाहते हैं?" },
-      whereStart:        { en: "Where are you starting from and where do you want to go?", de: "Von wo möchten Sie starten und wohin wollen Sie fahren?", ar: "من أين تبدأ وإلى أين تريد الذهاب؟", tr: "Nereden başlıyorsunuz ve nereye gitmek istiyorsunuz?", uk: "Звідки ви хочете їхати і куди?", hi: "आप कहाँ से शुरू करना चाहते हैं और कहाँ जाना चाहते हैं?" },
+      whereStart:        { en: "Where are you starting from?", de: "Von wo starten Sie?", ar: "من أين تبدأ؟", tr: "Nereden başlıyorsunuz?", uk: "Звідки ви починаєте?", hi: "आप कहाँ से शुरू कर रहे हैं?" },
       ticketHasMsg:      { en: "Great. Keep your valid ticket ready before boarding. You can continue with the route steps above.", de: "Prima. Halten Sie Ihr gültiges Ticket bereit. Sie können mit den Routenschritten oben fortfahren.", ar: "ممتاز. احتفظ بتذكرتك الصالحة جاهزة قبل الصعود.", tr: "Harika. Biletinizi hazır bulundurun. Yukarıdaki rota adımlarına devam edebilirsiniz.", uk: "Чудово. Тримайте дійсний квиток готовим. Ви можете продовжити за кроками маршруту вище.", hi: "बढ़िया। चढ़ने से पहले वैध टिकट तैयार रखें। आप ऊपर दिए मार्ग के चरण जारी रख सकते हैं।" },
       ticketUnsureMsg:   { en: "No problem. I can help you narrow it down.", de: "Kein Problem. Ich helfe Ihnen, es einzugrenzen.", ar: "لا مشكلة. يمكنني مساعدتك في تضييق الخيارات.", tr: "Sorun değil. Seçenekleri daraltmanıza yardım ederim.", uk: "Без проблем. Я допоможу звузити вибір.", hi: "कोई बात नहीं। मैं विकल्प कम करने में मदद करूंगा।" },
       selectTicket:      { en: "Select the ticket type you want to check.", de: "Wählen Sie die Ticketart, die Sie prüfen möchten.", ar: "اختر نوع التذكرة الذي تريد التحقق منه.", tr: "Kontrol etmek istediğiniz bilet türünü seçin.", uk: "Виберіть тип квитка, який хочете перевірити.", hi: "जिस टिकट प्रकार को जांचना चाहते हैं उसे चुनें।" },
@@ -2197,7 +2309,22 @@
       findingBestRoute:  { en: "Finding the best route...", de: "Ich suche die beste Route...", ar: "جارٍ البحث عن أفضل مسار...", tr: "En iyi rota aranıyor...", uk: "Шукаю найкращий маршрут...", hi: "सबसे अच्छा मार्ग खोजा जा रहा है..." },
       stillSearchingRoute: { en: "Still searching. The transport service is taking longer than usual...", de: "Ich suche noch. Der Verkehrsdienst braucht länger als üblich...", ar: "ما زال البحث جارياً. خدمة النقل تستغرق وقتاً أطول من المعتاد...", tr: "Hala aranıyor. Ulaşım servisi normalden uzun sürüyor...", uk: "Ще шукаю. Транспортний сервіс відповідає довше, ніж зазвичай...", hi: "अभी भी खोज रहा हूँ। परिवहन सेवा सामान्य से अधिक समय ले रही है..." },
       showOtherOptions:  { en: "Show other options", de: "Weitere Optionen anzeigen", ar: "عرض خيارات أخرى", tr: "Diğer seçenekleri göster", uk: "Показати інші варіанти", hi: "अन्य विकल्प दिखाएँ" },
-      hideOtherOptions:  { en: "Hide other options", de: "Weitere Optionen ausblenden", ar: "إخفاء الخيارات الأخرى", tr: "Diğer seçenekleri gizle", uk: "Сховати інші варіанти", hi: "अन्य विकल्प छिपाएँ" }
+      hideOtherOptions:  { en: "Hide other options", de: "Weitere Optionen ausblenden", ar: "إخفاء الخيارات الأخرى", tr: "Diğer seçenekleri gizle", uk: "Сховати інші варіанти", hi: "अन्य विकल्प छिपाएँ" },
+      accessibilityHelpQuestion: { en: "What kind of support do you need?", de: "Welche Unterstützung benötigen Sie?", ar: "ما نوع الدعم الذي تحتاجه؟", hi: "आपको किस प्रकार की सहायता चाहिए?", uk: "Яка підтримка вам потрібна?", tr: "Ne tür desteğe ihtiyacınız var?" },
+      wheelchairAccessibleRoute: { en: "Wheelchair accessible route", de: "Rollstuhlgerechte Route", ar: "مسار مناسب لكرسي متحرك", hi: "व्हीलचेयर सुलभ मार्ग", uk: "Маршрут для інвалідного візка", tr: "Tekerlekli sandalye erişilebilir rota" },
+      lessWalkingOption: { en: "Less walking", de: "Wenig laufen", ar: "مشي أقل", hi: "कम पैदल चलना", uk: "Менше ходьби", tr: "Az yürüyüş" },
+      stepFreeAccessOption: { en: "Step-free access", de: "Stufenloser Zugang", ar: "وصول بدون درج", hi: "सीढ़ी रहित पहुँच", uk: "Доступ без сходів", tr: "Basamaksız erişim" },
+      avoidStairsOption: { en: "Avoid stairs", de: "Treppen vermeiden", ar: "تجنب الدرج", hi: "सीढ़ियाँ से बचें", uk: "Уникати сходів", tr: "Merdivenlerden kaçın" },
+      helpWithStopPlatform: { en: "Help with stop/platform", de: "Hilfe bei Haltestelle/Bahnsteig", ar: "مساعدة عند المحطة/الرصيف", hi: "स्टॉप/प्लेटफॉर्म में मदद", uk: "Допомога на зупинці/платформі", tr: "Durak/peron yardımı" },
+      accessibilityNote: { en: "Accessibility note", de: "Barrierefreiheitshinweis", ar: "ملاحظة إمكانية الوصول", hi: "पहुँच-योग्यता नोट", uk: "Примітка щодо доступності", tr: "Erişilebilirlik notu" },
+      wheelchairDataUnknown: { en: "Accessibility information is not confirmed for this stop.", de: "Barrierefreiheitsinformationen für diese Haltestelle sind nicht bestätigt.", ar: "لم يتم تأكيد معلومات إمكانية الوصول لهذه المحطة.", hi: "इस स्टॉप के लिए पहुँच-योग्यता जानकारी की पुष्टि नहीं है।", uk: "Інформація про доступність для цієї зупинки не підтверджена.", tr: "Bu durak için erişilebilirlik bilgisi doğrulanmamıştır." },
+      wheelchairBoardingAvailable: { en: "Wheelchair boarding marked available.", de: "Rollstuhlzugang als verfügbar markiert.", ar: "الوصول بكرسي متحرك متاح.", hi: "व्हीलचेयर बोर्डिंग उपलब्ध दर्शाई गई है।", uk: "Посадка для інвалідного візка позначена як доступна.", tr: "Tekerlekli sandalye binişi mevcut olarak işaretlenmiştir." },
+      wheelchairBoardingNotAvailable: { en: "Wheelchair boarding may not be available.", de: "Rollstuhlzugang ist möglicherweise nicht verfügbar.", ar: "قد لا يتوفر الوصول بكرسي متحرك.", hi: "व्हीलचेयर बोर्डिंग उपलब्ध नहीं हो सकती।", uk: "Посадка для інвалідного візка може бути недоступна.", tr: "Tekerlekli sandalye binişi mevcut olmayabilir." },
+      routeMayNotBeWheelchairSuitable: { en: "This route may not be suitable for wheelchair users because {stopName} is not marked as wheelchair accessible.", de: "Diese Route ist möglicherweise nicht für Rollstuhlfahrer geeignet, da {stopName} nicht als rollstuhlgerecht markiert ist.", ar: "قد لا يكون هذا المسار مناسباً لمستخدمي الكراسي المتحركة لأن {stopName} غير مصنفة كمحطة مناسبة.", hi: "यह मार्ग व्हीलचेयर उपयोगकर्ताओं के लिए उपयुक्त नहीं हो सकता क्योंकि {stopName} को व्हीलचेयर सुलभ नहीं दर्शाया गया है।", uk: "Цей маршрут може не підходити для користувачів інвалідного візка, оскільки {stopName} не позначено як доступне.", tr: "Bu rota, {stopName} tekerlekli sandalye erişilebilir olarak işaretlenmediğinden tekerlekli sandalye kullanıcıları için uygun olmayabilir." },
+      checkingAccessibleRoute: { en: "Okay. I'll look for a route with less walking and fewer transfers.", de: "Okay. Ich suche eine Route mit weniger Fußwegen und Umstiegen.", ar: "حسناً. سأبحث عن مسار بمشي أقل وعدد أقل من التحويلات.", hi: "ठीक है। मैं कम पैदल चलने और कम बदलाव वाला मार्ग खोजूंगा।", uk: "Добре. Я знайду маршрут з меншою ходьбою та меншою кількістю пересадок.", tr: "Tamam. Daha az yürüme ve daha az aktarmalı bir rota arayacağım." },
+      lessWalkingRouteIntro: { en: "I'll look for a route with less walking.", de: "Ich suche eine Route mit wenig Fußweg.", ar: "سأبحث عن مسار بأقل قدر من المشي.", hi: "मैं कम पैदल चलने वाला मार्ग खोजूंगा।", uk: "Я знайду маршрут з меншою ходьбою.", tr: "Daha az yürüyüşlü bir rota arayacağım." },
+      nearestSuitableStop: { en: "I found your location. I'll try to use the nearest suitable stop, not just the closest one.", de: "Ich habe Ihren Standort gefunden. Ich versuche, die nächste geeignete Haltestelle zu verwenden.", ar: "لقد وجدت موقعك. سأحاول استخدام أقرب محطة مناسبة.", hi: "मुझे आपका स्थान मिल गया। मैं निकटतम उपयुक्त स्टॉप का उपयोग करने का प्रयास करूंगा।", uk: "Я знайшов вашу локацію. Я спробую використати найближчу підходящу зупинку.", tr: "Konumunuzu buldum. En yakın uygun durağı kullanmaya çalışacağım." },
+      verifyAccessibilityOfficialInfo: { en: "Please verify accessibility information on the official operator website before travelling.", de: "Bitte überprüfen Sie Barrierefreiheitsinformationen auf der offiziellen Betreiberwebsite vor der Reise.", ar: "يرجى التحقق من معلومات إمكانية الوصول على الموقع الرسمي للمشغل قبل السفر.", hi: "यात्रा से पहले आधिकारिक ऑपरेटर वेबसाइट पर पहुँच-योग्यता जानकारी की पुष्टि करें।", uk: "Будь ласка, перевірте інформацію про доступність на офіційному сайті оператора перед поїздкою.", tr: "Seyahat etmeden önce lütfen resmi operatör web sitesinde erişilebilirlik bilgilerini doğrulayın." }
     };
 
     function ct(key) {
@@ -2239,7 +2366,7 @@
 	    function continuationButtons() {
 	      return [
 	        { label: ct("planAnotherTrip"), value: ct("planAnotherTrip"), action: "plan_another_trip" },
-	        { label: ct("useCurrentLoc"),   value: "__current_location__" },
+	        { label: ct("useCurrentLoc"), value: "__current_location__", action: "use_current_location" },
 	        { label: ct("officialVbnTicketInfo"), value: "https://www.vbn.de/tickets", url: "https://www.vbn.de/tickets", external: true },
 	        { label: ct("clearChat"),       value: ct("clearChat"),       action: "clear_chat" }
 	      ];
@@ -2380,9 +2507,9 @@
 	      }
 	    }
 
-	    function startAnotherTrip() {
+	    function startPlanTripFlow(userLabel = ct("planAnotherTrip")) {
 	      removeChips();
-	      addMessage(ct("planAnotherTrip"), "user");
+	      addMessage(userLabel, "user");
 	      if (chatSessionId) {
 	        fetch("/api/clear-session", {
 	          method: "POST",
@@ -2397,11 +2524,17 @@
 	      localStorage.removeItem(LAST_ROUTE_RESULT_KEY);
 	      resetRouteState();
 	      resetTicketFlow();
+	      setPlanTripAwaitingOrigin();
 	      addMessage(ct("whereStart"), "bot");
 	      addChips([
-	        { label: ct("useCurrentLoc"), value: "__current_location__" },
-	        { label: ct("typeManually"),  value: "__type_location_manually__" }
+	        { label: ct("useCurrentLoc"), value: "__current_location__", action: "use_current_location" },
+	        { label: ct("typeManually"), value: "__type_location_manually__", action: "enter_origin" }
 	      ]);
+	      saveChatState();
+	    }
+
+	    function startAnotherTrip() {
+	      startPlanTripFlow(ct("planAnotherTrip"));
 	    }
 
 	    function ticketParamValue(ticketType) {
@@ -2511,6 +2644,12 @@
 
 	      if (item.action === "ticket_post_accessibility") {
 	        addMessage(ct("accessibilityPrompt"), "bot");
+	        return;
+	      }
+
+	      if (["accessibility_wheelchair", "accessibility_less_walking", "accessibility_step_free",
+	           "accessibility_avoid_stairs", "accessibility_stop_help"].includes(item.action)) {
+	        sendMessage(item.label || item.value, { action: item.action });
 	        return;
 	      }
 
@@ -2784,6 +2923,7 @@
 	          currentLocationLowAccuracy: "Your location was detected, but it may be approximate. You can continue or enter your starting point manually.",
 	          geoPermissionDenied: "Location permission is blocked. Please allow location in your browser settings or enter your starting point manually.",
 	          geoPositionUnavailable: "Your device couldn't find your location right now. No problem - you can type your starting point instead.",
+	          geoPositionUnavailableGranted: "Your device could not determine your location right now. No problem — you can type a nearby stop, street, or landmark.",
 	          geoAndroidPositionUnavailable: "Your Android phone couldn't find your location right now. No problem - you can type your starting point instead.",
 	          geoIosPositionUnavailable: "Your iPhone couldn't find your location right now. No problem - you can type your starting point instead.",
 	          geoMacPositionUnavailable: "Your Mac/browser couldn't find your location right now. No problem - you can type your starting point instead.",
@@ -2980,6 +3120,7 @@
 	          useCurrentLocation: routeState.useCurrentLocation,
 	          ticketFlowStatus,
 	          selectedTicket,
+	          memory: currentServerMemory,
 	          ...extra
 	        })
 	      });
@@ -3431,10 +3572,20 @@
 	      removeChips();
 	      updateNote(ui[lang].note);
 	      addMessage(geolocationFallbackMessage(reason, lang), "bot");
-	      addChips([
-	        { label: t(lang, "tryCurrentLocationAgain"), value: "__current_location__" },
-	        { label: ct("typeManually"), value: "__type_location_manually__" }
-	      ]);
+	      if (reason === "position_unavailable") {
+	        addChips([
+	          { label: ct("typeNearbyStop"), value: "__type_nearby_stop__", action: "type_nearby_stop" },
+	          { label: ct("enterAddressManually"), value: "__type_location_manually__", action: "enter_origin" },
+	          { label: t(lang, "tryCurrentLocationAgain"), value: "__current_location__", action: "use_current_location" },
+	          ...mainActionChips(lang)
+	        ]);
+	      } else {
+	        addChips([
+	          { label: t(lang, "tryCurrentLocationAgain"), value: "__current_location__", action: "use_current_location" },
+	          { label: ct("typeManually"), value: "__type_location_manually__", action: "enter_origin" },
+	          ...mainActionChips(lang)
+	        ]);
+	      }
 	      input.focus();
 	    }
 
@@ -3505,7 +3656,7 @@
 	        });
 	        addMessage(t(lang, "geoRouteFailedAfterCoords"), "bot");
 	        addChips([
-	          { label: ct("typeManually"), value: "__type_location_manually__" }
+	          { label: ct("typeManually"), value: "__type_location_manually__", action: "enter_origin" }
 	        ]);
 	      } finally {
 	        pendingResponseCount = Math.max(0, pendingResponseCount - 1);
@@ -3582,7 +3733,7 @@
 	          addMessage(t(lang, "currentLocationLowAccuracy"), "bot");
 	          addChips([
 	            { label: t(lang, "continueDetectedLocation"), value: "__continue_detected_location__" },
-	            { label: ct("typeManually"), value: "__type_location_manually__" }
+	            { label: ct("typeManually"), value: "__type_location_manually__", action: "enter_origin" }
 	          ]);
 	          input.focus();
 	          return;
@@ -3592,7 +3743,28 @@
 	      } catch (error) {
 	        const mappedCode = mapGeolocationError(error);
 	        attemptsTried = error?.__attemptsTried || attemptsTried;
-	        const errorMessage = geolocationFallbackMessage(mappedCode, lang);
+
+	        let permissionState = "unknown";
+	        if (navigator.permissions && typeof navigator.permissions.query === "function") {
+	          try {
+	            const status = await navigator.permissions.query({ name: "geolocation" });
+	            permissionState = status.state;
+	          } catch (_) {}
+	        }
+
+	        const pendingRouteDebug = pendingRouteForGeoDebug();
+	        console.log("[GEO FALLBACK TO STOP LOOKUP DEBUG]", {
+	          geolocationErrorCode: error?.code,
+	          mappedCode,
+	          permissionState,
+	          pendingRoute: pendingRouteDebug,
+	          nextConversationState: pendingRouteDebug ? "awaiting_manual_origin_after_geo_failure" : "neutral"
+	        });
+
+	        let errorMessage = geolocationFallbackMessage(mappedCode, lang);
+	        if (mappedCode === "position_unavailable" && permissionState === "granted") {
+	          errorMessage = t(lang, "geoPositionUnavailableGranted");
+	        }
 
 	        routeState.useCurrentLocation = false;
 	        pendingDetectedLocation = null;
@@ -3601,20 +3773,49 @@
 	        updateMessageText(loadingRow, errorMessage);
 
 	        removeChips();
-	        addChips([
-	          { label: t(lang, "tryCurrentLocationAgain"), value: "__current_location__" },
-	          { label: ct("typeManually"), value: "__type_location_manually__" }
-	        ]);
+	        if (mappedCode === "position_unavailable") {
+	          addChips([
+	            { label: ct("typeNearbyStop"), value: "__type_nearby_stop__", action: "type_nearby_stop" },
+	            { label: ct("enterAddressManually"), value: "__type_location_manually__", action: "enter_origin" },
+	            { label: t(lang, "tryCurrentLocationAgain"), value: "__current_location__", action: "use_current_location" }
+	          ]);
+	        } else {
+	          addChips([
+	            { label: t(lang, "tryCurrentLocationAgain"), value: "__current_location__", action: "use_current_location" },
+	            { label: ct("typeManually"), value: "__type_location_manually__", action: "enter_origin" }
+	          ]);
+	        }
 	        input.focus();
 
 	        console.log("[GEO FINAL FAILURE SUMMARY]", {
 	          mappedCode,
+	          permissionState,
 	          rawCode: error?.code,
 	          rawMessage: error?.message,
 	          deviceType: getDeviceType(),
 	          attemptsTried,
 	          pendingRoutePreserved: Boolean(pendingRoute?.destinationText)
 	        });
+
+	        fetch("/api/chat", {
+	          method: "POST",
+	          headers: { "Content-Type": "application/json" },
+	          body: JSON.stringify({
+	            message: "__geo_location_failed__",
+	            action: "geo_location_failed",
+	            geolocationErrorCode: error?.code,
+	            mappedCode,
+	            permissionState,
+	            lang: normalizeLanguage(lang),
+	            selectedLanguage: normalizeLanguage(lang),
+	            sessionId: chatSessionId,
+	            memory: currentServerMemory
+	          })
+	        }).then(r => r.json()).then(data => {
+	          if (data.memory) {
+	            currentServerMemory = { ...currentServerMemory, ...data.memory };
+	          }
+	        }).catch(() => {});
 	      } finally {
 	        geoRequestInProgress = false;
 	      }

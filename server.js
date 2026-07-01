@@ -110,6 +110,8 @@ const serverStrings = {
   startSaved:        { en: "Starting point saved.", de: "Startpunkt gespeichert.", ar: "تم حفظ نقطة الانطلاق.", tr: "Başlangıç noktası kaydedildi.", uk: "Відправну точку збережено.", hi: "शुरुआती बिंदु सहेजा गया।" },
   useCurrentLoc:     { en: "Use my current location", de: "Meinen Standort nutzen", ar: "استخدام موقعي الحالي", tr: "Mevcut konumumu kullan", uk: "Використати мою поточну локацію", hi: "मेरा वर्तमान स्थान उपयोग करें" },
   typeLocManually:   { en: "Type starting point", de: "Startpunkt eingeben", ar: "اكتب نقطة البداية", tr: "Başlangıç noktasını yaz", uk: "Ввести початкову точку", hi: "शुरुआती स्थान लिखें" },
+  typeNearbyStop:    { en: "Type nearby stop", de: "Haltestelle eingeben", ar: "اكتب محطة قريبة", tr: "Yakındaki durağı yaz", uk: "Ввести найближчу зупинку", hi: "पास का स्टॉप लिखें" },
+  geoFailAskManualOrigin: { en: "I couldn't get your current location. Type a nearby stop, street, or landmark as your starting point.", de: "Ich konnte Ihren Standort nicht ermitteln. Geben Sie eine nahe Haltestelle, Straße oder ein Wahrzeichen als Startpunkt ein.", ar: "تعذر تحديد موقعك الحالي. اكتب محطة قريبة أو شارعاً أو معلماً كنقطة بداية.", tr: "Mevcut konumunuzu alamadım. Başlangıç noktası olarak yakındaki bir durak, cadde veya yer işareti yazın.", uk: "Не вдалося отримати вашу поточну локацію. Введіть найближчу зупинку, вулицю або орієнтир як відправну точку.", hi: "मैं आपका वर्तमान स्थान नहीं ले पाया। अपने शुरुआती बिंदु के रूप में पास का स्टॉप, सड़क या स्थलचिह्न लिखें।" },
   askRouteOrigin:    { en: "Where are you starting from?", de: "Von wo starten Sie?", ar: "من أين تبدأ؟", tr: "Nereden başlıyorsunuz?", uk: "Звідки ви починаєте?", hi: "आप कहाँ से शुरू कर रहे हैं?" },
   askRouteOriginForDestination: { en: "I can help with that. Where are you starting from?", de: "Dabei helfe ich gern. Von wo starten Sie?", ar: "يمكنني مساعدتك في ذلك. من أين تبدأ؟", tr: "Buna yardımcı olurum. Nereden başlıyorsunuz?", uk: "Я допоможу з цим. Звідки ви починаєте?", hi: "मैं इसमें मदद कर सकता हूँ। आप कहाँ से शुरू कर रहे हैं?" },
   welcomeOldenburg:  { en: "👋 Welcome to Oldenburg!", de: "👋 Willkommen in Oldenburg!", ar: "👋 أهلاً بك في أولدنبورغ!", tr: "👋 Oldenburg'a hoş geldiniz!", uk: "👋 Ласкаво просимо до Ольденбурга!", hi: "👋 Oldenburg में आपका स्वागत है!" },
@@ -150,6 +152,30 @@ const serverStrings = {
   routeBusIntro:     { en: "Here's the easiest public transport option I found.", de: "Hier ist die einfachste Verbindung mit dem öffentlichen Verkehr, die ich gefunden habe.", ar: "هذا أسهل خيار مواصلات عامة وجدته.", tr: "Bulduğum en kolay toplu taşıma seçeneği bu.", uk: "Ось найпростіший варіант громадського транспорту, який я знайшов.", hi: "मुझे मिला सबसे आसान सार्वजनिक परिवहन विकल्प यह है।" },
   routeWalkIntro:    { en: "This is close enough to walk. That's probably the easiest option.", de: "Das ist nah genug zum Laufen. Das ist wahrscheinlich am einfachsten.", ar: "المكان قريب بما يكفي للمشي. غالباً هذا هو الخيار الأسهل.", tr: "Burası yürümek için yeterince yakın. Muhtemelen en kolay seçenek bu.", uk: "Це досить близько, щоб пройти пішки. Ймовірно, це найпростіший варіант.", hi: "यह पैदल जाने लायक पास है। शायद यही सबसे आसान विकल्प है।" },
   routeGotItChecking: { en: "Got it - from {origin} to {destination}. I'll check the route.", de: "Alles klar - von {origin} nach {destination}. Ich prüfe die Route.", ar: "فهمت - من {origin} إلى {destination}. سأتحقق من المسار.", tr: "Anladım - {origin} ile {destination} arası. Rotayı kontrol edeceğim.", uk: "Зрозуміло - від {origin} до {destination}. Перевірю маршрут.", hi: "समझ गया - {origin} से {destination}। मैं रूट देखता हूँ।" },
+  routeGotItCheckingNow: { en: "Got it - from {origin} to {destination}. I'll check the next route from now.", de: "Alles klar - von {origin} nach {destination}. Ich prüfe die nächste Verbindung ab jetzt.", ar: "فهمت - من {origin} إلى {destination}. سأتحقق من المسار التالي من الآن.", tr: "Anladım - {origin} ile {destination} arası. Şimdiden sonraki rotayı kontrol edeceğim.", uk: "Зрозуміло - від {origin} до {destination}. Перевірю наступний маршрут від зараз.", hi: "समझ गया - {origin} से {destination}। मैं अभी से अगला रूट देखता हूँ।" },
+  routeGotItCheckingTime: { en: "Got it - from {origin} to {destination} {time}.", de: "Alles klar - von {origin} nach {destination} {time}.", ar: "فهمت - من {origin} إلى {destination} {time}.", tr: "Anladım - {origin} ile {destination} arası {time}.", uk: "Зрозуміло - від {origin} до {destination} {time}.", hi: "समझ गया - {origin} से {destination} {time}।" },
+  routeGotItArriveBy: { en: "Got it - I'll find a route that gets you to {destination} by {time}.", de: "Alles klar - ich suche eine Verbindung, mit der Sie bis {time} bei {destination} ankommen.", ar: "فهمت - سأجد مساراً يوصلك إلى {destination} بحلول {time}.", tr: "Anladım - {destination} konumuna {time} saatine kadar varan bir rota bulacağım.", uk: "Зрозуміло - знайду маршрут, щоб ви прибули до {destination} до {time}.", hi: "समझ गया - मैं ऐसा रूट खोजूंगा जिससे आप {time} तक {destination} पहुँचें।" },
+  changeTime:        { en: "Change time", de: "Zeit ändern", ar: "تغيير الوقت", tr: "Saati değiştir", uk: "Змінити час", hi: "समय बदलें" },
+  changeTimeQuestion: { en: "Sure. Should I change the departure time or the arrival time?", de: "Klar. Soll ich die Abfahrts- oder die Ankunftszeit ändern?", ar: "حسناً. هل تريد تغيير وقت المغادرة أم وقت الوصول؟", tr: "Tabii. Kalkış mı yoksa varış saatini mi değiştireyim?", uk: "Звичайно. Змінити час відправлення чи прибуття?", hi: "ज़रूर। क्या मैं रवानगी का समय बदलूँ या पहुँचने का?" },
+  askRouteTimeChange:{ en: "Sure. Should I change the departure time or the arrival time?", de: "Klar. Soll ich die Abfahrts- oder die Ankunftszeit ändern?", ar: "حسناً. هل تريد تغيير وقت المغادرة أم وقت الوصول؟", tr: "Tabii. Kalkış mı yoksa varış saatini mi değiştireyim?", uk: "Звичайно. Змінити час відправлення чи прибуття?", hi: "ज़रूर। क्या मैं रवानगी का समय बदलूँ या पहुँचने का?" },
+  timeNow:           { en: "Now", de: "Jetzt", ar: "الآن", tr: "Şimdi", uk: "Зараз", hi: "अभी" },
+  leaveNow:          { en: "Leave now", de: "Jetzt abfahren", ar: "المغادرة الآن", tr: "Şimdi hareket et", uk: "Виїхати зараз", hi: "अभी निकलें" },
+  chooseDepartureTime: { en: "Choose departure time", de: "Abfahrtszeit wählen", ar: "اختر وقت المغادرة", tr: "Kalkış saatini seç", uk: "Оберіть час відправлення", hi: "रवानगी का समय चुनें" },
+  arriveByATime:     { en: "Arrive by a time", de: "Ankunft bis zu einer Zeit", ar: "الوصول بحلول وقت معين", tr: "Belirli saatte var", uk: "Прибути до певного часу", hi: "एक समय तक पहुँचें" },
+  tomorrow:          { en: "Tomorrow", de: "Morgen", ar: "غداً", tr: "Yarın", uk: "Завтра", hi: "कल" },
+  whatDepartureTime: { en: "What departure time should I use? You can type something like 'today at 5 pm' or 'tomorrow at 9 am'.", de: "Welche Abfahrtszeit soll ich verwenden? Sie können z. B. 'heute um 17 Uhr' oder 'morgen um 9 Uhr' eingeben.", ar: "ما وقت المغادرة الذي يجب استخدامه؟ يمكنك كتابة شيء مثل 'اليوم الساعة 5 مساءً' أو 'غداً الساعة 9 صباحاً'.", tr: "Hangi kalkış saatini kullanayım? 'Bugün saat 17:00' veya 'Yarın saat 9:00' gibi yazabilirsiniz.", uk: "Який час відправлення використовувати? Ви можете написати, наприклад, 'сьогодні о 17:00' або 'завтра о 9:00'.", hi: "मुझे कौन सा रवानगी का समय उपयोग करना चाहिए? आप कुछ ऐसा टाइप कर सकते हैं जैसे 'आज शाम 5 बजे' या 'कल सुबह 9 बजे'।" },
+  whatArrivalTime:   { en: "What time do you need to arrive by? You can type something like 'tomorrow at 8:30 am' or 'today at 12 pm'.", de: "Bis wann müssen Sie ankommen? Sie können z. B. 'morgen um 8:30 Uhr' oder 'heute um 12 Uhr' eingeben.", ar: "بأي وقت تحتاج للوصول؟ يمكنك كتابة شيء مثل 'غداً الساعة 8:30 صباحاً' أو 'اليوم الساعة 12 ظهراً'.", tr: "Ne zamana kadar varmanız gerekiyor? 'Yarın saat 8:30' veya 'Bugün öğlen 12:00' gibi yazabilirsiniz.", uk: "До якого часу вам потрібно прибути? Ви можете написати, наприклад, 'завтра о 8:30' або 'сьогодні о 12:00'.", hi: "आपको कितने बजे तक पहुँचना है? आप कुछ ऐसा टाइप कर सकते हैं जैसे 'कल सुबह 8:30 बजे' या 'आज दोपहर 12 बजे'।" },
+  whatTimeTomorrow:  { en: "What time tomorrow?", de: "Um wie viel Uhr morgen?", ar: "في أي وقت غداً؟", tr: "Yarın saat kaçta?", uk: "О котрій завтра?", hi: "कल किस समय?" },
+  typeAnotherTime:   { en: "Type another time", de: "Andere Zeit eingeben", ar: "اكتب وقتاً آخر", tr: "Başka bir saat girin", uk: "Ввести інший час", hi: "दूसरा समय टाइप करें" },
+  typeAnotherTimePrompt: { en: "Sure. Type the time, for example 7:30 AM or 11:15 AM.", de: "Kein Problem. Geben Sie die Zeit ein, zum Beispiel 7:30 Uhr oder 11:15 Uhr.", ar: "حسناً. اكتب الوقت، مثلاً 7:30 صباحاً أو 11:15 صباحاً.", tr: "Tabii. Zamanı yazın, örneğin 7:30 veya 11:15.", uk: "Звичайно. Введіть час, наприклад 7:30 або 11:15.", hi: "ज़रूर। समय टाइप करें, उदाहरण के लिए 7:30 AM या 11:15 AM।" },
+  eightAm:           { en: "8:00 AM", de: "8:00 Uhr", ar: "8:00 صباحاً", tr: "08:00", uk: "8:00", hi: "सुबह 8:00" },
+  nineAm:            { en: "9:00 AM", de: "9:00 Uhr", ar: "9:00 صباحاً", tr: "09:00", uk: "9:00", hi: "सुबह 9:00" },
+  tenAm:             { en: "10:00 AM", de: "10:00 Uhr", ar: "10:00 صباحاً", tr: "10:00", uk: "10:00", hi: "सुबह 10:00" },
+  lostRouteContext:  { en: "I lost the route we were changing. Please tell me your starting point and destination again.", de: "Ich habe die Route verloren, die wir ändern wollten. Bitte nennen Sie mir erneut Start und Ziel.", ar: "فقدت المسار الذي كنا نغيره. يرجى إخباري بنقطة البداية والوجهة مرة أخرى.", tr: "Değiştirdiğimiz rotayı kaybettim. Lütfen başlangıç noktanızı ve hedefinizi tekrar söyleyin.", uk: "Я загубив маршрут, який ми змінювали. Будь ласка, вкажіть початкову точку та пункт призначення ще раз.", hi: "मैं वह रूट भूल गया जो हम बदल रहे थे। कृपया अपना शुरुआती बिंदु और गंतव्य फिर से बताएं।" },
+  timeTodayLater:    { en: "Today later", de: "Heute später", ar: "لاحقاً اليوم", tr: "Bugün daha sonra", uk: "Сьогодні пізніше", hi: "आज बाद में" },
+  timeTomorrowMorning: { en: "Tomorrow morning", de: "Morgen früh", ar: "غداً صباحاً", tr: "Yarın sabah", uk: "Завтра вранці", hi: "कल सुबह" },
+  timeTomorrowAfternoon: { en: "Tomorrow afternoon", de: "Morgen Nachmittag", ar: "غداً بعد الظهر", tr: "Yarın öğleden sonra", uk: "Завтра після обіду", hi: "कल दोपहर" },
+  routeTimeChangeNoContext: { en: "I do not have a recent route saved here. Tell me where you are travelling from and to, and I will plan it again.", de: "Ich habe hier keine aktuelle Route gespeichert. Sagen Sie mir Start und Ziel, dann plane ich sie erneut.", ar: "ليست لدي رحلة حديثة محفوظة هنا. أخبرني من أين وإلى أين تسافر وسأخططها مرة أخرى.", tr: "Burada kayıtlı yeni bir rota yok. Nereden nereye gittiğinizi yazın, tekrar planlayayım.", uk: "У мене немає збереженого нещодавнього маршруту. Напишіть, звідки й куди ви їдете, і я спланую знову.", hi: "मेरे पास यहाँ हाल का रूट सेव नहीं है। बताएं आप कहाँ से कहाँ जा रहे हैं, मैं फिर से योजना बना दूंगा।" },
   ambiguousPlaceQuestion: { en: "Do you want to start from {place} or go to {place}?", de: "Möchten Sie von {place} starten oder nach {place} fahren?", ar: "هل تريد أن تبدأ من {place} أم تذهب إلى {place}؟", tr: "{place} konumundan mı başlamak istiyorsunuz, yoksa {place} konumuna mı gitmek istiyorsunuz?", uk: "Ви хочете почати з {place} чи поїхати до {place}?", hi: "क्या आप {place} से शुरू करना चाहते हैं या {place} जाना चाहते हैं?" },
   startFromPlace:  { en: "Start from {place}", de: "Von {place} starten", ar: "ابدأ من {place}", tr: "{place} konumundan başla", uk: "Почати з {place}", hi: "{place} से शुरू करें" },
   goToPlace:       { en: "Go to {place}", de: "Nach {place} fahren", ar: "اذهب إلى {place}", tr: "{place} konumuna git", uk: "Поїхати до {place}", hi: "{place} जाएँ" },
@@ -193,6 +219,28 @@ const serverStrings = {
   studentTicketInfo:{ en: "Student ticket info", de: "Studierendenticket-Info", ar: "معلومات تذكرة الطالب", tr: "Öğrenci bileti bilgisi", uk: "Інформація про студентський квиток", hi: "छात्र टिकट जानकारी" },
   weeklyMonthlyTicketInfo: { en: "Weekly/monthly ticket info", de: "Wochen-/Monatsticket-Info", ar: "معلومات التذاكر الأسبوعية/الشهرية", tr: "Haftalık/aylık bilet bilgisi", uk: "Інформація про тижневий/місячний квиток", hi: "साप्ताहिक/मासिक टिकट जानकारी" },
   multiTripTicketInfo: { en: "Multi-trip ticket info", de: "Mehrfahrten-Ticketinfo", ar: "معلومات تذكرة الرحلات المتعددة", tr: "Çoklu yolculuk bileti bilgisi", uk: "Інформація про квиток на кілька поїздок", hi: "मल्टी-ट्रिप टिकट जानकारी" },
+  accessibilityHelpQuestion: { en: "What kind of support do you need?", de: "Welche Unterstützung benötigen Sie?", ar: "ما نوع الدعم الذي تحتاجه؟", hi: "आपको किस प्रकार की सहायता चाहिए?", uk: "Яка підтримка вам потрібна?", tr: "Ne tür desteğe ihtiyacınız var?" },
+  wheelchairAccessibleRoute: { en: "Wheelchair accessible route", de: "Rollstuhlgerechte Route", ar: "مسار مناسب لكرسي متحرك", hi: "व्हीलचेयर सुलभ मार्ग", uk: "Маршрут для інвалідного візка", tr: "Tekerlekli sandalye erişilebilir rota" },
+  lessWalkingOption: { en: "Less walking", de: "Wenig laufen", ar: "مشي أقل", hi: "कम पैदल चलना", uk: "Менше ходьби", tr: "Az yürüyüş" },
+  stepFreeAccessOption: { en: "Step-free access", de: "Stufenloser Zugang", ar: "وصول بدون درج", hi: "सीढ़ी रहित पहुँच", uk: "Доступ без сходів", tr: "Basamaksız erişim" },
+  avoidStairsOption: { en: "Avoid stairs", de: "Treppen vermeiden", ar: "تجنب الدرج", hi: "सीढ़ियाँ से बचें", uk: "Уникати сходів", tr: "Merdivenlerden kaçın" },
+  helpWithStopPlatform: { en: "Help with stop/platform", de: "Hilfe bei Haltestelle/Bahnsteig", ar: "مساعدة عند المحطة/الرصيف", hi: "स्टॉप/प्लेटफॉर्म में मदद", uk: "Допомога на зупинці/платформі", tr: "Durak/peron yardımı" },
+  accessibilityNote: { en: "Accessibility note", de: "Barrierefreiheitshinweis", ar: "ملاحظة إمكانية الوصول", hi: "पहुँच-योग्यता नोट", uk: "Примітка щодо доступності", tr: "Erişilebilirlik notu" },
+  wheelchairDataUnknown: { en: "Accessibility information is not confirmed for this stop.", de: "Barrierefreiheitsinformationen für diese Haltestelle sind nicht bestätigt.", ar: "لم يتم تأكيد معلومات إمكانية الوصول لهذه المحطة.", hi: "इस स्टॉप के लिए पहुँच-योग्यता जानकारी की पुष्टि नहीं है।", uk: "Інформація про доступність для цієї зупинки не підтверджена.", tr: "Bu durak için erişilebilirlik bilgisi doğrulanmamıştır." },
+  wheelchairBoardingAvailable: { en: "Wheelchair boarding marked available.", de: "Rollstuhlzugang als verfügbar markiert.", ar: "الوصول بكرسي متحرك متاح.", hi: "व्हीलचेयर बोर्डिंग उपलब्ध दर्शाई गई है।", uk: "Посадка для інвалідного візка позначена як доступна.", tr: "Tekerlekli sandalye binişi mevcut olarak işaretlenmiştir." },
+  wheelchairBoardingNotAvailable: { en: "Wheelchair boarding may not be available.", de: "Rollstuhlzugang ist möglicherweise nicht verfügbar.", ar: "قد لا يتوفر الوصول بكرسي متحرك.", hi: "व्हीलचेयर बोर्डिंग उपलब्ध नहीं हो सकती।", uk: "Посадка для інвалідного візка може бути недоступна.", tr: "Tekerlekli sandalye binişi mevcut olmayabilir." },
+  routeMayNotBeWheelchairSuitable: { en: "This route may not be suitable for wheelchair users because {stopName} is not marked as wheelchair accessible.", de: "Diese Route ist möglicherweise nicht für Rollstuhlfahrer geeignet, da {stopName} nicht als rollstuhlgerecht markiert ist.", ar: "قد لا يكون هذا المسار مناسباً لمستخدمي الكراسي المتحركة لأن {stopName} غير مصنفة كمحطة مناسبة.", hi: "यह मार्ग व्हीलचेयर उपयोगकर्ताओं के लिए उपयुक्त नहीं हो सकता क्योंकि {stopName} को व्हीलचेयर सुलभ नहीं दर्शाया गया है।", uk: "Цей маршрут може не підходити для користувачів інвалідного візка, оскільки {stopName} не позначено як доступне.", tr: "Bu rota, {stopName} tekerlekli sandalye erişilebilir olarak işaretlenmediğinden tekerlekli sandalye kullanıcıları için uygun olmayabilir." },
+  checkingAccessibleRoute: { en: "Okay. I'll look for a route with less walking and fewer transfers.", de: "Okay. Ich suche eine Route mit weniger Fußwegen und Umstiegen.", ar: "حسناً. سأبحث عن مسار بمشي أقل وعدد أقل من التحويلات.", hi: "ठीक है। मैं कम पैदल चलने और कम बदलाव वाला मार्ग खोजूंगा।", uk: "Добре. Я знайду маршрут з меншою ходьбою та меншою кількістю пересадок.", tr: "Tamam. Daha az yürüme ve daha az aktarmalı bir rota arayacağım." },
+  lessWalkingRouteIntro: { en: "I'll look for a route with less walking.", de: "Ich suche eine Route mit wenig Fußweg.", ar: "سأبحث عن مسار بأقل قدر من المشي.", hi: "मैं कम पैदल चलने वाला मार्ग खोजूंगा।", uk: "Я знайду маршрут з меншою ходьбою.", tr: "Daha az yürüyüşlü bir rota arayacağım." },
+  nearestSuitableStop: { en: "I found your location. I'll try to use the nearest suitable stop, not just the closest one.", de: "Ich habe Ihren Standort gefunden. Ich versuche, die nächste geeignete Haltestelle zu verwenden.", ar: "لقد وجدت موقعك. سأحاول استخدام أقرب محطة مناسبة.", hi: "मुझे आपका स्थान मिल गया। मैं निकटतम उपयुक्त स्टॉप का उपयोग करने का प्रयास करूंगा।", uk: "Я знайшов вашу локацію. Я спробую використати найближчу підходящу зупинку.", tr: "Konumunuzu buldum. En yakın uygun durağı kullanmaya çalışacağım." },
+  verifyAccessibilityOfficialInfo: { en: "Please verify accessibility information on the official operator website before travelling.", de: "Bitte überprüfen Sie Barrierefreiheitsinformationen auf der offiziellen Betreiberwebsite vor der Reise.", ar: "يرجى التحقق من معلومات إمكانية الوصول على الموقع الرسمي للمشغل قبل السفر.", hi: "यात्रा से पहले आधिकारिक ऑपरेटर वेबसाइट पर पहुँच-योग्यता जानकारी की पुष्टि करें।", uk: "Будь ласка, перевірте інформацію про доступність на офіційному сайті оператора перед поїздкою.", tr: "Seyahat etmeden önce lütfen resmi operatör web sitesinde erişilebilirlik bilgilerini doğrulayın." },
+  planTrip:            { en: "Plan a trip", de: "Fahrt planen", ar: "خطط رحلة", tr: "Yolculuk planla", uk: "Спланувати поїздку", hi: "यात्रा योजना" },
+  tickets:             { en: "Tickets", de: "Tickets", ar: "التذاكر", tr: "Biletler", uk: "Квитки", hi: "टिकट" },
+  delayHelp:           { en: "Delay help", de: "Verspätung", ar: "تأخر الحافلة", tr: "Gecikme yardımı", uk: "Затримка", hi: "देरी सहायता" },
+  ticketHelpIntro:     { en: "No problem. I can help with tickets. Do you already have a route, or do you want to tell me your trip?", de: "Kein Problem. Ich helfe mit Tickets. Haben Sie bereits eine Route oder möchten Sie mir Ihre Fahrt schildern?", ar: "لا مشكلة. يمكنني مساعدتك في التذاكر. هل لديك مسار بالفعل أم تريد إخباري برحلتك؟", tr: "Sorun değil. Bilet konusunda yardımcı olurum. Zaten bir rotanız var mı, yoksa yolculuğunuzu anlatmak mı istiyorsunuz?", uk: "Без проблем. Я допоможу з квитками. У вас уже є маршрут, чи хочете розповісти про поїздку?", hi: "कोई बात नहीं। मैं टिकट में मदद कर सकता हूँ। क्या आपके पास पहले से कोई रूट है, या आप यात्रा बताना चाहते हैं?" },
+  useCurrentRoute:     { en: "Use current route", de: "Aktuelle Route nutzen", ar: "استخدام المسار الحالي", tr: "Mevcut rotayı kullan", uk: "Використати поточний маршрут", hi: "वर्तमान रूट उपयोग करें" },
+  tellTripDetails:     { en: "Tell trip details", de: "Fahrtdetails nennen", ar: "أخبر عن تفاصيل الرحلة", tr: "Yolculuk ayrıntılarını söyle", uk: "Розповісти про поїздку", hi: "यात्रा विवरण बताएं" },
+  delayHelpIntro:      { en: "I can help with delays. Which route, stop, or line should I check?", de: "Ich helfe bei Verspätungen. Welche Route, Haltestelle oder Linie soll ich prüfen?", ar: "يمكنني مساعدتك في التأخيرات. أي مسار أو محطة أو خط يجب أن أتحقق منه؟", tr: "Gecikmeler konusunda yardımcı olurum. Hangi rotayı, durağı veya hattı kontrol etmemi istersiniz?", uk: "Я допоможу із затримками. Який маршрут, зупинку або лінію перевірити?", hi: "मैं देरी में मदद कर सकता हूँ। कौन सा रूट, स्टॉप या लाइन चेक करना चाहेंगे?" },
 };
 
 function ts(key, lang, params = {}) {
@@ -1187,6 +1235,102 @@ function detectTransitIntent(rawText, selectedLanguage = "en") {
   };
 }
 
+function detectAccessibilityIntent(rawText) {
+  const text = normalizeIntentText(rawText);
+  const wheelchairPhrases = [
+    "wheelchair", "rollstuhl", "كرسي متحرك", "व्हीलचेयर", "інвалідний візок", "tekerlekli sandalye",
+    "im rollstuhl", "rollstuhlfahrer"
+  ];
+  const stairFreePhrases = [
+    "step free", "step-free", "stepfree", "avoid stairs", "no stairs", "stufenlos", "keine treppen",
+    "stufenloser", "barrierefrei", "barrier-free", "barrierefreier", "barrierefreiheit",
+    "بدون درج", "تجنب الدرج", "सीढ़ी रहित", "सीढ़ियाँ से बचें", "без сходів", "уникати сходів",
+    "merdivenlerden kaçın", "basamaksız", "stufenfreier zugang", "step free access"
+  ];
+  const lessWalkingPhrases = [
+    "less walking", "cannot walk much", "can't walk much", "cannot walk far", "can't walk far",
+    "don't want to walk", "elderly", "stroller", "pram", "luggage", "heavy luggage",
+    "disabled", "disability", "cannot walk", "can not walk",
+    "wenig laufen", "ich kann nicht viel laufen", "ältere person", "kinderwagen", "gepäck",
+    "لا أستطيع المشي كثيراً", "عربة أطفال", "أمتعة", "معاق",
+    "ज्यादा नहीं चल सकता", "ज्यादा नहीं चल सकती", "बुजुर्ग", "बच्चागाड़ी", "सामान", "विकलांग",
+    "не можу багато ходити", "літня людина", "коляска", "багаж", "інвалід",
+    "yürüyemem", "çok yürüyemem", "yaşlı", "bebek arabası", "bagaj", "engelli"
+  ];
+  const accessibilityPhrases = [
+    "accessible", "accessibility", "accessible route", "barrierefrei", "accessible stop",
+    "مسار مناسب", "سهل الوصول", "إمكانية الوصول",
+    "सुलभ मार्ग", "पहुँच-योग्यता", "erişilebilir", "erişilebilir rota",
+    "доступний маршрут", "доступно", "доступність"
+  ];
+  const wheelchairRequired = wheelchairPhrases.some(phrase => text.includes(normalizeIntentText(phrase)));
+  const avoidStairs = stairFreePhrases.some(phrase => text.includes(normalizeIntentText(phrase)));
+  const stepFreePreferred = avoidStairs;
+  const lessWalking = lessWalkingPhrases.some(phrase => text.includes(normalizeIntentText(phrase)));
+  const accessibilityRequired = wheelchairRequired || avoidStairs || lessWalking
+    || accessibilityPhrases.some(phrase => text.includes(normalizeIntentText(phrase)));
+  return { accessibilityRequired, wheelchairRequired, lessWalking, avoidStairs, stepFreePreferred };
+}
+
+function accessibilitySubChoiceButtons(lang) {
+  return [
+    { label: ts("wheelchairAccessibleRoute", lang), value: ts("wheelchairAccessibleRoute", lang), action: "accessibility_wheelchair" },
+    { label: ts("lessWalkingOption", lang), value: ts("lessWalkingOption", lang), action: "accessibility_less_walking" },
+    { label: ts("stepFreeAccessOption", lang), value: ts("stepFreeAccessOption", lang), action: "accessibility_step_free" },
+    { label: ts("avoidStairsOption", lang), value: ts("avoidStairsOption", lang), action: "accessibility_avoid_stairs" },
+    { label: ts("helpWithStopPlatform", lang), value: ts("helpWithStopPlatform", lang), action: "accessibility_stop_help" }
+  ];
+}
+
+function buildAccessibilityNote(routeResult, routePreferences, lang) {
+  const prefs = routePreferences || {};
+  if (!prefs.accessibilityRequired && !prefs.wheelchairRequired && !prefs.lessWalking && !prefs.avoidStairs) {
+    return "";
+  }
+  const lines = [`**${ts("accessibilityNote", lang)}**`];
+  if (prefs.lessWalking) {
+    lines.push(`- ${ts("lessWalkingRouteIntro", lang)}`);
+  }
+  if (prefs.wheelchairRequired || prefs.avoidStairs || prefs.stepFreePreferred) {
+    lines.push(`- ${ts("checkingAccessibleRoute", lang)}`);
+  }
+  const legs = routeResult?.route?.legs || [];
+  const stopsChecked = new Set();
+  let hasNonAccessible = false;
+  for (const leg of legs) {
+    for (const place of [leg.from, leg.to]) {
+      if (!place || !place.name || stopsChecked.has(place.name)) continue;
+      stopsChecked.add(place.name);
+      const wb = place.wheelchairBoarding;
+      console.log("[STOP ACCESSIBILITY DEBUG]", {
+        stopName: place.name,
+        stopId: place.stopId || "",
+        wheelchairBoarding: wb,
+        accessibilityKnown: wb !== "unknown",
+        platformCode: place.platformCode || null
+      });
+      if (wb === "not possible" && (prefs.wheelchairRequired || prefs.avoidStairs)) {
+        lines.push(`- ${ts("routeMayNotBeWheelchairSuitable", lang, { stopName: place.name })}`);
+        hasNonAccessible = true;
+      } else if (wb === "unknown") {
+        lines.push(`- ${place.name}: ${ts("wheelchairDataUnknown", lang)}`);
+      } else if (wb === "possible") {
+        lines.push(`- ${place.name}: ${ts("wheelchairBoardingAvailable", lang)}`);
+      }
+    }
+  }
+  const walkLegs = legs.filter(leg => leg.mode === "WALK");
+  for (const leg of walkLegs) {
+    const walkMin = Math.round((Number(leg.arrival || 0) - Number(leg.departure || 0)) / 60000) || Math.round((leg.distanceMeters || 0) / 80);
+    if (walkMin > 0) {
+      lines.push(`- This route includes a ${walkMin}-minute walk. If walking is difficult, try a different option.`);
+      break;
+    }
+  }
+  lines.push(`- ${ts("verifyAccessibilityOfficialInfo", lang)}`);
+  return lines.join("\n");
+}
+
 function decideRecommendedMode({ rawText, selectedLanguage, distanceMeters, estimatedWalkMinutes, userRequestedTransit }) {
   const transitIntent = detectTransitIntent(rawText, selectedLanguage);
   const requestedTransit = userRequestedTransit === true || transitIntent.requested;
@@ -2109,13 +2253,20 @@ function normalizeStop(stop, origin) {
   if (!Number.isFinite(lat) || !Number.isFinite(lon)) return null;
 
   const area = areaForCoords(lat, lon);
+  const stopId = stop.id || stop.gtfsId || stop.stopId || "";
   return {
+    id: stopId,
     name: stop.name || stop.stopName || "",
-    stopId: stop.id || stop.gtfsId || stop.stopId || "",
+    code: stop.code || stop.stopCode || "",
+    stopId,
     lat,
     lon,
+    zoneId: stop.zoneId || stop.zone_id || "",
+    platformCode: stop.platformCode || stop.platform || stop.platform_code || stop.code || stop.stopCode || "",
     area: area ? area.name : "",
     distanceMeters: origin ? Math.round(distanceMeters(origin, { lat, lon })) : 0,
+    walkingMinutes: origin ? Math.max(1, Math.round(distanceMeters(origin, { lat, lon }) / 80)) : 0,
+    source: "vbn_stop",
     type: "stop"
   };
 }
@@ -2151,7 +2302,7 @@ function locationChoice(place, fallbackLabel = "") {
 }
 
 async function allVbnStops() {
-  if (!vbnApiKey) return [];
+  if (!vbnApiKey) return knownStopsForLookup();
   if (stopsCache.stops.length && Date.now() - stopsCache.loadedAt < stopsCacheTtlMs) {
     return stopsCache.stops;
   }
@@ -2169,15 +2320,31 @@ async function allVbnStops() {
 
     stopsCache = {
       loadedAt: Date.now(),
-      stops: data
-        .map(stop => normalizeStop(stop))
-        .filter(Boolean)
-        .filter(stop => stop.name && isInsideSupportedArea(stop.lat, stop.lon))
+      stops: uniquePlaces([
+        ...data
+          .map(stop => normalizeStop(stop))
+          .filter(Boolean)
+          .filter(stop => stop.name && isInsideSupportedArea(stop.lat, stop.lon)),
+        ...knownStopsForLookup()
+      ])
     };
-    return stopsCache.stops;
+    return stopsCache.stops.length ? stopsCache.stops : knownStopsForLookup();
   } catch {
-    return stopsCache.stops;
+    return stopsCache.stops.length ? stopsCache.stops : knownStopsForLookup();
   }
+}
+
+function knownStopsForLookup() {
+  return knownPlaces
+    .filter(place => place.stopId || /\b(?:hbf|hauptbahnhof|bahnhof|zob|lappan|postenweg|pferdemarkt)\b/i.test([place.name, ...(place.aliases || [])].join(" ")))
+    .map(place => normalizeStop({
+      id: place.stopId || `known:${normalizeText(place.name).replace(/\s+/g, ":")}`,
+      name: place.name,
+      lat: place.lat,
+      lon: place.lon,
+      aliases: place.aliases || []
+    }))
+    .filter(Boolean);
 }
 
 async function searchVbnStopsByName(query) {
@@ -2185,22 +2352,106 @@ async function searchVbnStopsByName(query) {
   if (!normalized) return [];
 
   const stops = await allVbnStops();
+  const stationBaseRank = stop => {
+    const name = normalizeText(stop.name);
+    if (/\bhauptbahnhof\b/.test(normalized) || /\bhbf\b/.test(normalized)) {
+      return /\bhauptbahnhof\b/.test(name) && !/\b(?:fernbusterminal|nord|messe|sud|sued|vorplatz)\b/.test(name) ? 0 : 1;
+    }
+    return 0;
+  };
   const scored = stops
     .map(stop => {
-      const stopName = normalizeText(stop.name);
-      const score = stopName === normalized
+      const names = [stop.name, ...(stop.aliases || [])].map(normalizeText).filter(Boolean);
+      const exact = names.some(name => name === normalized);
+      const partial = names.some(name => name.includes(normalized) || normalized.includes(name));
+      const fuzzyDistance = Math.min(...names.map(name => isFuzzyMatch(normalized, name) ? levenshteinDistance(normalized, name) : Infinity));
+      const score = exact
         ? 0
-        : stopName.includes(normalized)
+        : partial
           ? 1
-          : isFuzzyMatch(normalized, stopName)
-            ? 2 + levenshteinDistance(normalized, stopName)
+          : Number.isFinite(fuzzyDistance)
+            ? 2 + fuzzyDistance
             : Infinity;
       return { stop, score };
     })
     .filter(item => Number.isFinite(item.score))
-    .sort((a, b) => a.score - b.score || a.stop.name.localeCompare(b.stop.name));
+    .sort((a, b) => a.score - b.score || stationBaseRank(a.stop) - stationBaseRank(b.stop) || a.stop.name.localeCompare(b.stop.name));
 
-  return uniquePlaces(scored.map(item => item.stop)).slice(0, 4);
+  const seenNames = new Set();
+  return uniquePlaces(scored.map(item => item.stop))
+    .filter(stop => {
+      const key = normalizeText(stop.name);
+      if (seenNames.has(key)) return false;
+      seenNames.add(key);
+      return true;
+    })
+    .slice(0, 4);
+}
+
+function stopLookupResult(stop, source = "stop_lookup") {
+  if (!stop) return null;
+  const stopId = stop.stopId || stop.id || "";
+  return {
+    id: stopId,
+    stopId,
+    name: stop.name || "",
+    code: stop.code || "",
+    lat: Number(stop.lat),
+    lon: Number(stop.lon),
+    zoneId: stop.zoneId || "",
+    platformCode: stop.platformCode || "",
+    area: stop.area || areaForCoords(Number(stop.lat), Number(stop.lon))?.name || "",
+    distanceMeters: Number(stop.distanceMeters) || 0,
+    walkingMinutes: Number(stop.walkingMinutes) || 0,
+    source,
+    type: "stop"
+  };
+}
+
+async function searchStopsByName(query) {
+  const matches = (await searchVbnStopsByName(query))
+    .map(stop => stopLookupResult(stop))
+    .filter(Boolean);
+  console.log("[STOP LOOKUP DEBUG]", {
+    query,
+    matchesCount: matches.length,
+    matches
+  });
+  return matches;
+}
+
+async function findNearbyStops(lat, lon, radiusMeters = 500) {
+  const origin = { lat: Number(lat), lon: Number(lon) };
+  if (!Number.isFinite(origin.lat) || !Number.isFinite(origin.lon)) return [];
+  const radii = [radiusMeters, 800, 1200]
+    .filter((value, index, arr) => Number(value) > 0 && arr.indexOf(value) === index);
+  let selectedRadius = radii[0] || radiusMeters;
+  let stops = [];
+
+  for (const radius of radii) {
+    selectedRadius = radius;
+    stops = await nearbyVbnStops(origin, radius);
+    if (stops.length) break;
+  }
+
+  const ranked = stops
+    .map(stop => stopLookupResult({
+      ...stop,
+      distanceMeters: Math.round(distanceMeters(origin, stop)),
+      walkingMinutes: Math.max(1, Math.round(distanceMeters(origin, stop) / 80))
+    }))
+    .filter(Boolean)
+    .sort((a, b) => a.distanceMeters - b.distanceMeters);
+  const selectedStop = ranked[0] || null;
+
+  console.log("[NEARBY STOP SEARCH DEBUG]", {
+    lat: origin.lat,
+    lon: origin.lon,
+    radiusMeters: selectedRadius,
+    stopsFound: ranked.length,
+    selectedStop
+  });
+  return ranked;
 }
 
 function markPlaceSource(place, source) {
@@ -2270,7 +2521,17 @@ function suggestionChoicesFromResolution(resolution) {
 }
 
 async function nearbyVbnStops(place, radiusMeters = 650) {
-  if (!vbnApiKey) return [];
+  if (!vbnApiKey) {
+    return uniquePlaces(knownStopsForLookup()
+      .map(stop => ({
+        ...stop,
+        distanceMeters: Math.round(distanceMeters(place, stop)),
+        walkingMinutes: Math.max(1, Math.round(distanceMeters(place, stop) / 80))
+      }))
+      .filter(stop => stop.distanceMeters <= radiusMeters)
+      .sort((a, b) => a.distanceMeters - b.distanceMeters))
+      .slice(0, 4);
+  }
 
   const url = new URL(`${vbnApiBase.replace(/\/$/, "")}/routers/${vbnRouterId}/index/stops`);
   url.search = new URLSearchParams({
@@ -2297,6 +2558,214 @@ async function nearbyVbnStops(place, radiusMeters = 650) {
   } catch {
     return [];
   }
+}
+
+function normalizeDeparture(raw = {}) {
+  const pattern = raw.pattern || raw.trip?.pattern || {};
+  const trip = raw.trip || {};
+  const stopTime = raw.stopTime || raw;
+  const serviceDay = Number(raw.serviceDay ?? stopTime.serviceDay);
+  const scheduledSeconds = Number(stopTime.scheduledDeparture ?? raw.scheduledDeparture);
+  const scheduled = Number.isFinite(serviceDay) && Number.isFinite(scheduledSeconds)
+    ? serviceDay * 1000 + scheduledSeconds * 1000
+    : Number(stopTime.scheduledDeparture ?? raw.scheduledDeparture ?? raw.departure ?? raw.scheduledDepartureTime);
+  const realtime = Number(stopTime.realtimeDeparture ?? raw.realtimeDeparture ?? raw.realtimeDepartureTime);
+  const departureDelay = Number(stopTime.departureDelay ?? raw.departureDelay ?? 0);
+  const scheduledDeparture = Number.isFinite(scheduled) && scheduled > 100000000000
+    ? scheduled
+    : null;
+  const realtimeDeparture = Number.isFinite(realtime) && realtime > 100000000000
+    ? realtime
+    : scheduledDeparture && Number.isFinite(departureDelay)
+      ? scheduledDeparture + departureDelay * 1000
+      : null;
+
+  return {
+    routeShortName: pattern.route?.shortName || trip.routeShortName || raw.routeShortName || raw.route || "",
+    headsign: trip.tripHeadsign || raw.headsign || raw.tripHeadsign || pattern.headsign || "",
+    scheduledDeparture,
+    realtimeDeparture,
+    departureDelay: Number.isFinite(departureDelay) ? departureDelay : null,
+    realtime: Boolean(stopTime.realtime || raw.realtime || realtimeDeparture),
+    platformCode: raw.platformCode || stopTime.platformCode || ""
+  };
+}
+
+async function getStopDepartures(stopId, startTime = new Date(), limit = 5) {
+  const cleanStopId = String(stopId || "").trim();
+  if (!cleanStopId || cleanStopId.startsWith("known:") || !vbnApiKey) {
+    console.log("[STOP DEPARTURES DEBUG]", {
+      stopId: cleanStopId,
+      stopName: "",
+      departuresCount: 0,
+      departures: []
+    });
+    return [];
+  }
+
+  const stopPath = encodeURIComponent(cleanStopId);
+  const attempts = [
+    `${vbnApiBase.replace(/\/$/, "")}/routers/${vbnRouterId}/index/stops/${stopPath}/stoptimes`,
+    `${vbnApiBase.replace(/\/$/, "")}/routers/${vbnRouterId}/index/stops/${stopPath}/departures`
+  ];
+  const date = startTime instanceof Date ? startTime : new Date(startTime || Date.now());
+
+  for (const endpoint of attempts) {
+    const url = new URL(endpoint);
+    url.search = new URLSearchParams({
+      timeRange: String(60 * 60 * 6),
+      numberOfDepartures: String(limit),
+      startTime: String(Math.floor(date.getTime() / 1000))
+    }).toString();
+
+    try {
+      const { response, data } = await fetchJsonWithTimeout(url, {
+        headers: {
+          Authorization: authHeaderValue(),
+          Accept: "application/json"
+        }
+      }, vbnTimeoutMs);
+      if (!response.ok) continue;
+
+      const rawDepartures = Array.isArray(data)
+        ? data
+        : Array.isArray(data.departures)
+          ? data.departures
+          : Array.isArray(data.times)
+            ? data.times
+            : [];
+      const departures = rawDepartures
+        .map(normalizeDeparture)
+        .filter(dep => dep.routeShortName || dep.headsign || dep.scheduledDeparture || dep.realtimeDeparture)
+        .sort((a, b) => (a.realtimeDeparture || a.scheduledDeparture || 0) - (b.realtimeDeparture || b.scheduledDeparture || 0))
+        .slice(0, limit);
+      console.log("[STOP DEPARTURES DEBUG]", {
+        stopId: cleanStopId,
+        stopName: "",
+        departuresCount: departures.length,
+        departures
+      });
+      return departures;
+    } catch {
+      continue;
+    }
+  }
+
+  console.log("[STOP DEPARTURES DEBUG]", {
+    stopId: cleanStopId,
+    stopName: "",
+    departuresCount: 0,
+    departures: []
+  });
+  return [];
+}
+
+function departureQueryStopText(message) {
+  const text = String(message || "").trim();
+  const patterns = [
+    /\b(?:next\s+(?:bus|tram|train|departure|departures)|departures|buses|what\s+buses)\s+(?:leave\s+)?from\s+(.+?)(?:\?|$)/i,
+    /\bwhen\s+is\s+the\s+next\s+(?:bus|tram|train)\s+from\s+(.+?)(?:\?|$)/i,
+    /\b(?:abfahrten|nächster\s+bus|naechster\s+bus)\s+(?:von|ab)\s+(.+?)(?:\?|$)/i
+  ];
+  for (const pattern of patterns) {
+    const match = text.match(pattern);
+    if (match?.[1]) return cleanRoutePlaceName(match[1]);
+  }
+  return "";
+}
+
+function isStopDepartureQuery(message) {
+  return Boolean(departureQueryStopText(message));
+}
+
+function stopChoiceButtons(stops) {
+  return stops.slice(0, 4).map(stop => ({
+    label: stop.name,
+    value: stop.name
+  })).concat([{ label: "Enter another place", value: "Enter another place" }]);
+}
+
+function locationChoicesForStops(stops) {
+  return (stops || []).slice(0, 4).map(stop => locationChoice({
+    ...stop,
+    stopId: stop.stopId || stop.id,
+    source: stop.source || "stop_lookup",
+    type: "stop",
+    nearbyStops: [stop]
+  })).filter(Boolean);
+}
+
+function pendingStopChoiceForMessage(session, message) {
+  const pending = session.pendingStopDeparture;
+  if (!pending || !Array.isArray(pending.options)) return null;
+  const normalized = normalizeText(message);
+  if (!normalized || normalized === normalizeText("Enter another place")) return null;
+  return pending.options.find(stop => normalizeText(stop.name) === normalized) || null;
+}
+
+function formatStopDeparturesReply(stop, departures, lang = "en") {
+  const platform = stop.platformCode || stop.code || "";
+  const intro = `Next departures from ${stop.name}:`;
+  const guidance = platform
+    ? `Platform/stop: ${platform}`
+    : /\b(?:hauptbahnhof|hbf|zob|bahnhof)\b/i.test(stop.name)
+      ? "At this station, go to the listed bus stop/platform before boarding."
+      : "";
+  if (!departures.length) {
+    return [intro, guidance, "I could not fetch live departures for this stop right now."].filter(Boolean).join("\n");
+  }
+  const lines = departures.map(dep => {
+    const mode = dep.routeShortName ? `Bus ${dep.routeShortName}` : "Departure";
+    const headsign = dep.headsign ? ` toward ${dep.headsign}` : "";
+    const time = formatClock(dep.realtimeDeparture || dep.scheduledDeparture, lang) || "time unavailable";
+    const delay = dep.departureDelay ? `, ${delayText(dep.departureDelay, lang)}` : "";
+    const platformText = dep.platformCode ? `, platform/stop ${dep.platformCode}` : "";
+    return `- ${mode}${headsign} - ${time}${delay}${platformText}`;
+  });
+  return [intro, guidance, ...lines].filter(Boolean).join("\n");
+}
+
+async function responseForStopDepartureQuery({ session, message, lang }) {
+  const selectedStop = pendingStopChoiceForMessage(session, message);
+  const query = selectedStop ? selectedStop.name : departureQueryStopText(message);
+  if (!query) return null;
+
+  const matches = selectedStop ? [selectedStop] : await searchStopsByName(query);
+  if (!matches.length) {
+    session.pendingStopDeparture = null;
+    return {
+      reply: "I could not find that stop. Please enter another stop name.",
+      quickButtons: []
+    };
+  }
+
+  if (!selectedStop && matches.length > 1) {
+    const optionsShown = matches.slice(0, 4).map(stop => stop.name);
+    console.log("[STOP CLARIFICATION DEBUG]", { query, optionsShown });
+    session.pendingStopDeparture = {
+      query,
+      options: matches.slice(0, 4),
+      createdAt: Date.now()
+    };
+    return {
+      reply: "I found a few matching stops. Which one do you mean?",
+      quickButtons: stopChoiceButtons(matches)
+    };
+  }
+
+  const stop = matches[0];
+  session.pendingStopDeparture = null;
+  const departures = await getStopDepartures(stop.stopId || stop.id, new Date(), 5);
+  console.log("[STOP DEPARTURES DEBUG]", {
+    stopId: stop.stopId || stop.id,
+    stopName: stop.name,
+    departuresCount: departures.length,
+    departures
+  });
+  return {
+    reply: formatStopDeparturesReply(stop, departures, lang),
+    quickButtons: []
+  };
 }
 
 function requestedAddressParts(query) {
@@ -3311,6 +3780,88 @@ function normalizeItinerary(itinerary, routeCoords = {}) {
   };
 }
 
+function currentLocationPlace(coords) {
+  return {
+    name: "Current location",
+    lat: Number(coords?.lat),
+    lon: Number(coords?.lon),
+    type: "current_location",
+    source: "geolocation"
+  };
+}
+
+function accessWalkLegFromCurrentLocation(coords, stop, routeStartTime = Date.now()) {
+  const from = currentLocationPlace(coords);
+  const to = routeEndpointPlace(stop, stop?.name || "the stop");
+  if (!getLatLon(from) || !getLatLon(to)) return null;
+  const meters = Math.round(distanceMeters(from, to));
+  const minutes = Math.max(1, Math.round(meters / 80));
+  const arrival = Number(routeStartTime) || Date.now();
+  const departure = arrival - minutes * 60000;
+  return {
+    mode: "WALK",
+    route: "",
+    routeId: "",
+    tripId: "",
+    headsign: "",
+    agencyName: "",
+    from,
+    to,
+    fromCoords: getLatLon(from),
+    toCoords: getLatLon(to),
+    mapsUrl: buildWalkingMapsUrlFromCoords(from, to),
+    rawCoordinateFields: null,
+    steps: [],
+    departure,
+    arrival,
+    distanceMeters: meters,
+    departureDelay: null,
+    arrivalDelay: null,
+    departureDelayText: null,
+    arrivalDelayText: null,
+    realTime: false,
+    cancelled: false,
+    scheduleRelationship: "",
+    accessWalk: true
+  };
+}
+
+function prependAccessWalkToItinerary(itinerary, coords, stop) {
+  if (!itinerary?.legs?.length || !coords || !stop) return itinerary;
+  if (itinerary.legs[0]?.accessWalk) return itinerary;
+  const firstLeg = itinerary.legs[0];
+  const accessWalk = accessWalkLegFromCurrentLocation(coords, stop, itinerary.startTime || firstLeg.departure);
+  if (!accessWalk) return itinerary;
+  const legs = [accessWalk, ...itinerary.legs];
+  const endTime = Number(itinerary.endTime) || Number(legs[legs.length - 1]?.arrival) || accessWalk.arrival;
+  const walkingDistanceMeters = legs
+    .filter(leg => leg.mode === "WALK")
+    .reduce((total, leg) => total + (Number(leg.distanceMeters) || 0), 0);
+  return {
+    ...itinerary,
+    legs,
+    startTime: accessWalk.departure,
+    durationMinutes: Math.max(1, Math.round((endTime - accessWalk.departure) / 60000)),
+    walkingDistanceMeters: Math.round(walkingDistanceMeters)
+  };
+}
+
+function addAccessWalkToRouteResult(routeResult, coords, stop) {
+  if (!routeResult?.ok || !coords || !stop) return routeResult;
+  const mapItinerary = itinerary => prependAccessWalkToItinerary(itinerary, coords, stop);
+  return {
+    ...routeResult,
+    route: mapItinerary(routeResult.route),
+    itineraries: (routeResult.itineraries || []).map(mapItinerary),
+    alternatives: (routeResult.alternatives || []).map(mapItinerary),
+    query: {
+      ...routeResult.query,
+      currentLocationOrigin: currentLocationPlace(coords),
+      originStop: stopLookupResult(stop)
+    }
+  };
+}
+
 function routeModeIcon(mode) {
   if (mode === "WALK") return "🚶";
   if (mode === "BUS") return "🚌";
@@ -3901,22 +4452,111 @@ function walkRecommendedReply(routeResult, lang = "en") {
   return messages[lang] || messages.en;
 }
 
-function routeReplyForResult(routeResult, message, lang, context = {}) {
-  const acknowledgement = routeResult?.query?.start && routeResult?.query?.destination
-    ? `${ts("routeGotItChecking", lang, {
-      origin: routeResult.query.requestedStart || routeResult.query.start,
-      destination: routeResult.query.requestedDestination || routeResult.query.destination
-    })}\n\n`
-    : "";
-  return acknowledgement + (routeResult?.walkRecommended
-    ? walkRecommendedReply(routeResult, lang)
-    : `${ts("routeBusIntro", lang)}\n\n${compactRouteIntro(message, lang, context)}`);
+function hasExplicitRouteTime(rawText, route = {}) {
+  const text = String(rawText || "");
+  return Boolean(
+    extractTimeText(text)
+    || extractMultilingualTimeText(text)
+    || detectExplicitDate(text)
+    || /\b(?:now|jetzt|right now)\b/i.test(text)
+    || (route?.requestedDateTime && route.requestedDateTime !== "now")
+    || (route?.time && route.time !== "now")
+    || route?.explicitDate
+  );
+}
+
+function setRouteTimeAssumption(routeResult, { rawText = "", route = {}, timeWasAssumed = null } = {}) {
+  if (!routeResult?.query) return routeResult;
+  const explicitTimeDetected = hasExplicitRouteTime(rawText, route);
+  const assumed = timeWasAssumed === null
+    ? !explicitTimeDetected && normalizeTimeMode(routeResult.query.timeMode) === TIME_MODE.DEPART_AT
+    : Boolean(timeWasAssumed);
+  routeResult.query.explicitTimeDetected = explicitTimeDetected;
+  routeResult.query.timeWasAssumed = assumed;
+  routeResult.query.explicitDate = route?.explicitDate || routeResult.query.explicitDate || detectExplicitDate(routeResult.query.time || "");
+  console.log("[ROUTE TIME ASSUMPTION DEBUG]", {
+    rawText,
+    originText: routeResult.query.requestedStart || routeResult.query.start,
+    destinationText: routeResult.query.requestedDestination || routeResult.query.destination,
+    explicitTimeDetected,
+    requestedDateTime: routeResult.query.time || route?.requestedDateTime || route?.time || "now",
+    timeWasAssumed: assumed,
+    timeMode: normalizeTimeMode(routeResult.query.timeMode)
+  });
+  return routeResult;
+}
+
+function routeTimeLabel(query = {}, lang = "en") {
+  const parsed = parseRouteTime(query.time || "now");
+  const clock = formatClock(otpDateTimeMs(parsed.date, parsed.time), lang);
+  const dateWord = detectExplicitDate(query.time || "") || query.explicitDate || parsed.explicitDate || "";
+  if (dateWord === "tomorrow") return `tomorrow at ${clock}`;
+  if (dateWord === "today") return `today at ${clock}`;
+  return `at ${clock}`;
+}
+
+function routeAcknowledgementForResult(routeResult, lang) {
+  const query = routeResult?.query || {};
+  if (!query.start || !query.destination) return "";
+  const origin = query.requestedStart || query.start;
+  const destination = query.requestedDestination || query.destination;
+  if (query.timeWasAssumed) {
+    return ts("routeGotItCheckingNow", lang, { origin, destination });
+  }
+  const time = routeTimeLabel(query, lang);
+  if (normalizeTimeMode(query.timeMode) === TIME_MODE.ARRIVE_BY) {
+    return ts("routeGotItArriveBy", lang, { destination, time: time.replace(/^at\s+/i, "") });
+  }
+  return ts("routeGotItCheckingTime", lang, { origin, destination, time });
+}
+
+function routeReplyForResult(routeResult, message, lang, context = {}, routePreferences = null) {
+  const acknowledgement = routeAcknowledgementForResult(routeResult, lang);
+  const base = acknowledgement + (routeResult?.walkRecommended
+    ? `${acknowledgement ? "\n\n" : ""}${walkRecommendedReply(routeResult, lang)}`
+    : `${acknowledgement ? "\n\n" : ""}${ts("routeBusIntro", lang)}\n\n${compactRouteIntro(message, lang, context)}`);
+  if (routePreferences) {
+    const note = buildAccessibilityNote(routeResult, routePreferences, lang);
+    if (note) return `${base}\n\n${note}`;
+  }
+  return base;
+}
+
+function routeChangeTimeButtons(lang) {
+  return [
+    { label: ts("leaveNow", lang), value: ts("leaveNow", lang) },
+    { label: ts("chooseDepartureTime", lang), value: ts("chooseDepartureTime", lang) },
+    { label: ts("arriveByATime", lang), value: ts("arriveByATime", lang) },
+    { label: ts("tomorrow", lang), value: ts("tomorrow", lang) }
+  ];
+}
+
+function routeChangeTomorrowButtons(lang) {
+  return [
+    { label: ts("eightAm", lang), value: ts("eightAm", lang) },
+    { label: ts("nineAm", lang), value: ts("nineAm", lang) },
+    { label: ts("tenAm", lang), value: ts("tenAm", lang) },
+    { label: ts("typeAnotherTime", lang), value: ts("typeAnotherTime", lang) }
+  ];
+}
+
+function changeTimeButton(lang) {
+  return { label: ts("changeTime", lang), value: ts("changeTime", lang), action: "route_change_time" };
+}
+
+function showOtherOptionsButton(routeResult, lang) {
+  const alternatives = alternativeRouteButtons(routeResult, lang);
+  return alternatives[0] || null;
 }
 
 function routeButtonsForResult(routeResult, lang, session = null) {
-  if (routeResult?.walkRecommended) return [];
+  if (routeResult?.walkRecommended) {
+    return mergeQuickReplies([changeTimeButton(lang)], lang, { responseType: "walk_route_result" });
+  }
 
-  const buttons = [];
+  const buttons = [changeTimeButton(lang)];
+  const otherOptions = showOtherOptionsButton(routeResult, lang);
+  if (otherOptions) buttons.push({ ...otherOptions, label: ts("otherOptions", lang) });
   if (routeResult?.destinationWalkNotice && Number(routeResult.directDestinationAlternativeIndex) >= 0) {
     buttons.push({
       label: ts("routeDirectlyToStop", lang, { destination: routeResult.destinationWalkNotice.destinationName }),
@@ -3926,7 +4566,8 @@ function routeButtonsForResult(routeResult, lang, session = null) {
     });
   }
 
-  return [...buttons, ...routeTicketButtons(lang, session?.lastRouteContext?.routeContextId || routeResult?.query?.routeContextId || "")];
+  const contextReplies = [...buttons, ...routeTicketButtons(lang, session?.lastRouteContext?.routeContextId || routeResult?.query?.routeContextId || "")];
+  return mergeQuickReplies(contextReplies, lang, { responseType: "route_result" });
 }
 
 function buildWalkingRecommendationRoute(details, from, to, tripTime, options = {}) {
@@ -4477,6 +5118,8 @@ async function planRoute(details, fromCoords = null, options = {}) {
 
   async function fetchOtpItineraries(queryTripTime) {
     const url = new URL(`${vbnApiBase.replace(/\/$/, "")}/routers/${vbnRouterId}/plan`);
+    const accessPrefs = options.routePreferences || {};
+    const maxWalkDistanceValue = accessPrefs.lessWalking ? "300" : "900";
     const requestParams = {
       arriveBy: arriveBy ? "true" : "false",
       date: queryTripTime.date,
@@ -4484,11 +5127,18 @@ async function planRoute(details, fromCoords = null, options = {}) {
       toPlace: `${to.lat},${to.lon}`,
       time: queryTripTime.time,
       mode: "WALK,TRANSIT",
-      maxWalkDistance: "900",
+      maxWalkDistance: maxWalkDistanceValue,
       numItineraries: "3"
     };
     url.search = new URLSearchParams(requestParams).toString();
 
+    console.log("[ACCESSIBLE ROUTE REQUEST DEBUG]", {
+      originText: details.start,
+      destinationText: details.destination,
+      routePreferences: accessPrefs,
+      apiSupportsWheelchairRouting: false,
+      requestParams
+    });
     console.log("[ROUTE API TIME DEBUG]", {
       requestedDateTime: requestedRouteTimeText || details.time,
       timeMode: arriveBy ? TIME_MODE.ARRIVE_BY : TIME_MODE.DEPART_AT,
@@ -4877,6 +5527,7 @@ function createSession() {
     pendingLocation: null,
     pendingRoute: null,
     pendingAmbiguousPlace: null,
+    pendingStopDeparture: null,
     selectedLocations: {
       start: null,
       destination: null
@@ -4889,6 +5540,13 @@ function createSession() {
       isStudent: false,
       isNewcomer: false,
       needsTicketHelp: false
+    },
+    routePreferences: {
+      accessibilityRequired: false,
+      wheelchairRequired: false,
+      lessWalking: false,
+      avoidStairs: false,
+      stepFreePreferred: false
     },
     messages: [],
     lastRouteContext: null,
@@ -4971,9 +5629,11 @@ function getSession(sessionId) {
   if (!("pendingLocation" in session)) session.pendingLocation = null;
   if (!("pendingRoute" in session)) session.pendingRoute = null;
   if (!("pendingAmbiguousPlace" in session)) session.pendingAmbiguousPlace = null;
+  if (!("pendingStopDeparture" in session)) session.pendingStopDeparture = null;
   if (!session.ticketFlowStatus) session.ticketFlowStatus = "none";
   if (!("selectedTicket" in session)) session.selectedTicket = "";
   if (!("pendingTicketDetails" in session)) session.pendingTicketDetails = null;
+  if (!session.routePreferences) session.routePreferences = { accessibilityRequired: false, wheelchairRequired: false, lessWalking: false, avoidStairs: false, stepFreePreferred: false };
   session.lastSeen = Date.now();
   return { id, session };
 }
@@ -4999,10 +5659,48 @@ function pruneSessions() {
 
 function quickButtonsForMissing(missing, lang = "en") {
   if (missing !== "start") return [];
-  return [
-    { label: ts("useCurrentLoc", lang), value: "__current_location__" },
-    { label: ts("typeLocManually", lang), value: "__type_location_manually__" }
+  const contextReplies = [
+    { label: ts("useCurrentLoc", lang), value: "__current_location__", action: "use_current_location" },
+    { label: ts("typeLocManually", lang), value: "__type_location_manually__", action: "enter_origin" }
   ];
+  return mergeQuickReplies(contextReplies, lang, { responseType: "awaiting_origin" });
+}
+
+function createPlanTripPendingRoute() {
+  return {
+    mode: "awaiting_origin",
+    originText: null,
+    origin: null,
+    destinationText: null,
+    destination: null,
+    requestedDateTime: "now",
+    explicitDate: "",
+    timeMode: TIME_MODE.DEPART_AT,
+    sourceFlow: "plan_trip_button",
+    createdAt: Date.now()
+  };
+}
+
+function startPlanTripFromButton(session) {
+  const conversationStateBefore = effectiveConversationState(session);
+  const pendingRouteBefore = session.pendingRoute ? { ...session.pendingRoute } : null;
+  const pendingRouteAfter = createPlanTripPendingRoute();
+  session.pendingRoute = pendingRouteAfter;
+  session.pendingLocation = null;
+  session.pendingAmbiguousPlace = null;
+  session.pendingStopDeparture = null;
+  session.route = { start: "", destination: "", time: "now", explicitDate: "", timeMode: TIME_MODE.DEPART_AT };
+  session.fromCoords = null;
+  session.selectedLocations = { start: null, destination: null };
+  session.conversationState = "awaiting_origin";
+  console.log("[PLAN TRIP BUTTON DEBUG]", {
+    conversationStateBefore,
+    pendingRouteBefore,
+    action: "plan_trip",
+    conversationStateAfter: "awaiting_origin",
+    pendingRouteAfter
+  });
+  return pendingRouteAfter;
 }
 
 function selectedPlacePayloadFromPlace(place) {
@@ -5071,6 +5769,53 @@ function ambiguousSinglePlaceText(message, route = {}) {
   return normalizeText(candidate).split(" ").length <= 5 ? candidate : "";
 }
 
+function effectiveConversationState(session) {
+  if (session?.pendingRoute?.mode) return session.pendingRoute.mode;
+  if (isAwaitingTicketDetails(session)) return "awaiting_ticket_missing_fields";
+  if (session?.conversationState) return session.conversationState;
+  return "neutral";
+}
+
+function hasPendingRouteOrigin(session) {
+  const pending = session?.pendingRoute || {};
+  return Boolean(pending.origin || pending.originText);
+}
+
+function hasPendingRouteDestination(session) {
+  const pending = session?.pendingRoute || {};
+  return Boolean(pending.destination || pending.destinationText);
+}
+
+function allowsAmbiguousSinglePlaceQuestion(session) {
+  const conversationState = effectiveConversationState(session);
+  return conversationState === "neutral"
+    && !session?.pendingRoute
+    && !hasPendingRouteOrigin(session)
+    && !hasPendingRouteDestination(session);
+}
+
+function logAmbiguousPlaceGuard({ session, rawText, ambiguousQuestionAllowed }) {
+  console.log("[AMBIGUOUS PLACE GUARD DEBUG]", {
+    rawText,
+    conversationState: effectiveConversationState(session),
+    hasPendingRoute: Boolean(session?.pendingRoute),
+    hasOrigin: hasPendingRouteOrigin(session),
+    hasDestination: hasPendingRouteDestination(session),
+    ambiguousQuestionAllowed
+  });
+}
+
+function logConversationStateRouting({ session, rawText, selectedHandler }) {
+  console.log("[CONVERSATION STATE ROUTING DEBUG]", {
+    rawText,
+    conversationState: effectiveConversationState(session),
+    hasPendingRoute: Boolean(session?.pendingRoute),
+    pendingOrigin: session?.pendingRoute?.originText || session?.pendingRoute?.origin?.label,
+    pendingDestination: session?.pendingRoute?.destinationText || session?.pendingRoute?.destination?.label,
+    selectedHandler
+  });
+}
+
 function formatAmbiguousPlaceName(placeText, resolvedPlace = null) {
   const source = placeText || resolvedPlace?.rawText || resolvedPlace?.name || "";
   return displayPlace(source.replace(/^oldenburg\(oldb\)\s+/i, ""));
@@ -5092,6 +5837,10 @@ function rememberPendingAmbiguousPlace(session, { placeText, resolvedPlace, rout
 }
 
 function responseForAmbiguousSinglePlace({ session, message, route, lang, ticketMode = false }) {
+  const ambiguousQuestionAllowed = ticketMode || allowsAmbiguousSinglePlaceQuestion(session);
+  logAmbiguousPlaceGuard({ session, rawText: message, ambiguousQuestionAllowed });
+  if (!ambiguousQuestionAllowed) return null;
+
   const placeText = ambiguousSinglePlaceText(message, route);
   if (!placeText) return null;
   return resolveSupportedLocation(placeText, { allowAmbiguous: true }).then(resolution => {
@@ -5178,10 +5927,11 @@ function quickButtonsForChoices(choices) {
 }
 
 function ticketQuickButtons(lang) {
-  return [
+  const contextReplies = [
     { label: ts("chooseTicketType", lang), value: ts("chooseTicketType", lang), action: "ticket_need" },
     { label: ts("officialVbnTicketInfo", lang), value: "https://www.vbn.de/tickets", url: "https://www.vbn.de/tickets", external: true }
   ];
+  return mergeQuickReplies(contextReplies, lang, { responseType: "ticket_quick" });
 }
 
 function ticketGuidanceButtons(lang, recommendation = {}, options = {}) {
@@ -5196,7 +5946,7 @@ function ticketGuidanceButtons(lang, recommendation = {}, options = {}) {
   }).filter(Boolean);
 
   const seen = new Set();
-  const buttons = [...recommendedButtons, {
+  const contextButtons = [...recommendedButtons, {
     label: ts("officialVbnTicketInfo", lang),
     value: "https://www.vbn.de/tickets",
     url: "https://www.vbn.de/tickets",
@@ -5209,9 +5959,9 @@ function ticketGuidanceButtons(lang, recommendation = {}, options = {}) {
   });
 
   if (options.includeRouteRetry) {
-    buttons.push({ label: ts("tryRouteAgain", lang), value: ts("tryRouteAgain", lang) });
+    contextButtons.push({ label: ts("tryRouteAgain", lang), value: ts("tryRouteAgain", lang) });
   }
-  return buttons;
+  return mergeQuickReplies(contextButtons, lang, { responseType: "ticket_guidance" });
 }
 
 function coordParam(coords) {
@@ -5227,6 +5977,44 @@ function routeTicketButtons(lang, routeContextId = "") {
     { label: ts("noNeedTicket", lang), value: "needs_ticket", action: "ticket_status_response", routeContextId, legacyAction: "ticket_need" },
     { label: ts("notSure", lang), value: "not_sure", action: "ticket_status_response", routeContextId, legacyAction: "ticket_unsure" }
   ];
+}
+
+const accessibilityLabel = { en: "Accessibility", de: "Barrierefreiheit", ar: "إتاحة الوصول", tr: "Erişilebilirlik", uk: "Доступність", hi: "सुलभता" };
+
+function getMainActionReplies(lang) {
+  return [
+    { label: ts("planTrip", lang), action: "plan_trip" },
+    { label: ts("tickets", lang), action: "tickets" },
+    { label: accessibilityLabel[lang] || accessibilityLabel.en, action: "accessibility" },
+    { label: ts("delayHelp", lang), action: "delay_help" }
+  ];
+}
+
+function dedupeRepliesByActionAndLabel(replies) {
+  const seen = new Set();
+  return replies.filter(reply => {
+    const key = reply.action
+      ? `action:${reply.action}:${reply.value || ""}`
+      : `label:${normalizeText(reply.label)}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
+function mergeQuickReplies(contextReplies, lang, options = {}) {
+  const includeMainActions = options.includeMainActions !== false;
+  const mainReplies = includeMainActions ? getMainActionReplies(lang) : [];
+  const merged = [...contextReplies, ...mainReplies];
+  const finalReplies = dedupeRepliesByActionAndLabel(merged);
+  console.log("[QUICK REPLY MERGE DEBUG]", {
+    responseType: options.responseType || "unknown",
+    contextReplies,
+    mainReplies,
+    finalReplies,
+    includeMainActions
+  });
+  return finalReplies;
 }
 
 function routeSummaryForDemo(routeResult, lang = "en") {
@@ -5890,7 +6678,7 @@ function recentLastRouteContext(session, routeContextId = "") {
 }
 
 function existingRouteTicketButtons(lang) {
-  return [
+  const contextReplies = [
     { label: ts("singleTicketInfo", lang), value: "single", action: "ticket_option" },
     { label: ts("dayTicketInfo", lang), value: "day", action: "ticket_option" },
     { label: ts("studentTicketInfo", lang), value: "student", action: "ticket_option" },
@@ -5898,6 +6686,7 @@ function existingRouteTicketButtons(lang) {
     { label: ts("officialVbnTicketInfo", lang), value: "https://www.vbn.de/tickets", url: "https://www.vbn.de/tickets", external: true },
     { label: ts("continueTicketPage", lang), value: "selected", action: "ticket_continue" }
   ];
+  return mergeQuickReplies(contextReplies, lang, { responseType: "ticket_advice" });
 }
 
 function buildTicketAdviceForExistingRoute(session, lastRoute, ticketStatus, lang) {
@@ -5958,9 +6747,10 @@ function buildTicketAdviceForExistingRoute(session, lastRoute, ticketStatus, lan
 }
 
 function continuationTicketButtons(lang) {
-  return [
+  const contextReplies = [
     { label: ts("officialVbnTicketInfo", lang), value: "https://www.vbn.de/tickets", url: "https://www.vbn.de/tickets", external: true }
   ];
+  return mergeQuickReplies(contextReplies, lang, { responseType: "ticket_has" });
 }
 
 function startTicketDetailsCollection(session, ticketStatus, lang) {
@@ -6090,13 +6880,35 @@ function clearRouteMemory(session) {
   session.pendingLocation = null;
   session.pendingRoute = null;
   session.pendingAmbiguousPlace = null;
+  session.pendingStopDeparture = null;
   session.selectedLocations = { start: null, destination: null };
+  session.conversationState = "neutral";
 }
 
 function clearTicketFlow(session) {
   session.ticketFlowStatus = "none";
   session.selectedTicket = "";
   session.pendingTicketDetails = null;
+}
+
+function syncConversationStateFromBody(session, body) {
+  const memory = body && typeof body.memory === "object" ? body.memory : null;
+  if (!memory) return;
+
+  if (memory.pendingRoute && typeof memory.pendingRoute === "object" && !session.pendingRoute) {
+    session.pendingRoute = {
+      ...memory.pendingRoute,
+      mode: String(memory.pendingRoute.mode || memory.conversationState || "").trim() || "awaiting_origin",
+      requestedDateTime: memory.pendingRoute.requestedDateTime || "now",
+      timeMode: normalizeTimeMode(memory.pendingRoute.timeMode || TIME_MODE.DEPART_AT),
+      createdAt: Number(memory.pendingRoute.createdAt) || Date.now()
+    };
+  }
+
+  const incomingState = String(memory.conversationState || "").trim();
+  if (incomingState && !session.conversationState) {
+    session.conversationState = incomingState;
+  }
 }
 
 function syncTicketFlowFromBody(session, body) {
@@ -6121,11 +6933,13 @@ function memoryPayload(session) {
     pendingLocation: session.pendingLocation,
     pendingRoute: session.pendingRoute,
     pendingAmbiguousPlace: session.pendingAmbiguousPlace,
+    pendingStopDeparture: session.pendingStopDeparture,
     selectedLocations: session.selectedLocations,
     ticketFlowStatus: session.ticketFlowStatus,
     selectedTicket: session.selectedTicket,
     pendingTicketDetails: session.pendingTicketDetails || null,
-    lastRouteContext: session.lastRouteContext || null
+    lastRouteContext: session.lastRouteContext || null,
+    conversationState: effectiveConversationState(session)
   };
 }
 
@@ -6262,6 +7076,27 @@ function foundStartMessage(place, lang) {
 
 async function handleStandalonePlaceMessage(message, lang, session) {
   if (!isLikelyStandalonePlaceMessage(message) || session.route.destination) return null;
+  const ambiguousQuestionAllowed = allowsAmbiguousSinglePlaceQuestion(session);
+  logAmbiguousPlaceGuard({ session, rawText: message, ambiguousQuestionAllowed });
+  if (!ambiguousQuestionAllowed) return null;
+
+  const stopMatches = await searchStopsByName(message);
+  if (stopMatches.length > 1 && /\b(?:hbf|hauptbahnhof|bahnhof|station|zob)\b/i.test(message)) {
+    const choices = locationChoicesForStops(stopMatches);
+    const optionsShown = choices.map(choice => choice.label || choice.value);
+    console.log("[STOP CLARIFICATION DEBUG]", {
+      query: message,
+      optionsShown
+    });
+    session.pendingLocation = {
+      role: "start",
+      choices
+    };
+    return {
+      reply: "I found a few matching stops. Which one do you mean?",
+      quickButtons: quickButtonsForChoices(choices)
+    };
+  }
 
   const resolution = await resolveSupportedLocation(message, { allowAmbiguous: true });
   if (resolution.ok) {
@@ -6309,7 +7144,7 @@ async function handleStandalonePlaceMessage(message, lang, session) {
   if (isLikelyPlaceSearchText(message)) {
     return {
       reply: ts("noPlaceSuggestions", lang),
-      quickButtons: []
+      quickButtons: mergeQuickReplies([], lang, { responseType: "place_not_found" })
     };
   }
 
@@ -6657,11 +7492,24 @@ async function routeResponseFromSession({ session, message, lang, arriveBy = fal
     timeMode: routeToPlan?.timeMode,
     arriveBy: normalizeTimeMode(routeToPlan?.timeMode) === TIME_MODE.ARRIVE_BY
   });
-  const routeResult = await planRoute(
+  let routeResult = await planRoute(
     session.route,
     session.route.start === "My current location" ? session.fromCoords : null,
     routeOptionsFromSession(session, arriveBy, message)
-  );
+  ).catch(error => ({
+    ok: false,
+    status: 503,
+    error: "vbn_fetch_error",
+    message: error.message,
+    details: { ...session.route }
+  }));
+  if (session.route.start === "My current location" && session.fromCoords && session.selectedLocations?.start?.type === "stop") {
+    routeResult = addAccessWalkToRouteResult(routeResult, session.fromCoords, session.selectedLocations.start);
+  }
+  setRouteTimeAssumption(routeResult, {
+    rawText: message,
+    route: completedRoute || session.route
+  });
   if (completedRoute) {
     const finalArrival = routeResult.route?.endTime || null;
     const requested = resolveRequestedDateTime(completedRoute.requestedDateTime, new Date());
@@ -6681,9 +7529,10 @@ async function routeResponseFromSession({ session, message, lang, arriveBy = fal
   if (routeResult.ok) {
     session.pendingLocation = null;
     session.pendingRoute = null;
+    session.conversationState = "neutral";
     session.ticketFlowStatus = routeResult.walkRecommended ? "none" : "asking_ticket";
     saveLastRouteContext(session, routeResult, lang);
-    reply = routeReplyForResult(routeResult, message, lang, session.context);
+    reply = routeReplyForResult(routeResult, message, lang, session.context, session.routePreferences);
     quickButtons = routeButtonsForResult(routeResult, lang, session);
   } else if (routeResult.error === "past_time") {
     session.pendingLocation = null;
@@ -6807,7 +7656,7 @@ async function responseForTicketDetailsReply({ session, message, lang }) {
       sourceFlow
     });
     return {
-      reply: `${completionAck}\n\n${routeReplyForResult(routeResult, message, lang, session.context)}\n\n${formatTicketRecommendation(ticketSuggestion)}`,
+      reply: `${completionAck}\n\n${routeReplyForResult(routeResult, message, lang, session.context, session.routePreferences)}\n\n${formatTicketRecommendation(ticketSuggestion)}`,
       quickButtons: ticketSuggestion.quickReplies,
       routeResult
     };
@@ -6954,6 +7803,14 @@ async function responseForPendingDestination({ session, message, lang }) {
 
   const routeFromMessage = extractTripDetails(message, lang);
   if (routeFromMessage.start && routeFromMessage.destination) {
+    console.log("[AWAITING DESTINATION HANDLER DEBUG]", {
+      rawText: message,
+      conversationState: effectiveConversationState(session),
+      destinationText: routeFromMessage.destination,
+      pendingRouteBefore: pending,
+      pendingRouteAfter: null,
+      routePlanningStarted: true
+    });
     session.pendingRoute = null;
     clearRouteMemory(session);
     mergeRouteState(session, routeFromMessage, message);
@@ -6965,24 +7822,63 @@ async function responseForPendingDestination({ session, message, lang }) {
     });
   }
 
-  const destination = cleanRoutePlaceName(normalizeStationReference(routeFromMessage.destination || message, message))
+  const destination = cleanRoutePlaceName(message)
     .replace(/^(?:to|go\s+to|destination)\s+/i, "")
     .trim();
   if (!destination) return null;
 
-  session.route.start = pending.originText || session.route.start;
+  const usesCurrentLocation = normalizeText(pending.originText) === "current location"
+    || normalizeText(pending.originText) === "my current location"
+    || pending.origin?.type === "current_location";
+  const routeToPlan = {
+    ...pending,
+    destinationText: destination,
+    destination: null,
+    origin: pending.origin,
+    originText: pending.originText,
+    requestedDateTime: pending.requestedDateTime,
+    timeMode: normalizeTimeMode(pending.timeMode || TIME_MODE.DEPART_AT)
+  };
+  logAmbiguousPlaceGuard({
+    session,
+    rawText: message,
+    ambiguousQuestionAllowed: false
+  });
+  logConversationStateRouting({
+    session,
+    rawText: message,
+    selectedHandler: "awaiting_destination_merge"
+  });
+
+  session.route.start = usesCurrentLocation ? "My current location" : (routeToPlan.originText || session.route.start);
   session.route.destination = destination;
-  session.route.time = pending.requestedDateTime || session.route.time || "now";
-  session.route.explicitDate = pending.explicitDate || "";
-  session.route.timeMode = normalizeTimeMode(pending.timeMode || session.route.timeMode);
-  session.selectedLocations.start = pending.origin || session.selectedLocations.start;
+  session.route.time = routeToPlan.requestedDateTime || session.route.time || "now";
+  session.route.explicitDate = routeToPlan.explicitDate || "";
+  session.route.timeMode = normalizeTimeMode(routeToPlan.timeMode || session.route.timeMode);
+  session.selectedLocations.start = usesCurrentLocation && pending.originStop
+    ? selectedPlacePayloadFromPlace({
+      ...pending.originStop,
+      stopId: pending.originStop.stopId || pending.originStop.id,
+      type: "stop",
+      source: "nearby_stop"
+    })
+    : routeToPlan.origin || session.selectedLocations.start;
   session.pendingRoute = null;
+  console.log("[AWAITING DESTINATION HANDLER DEBUG]", {
+    rawText: message,
+    conversationState: "awaiting_destination",
+    destinationText: destination,
+    pendingRouteBefore: pending,
+    pendingRouteAfter: null,
+    routePlanningStarted: true
+  });
 
   return routeResponseFromSession({
     session,
     message,
     lang,
-    arriveBy: session.route.timeMode === TIME_MODE.ARRIVE_BY
+    arriveBy: session.route.timeMode === TIME_MODE.ARRIVE_BY,
+    completedRoute: routeToPlan
   });
 }
 
@@ -6997,10 +7893,18 @@ function originTextFromPendingReply(message, lang) {
 
 async function responseForPendingOrigin({ session, message, lang }) {
   const pending = session.pendingRoute;
-  if (!pending || pending.mode !== "awaiting_origin") return null;
+  if (!pending || (pending.mode !== "awaiting_origin" && pending.mode !== "awaiting_manual_origin_after_geo_failure")) return null;
 
   const routeFromMessage = extractTripDetails(message, lang);
   if (routeFromMessage.start && routeFromMessage.destination) {
+    console.log("[AWAITING ORIGIN HANDLER DEBUG]", {
+      rawText: message,
+      conversationState: effectiveConversationState(session),
+      parsedAsFullRoute: true,
+      originText: routeFromMessage.start,
+      destinationText: routeFromMessage.destination,
+      nextState: "plan_route"
+    });
     session.pendingRoute = null;
     clearRouteMemory(session);
     mergeRouteState(session, routeFromMessage, message);
@@ -7015,6 +7919,55 @@ async function responseForPendingOrigin({ session, message, lang }) {
   const origin = originTextFromPendingReply(message, lang);
   if (!origin) return null;
 
+  if (!(pending.destinationText || pending.destination)) {
+    const pendingRouteBefore = { ...pending };
+    const pendingRouteAfter = {
+      ...pending,
+      mode: "awaiting_destination",
+      originText: origin,
+      origin: null,
+      destinationText: null,
+      destination: null,
+      requestedDateTime: pending.requestedDateTime || "now",
+      explicitDate: pending.explicitDate || "",
+      timeMode: normalizeTimeMode(pending.timeMode || TIME_MODE.DEPART_AT),
+      createdAt: pending.createdAt || Date.now()
+    };
+    console.log("[AWAITING ORIGIN HANDLER DEBUG]", {
+      rawText: message,
+      conversationState: effectiveConversationState(session),
+      parsedAsFullRoute: false,
+      originText: origin,
+      destinationText: null,
+      nextState: "awaiting_destination"
+    });
+    logAmbiguousPlaceGuard({
+      session,
+      rawText: message,
+      ambiguousQuestionAllowed: false
+    });
+    console.log("[AWAITING ORIGIN MERGE DEBUG]", {
+      pendingRouteBefore,
+      pendingRouteAfter
+    });
+
+    session.pendingRoute = pendingRouteAfter;
+    session.route.start = origin;
+    session.route.destination = "";
+    session.route.time = pendingRouteAfter.requestedDateTime;
+    session.route.explicitDate = pendingRouteAfter.explicitDate;
+    session.route.timeMode = pendingRouteAfter.timeMode;
+    session.fromCoords = null;
+    session.selectedLocations.start = null;
+    session.conversationState = "awaiting_destination";
+
+    return {
+      reply: ts("originConfirmedAskDestination", lang, { place: displayPlace(origin) }),
+      quickButtons: [],
+      routeResult: null
+    };
+  }
+
   const completedRoute = {
     originText: origin,
     origin: null,
@@ -7028,6 +7981,22 @@ async function responseForPendingOrigin({ session, message, lang }) {
     enteredOriginText: origin,
     pendingRoute: pending,
     completedRoute
+  });
+  console.log("[MANUAL ORIGIN AFTER GEO FAILURE DEBUG]", {
+    rawText: message,
+    parsedOriginText: origin,
+    destinationText: pending.destinationText,
+    routePlanningStarted: true
+  });
+  logAmbiguousPlaceGuard({
+    session,
+    rawText: message,
+    ambiguousQuestionAllowed: false
+  });
+  logConversationStateRouting({
+    session,
+    rawText: message,
+    selectedHandler: "awaiting_origin_merge"
   });
 
   session.route.start = completedRoute.originText;
@@ -7188,7 +8157,11 @@ function missingRouteField(session) {
   if (!session.route.destination) return "destination";
   if (isVagueDestination(session.route.destination)) return "destination";
   if (!session.route.start) return "start";
-  if (!session.route.time) return "time";
+  if (!session.route.time) {
+    session.route.time = "now";
+    session.route.explicitDate = "";
+    session.route.timeMode = TIME_MODE.DEPART_AT;
+  }
   return "";
 }
 
@@ -7297,20 +8270,22 @@ function routeErrorMessage(error, lang, suggestions = []) {
 
 function routeErrorButtonsForResult(routeResult, lang, fallbackButtons = []) {
   if (routeResult?.error === "exact_address_not_found") {
-    return [
+    const contextReplies = [
       { label: ts("useThisStreet", lang), value: ts("useThisStreet", lang) },
       { label: ts("useNearbyStop", lang), value: ts("useNearbyStop", lang) },
       { label: ts("enterAnotherAddress", lang), value: ts("enterAnotherAddress", lang) }
     ];
+    return mergeQuickReplies(contextReplies, lang, { responseType: "exact_address_not_found" });
   }
   if (routeResult?.error === "vbn_fetch_error" || routeResult?.status === 503) {
-    return [
+    const contextReplies = [
       { label: ts("tryRouteAgain", lang), value: ts("tryRouteAgain", lang) },
       { label: ts("continueTicketHelp", lang), value: ts("continueTicketHelp", lang), action: "ticket_unsure" },
       { label: ts("officialVbnTicketInfo", lang), value: "https://www.vbn.de/tickets", url: "https://www.vbn.de/tickets", external: true }
     ];
+    return mergeQuickReplies(contextReplies, lang, { responseType: "vbn_fetch_error" });
   }
-  return fallbackButtons;
+  return fallbackButtons.length ? mergeQuickReplies(fallbackButtons, lang, { responseType: "route_error_fallback" }) : fallbackButtons;
 }
 
 // Builds the "X has already passed" clarification reply and stores the
@@ -7376,7 +8351,8 @@ function routeOptionsFromSession(session, arriveBy = false, message = "") {
     selectedLanguage: session.selectedLanguage,
     resolvedStart: session.selectedLocations?.start || null,
     resolvedDestination: session.selectedLocations?.destination || null,
-    rawText: message
+    rawText: message,
+    routePreferences: session.routePreferences || {}
   };
 }
 
@@ -7389,6 +8365,300 @@ function promptForMissingAfterSelection(missing, place, role, lang) {
   if (missing === "destination") return ts("startSavedAskDest", lang);
   if (missing === "time") return ts("startSavedAskTime", lang);
   return role === "start" ? ts("startSaved", lang) : ts("destSaved", lang);
+}
+
+function startRouteTimeChange(session, lang) {
+  const context = session.lastRouteContext || null;
+  if (!context?.originText || !context?.destinationText) {
+    return {
+      reply: ts("lostRouteContext", lang),
+      quickButtons: quickButtonsForMissing("start", lang),
+      routeResult: null
+    };
+  }
+  const quickButtons = routeChangeTimeButtons(lang);
+  session.pendingRoute = {
+    mode: "awaiting_route_time_change",
+    originText: context.originText,
+    origin: context.resolvedOrigin || null,
+    destinationText: context.destinationText,
+    destination: context.resolvedDestination || null,
+    previousRequestedDateTime: context.requestedDateTime || "now",
+    previousTimeMode: normalizeTimeMode(context.timeMode),
+    sourceFlow: "change_time",
+    createdAt: Date.now()
+  };
+  session.conversationState = "awaiting_route_time_change";
+  console.log("[CHANGE TIME FLOW DEBUG]", {
+    action: "start_change_time",
+    conversationStateBefore: "neutral",
+    conversationStateAfter: "awaiting_route_time_change",
+    lastRouteContext: session.lastRouteContext,
+    quickReplies: quickButtons
+  });
+  return {
+    reply: ts("changeTimeQuestion", lang),
+    quickButtons,
+    routeResult: null
+  };
+}
+
+function routeTimeTextFromChangeReply(message, lang) {
+  const normalized = normalizeText(message);
+  if (normalized === normalizeText(ts("timeNow", lang)) || normalized === "now") return "now";
+  if (normalized === normalizeText(ts("leaveNow", lang))) return "now";
+  if (normalized === normalizeText(ts("timeTodayLater", lang))) return "today 5:00 PM";
+  if (normalized === normalizeText(ts("timeTomorrowMorning", lang))) return "tomorrow 8:00 AM";
+  if (normalized === normalizeText(ts("timeTomorrowAfternoon", lang))) return "tomorrow 2:00 PM";
+  const parsed = extractTripDetails(message, lang);
+  return parsed.time || parsed.requestedDateTime || "";
+}
+
+async function recalculateRouteWithTime({ session, lang, pending, routeTimeText, timeMode, explicitDate }) {
+  const routeToPlan = {
+    originText: pending.originText,
+    origin: pending.origin || null,
+    destinationText: pending.destinationText,
+    destination: pending.destination || null,
+    requestedDateTime: routeTimeText,
+    explicitDate,
+    timeMode
+  };
+
+  session.route.start = pending.originText;
+  session.route.destination = pending.destinationText;
+  session.route.time = routeTimeText;
+  session.route.explicitDate = explicitDate;
+  session.route.timeMode = timeMode;
+  session.selectedLocations.start = pending.origin || null;
+  session.selectedLocations.destination = pending.destination || null;
+  session.fromCoords = pending.origin ? { lat: pending.origin.lat, lon: pending.origin.lon } : null;
+  session.pendingRoute = null;
+  session.conversationState = "neutral";
+
+  console.log("[CHANGE TIME RECALCULATE DEBUG]", {
+    originText: pending.originText,
+    destinationText: pending.destinationText,
+    requestedDateTime: routeTimeText,
+    timeMode,
+    routeRecalculated: true
+  });
+
+  return routeResponseFromSession({
+    session,
+    message: routeTimeText,
+    lang,
+    arriveBy: timeMode === TIME_MODE.ARRIVE_BY,
+    completedRoute: routeToPlan
+  });
+}
+
+const CHANGE_TIME_MODES = new Set([
+  "awaiting_route_time_change",
+  "awaiting_departure_time_for_existing_route",
+  "awaiting_arrival_time_for_existing_route",
+  "awaiting_tomorrow_time_for_existing_route"
+]);
+
+async function responseForRouteTimeChange({ session, message, lang }) {
+  const pending = session.pendingRoute;
+  const mode = pending?.mode;
+  if (!mode || !CHANGE_TIME_MODES.has(mode)) return null;
+
+  const conversationStateBefore = mode;
+
+  if (!pending.originText || !pending.destinationText) {
+    session.pendingRoute = null;
+    session.conversationState = "neutral";
+    return {
+      reply: ts("lostRouteContext", lang),
+      quickButtons: quickButtonsForMissing("start", lang),
+      routeResult: null
+    };
+  }
+
+  const normalized = normalizeText(message);
+
+  // ── LEVEL 1: awaiting_route_time_change ──────────────────────────────────
+  if (mode === "awaiting_route_time_change") {
+    // "Leave now"
+    if (normalized === normalizeText(ts("leaveNow", lang)) || normalized === "now" || normalized === normalizeText(ts("timeNow", lang))) {
+      console.log("[CHANGE TIME FLOW DEBUG]", {
+        action: "leave_now",
+        conversationStateBefore,
+        conversationStateAfter: "neutral",
+        lastRouteContext: session.lastRouteContext,
+        quickReplies: []
+      });
+      return recalculateRouteWithTime({ session, lang, pending, routeTimeText: "now", timeMode: TIME_MODE.DEPART_AT, explicitDate: "" });
+    }
+
+    // "Choose departure time"
+    if (normalized === normalizeText(ts("chooseDepartureTime", lang))) {
+      session.pendingRoute = { ...pending, mode: "awaiting_departure_time_for_existing_route" };
+      session.conversationState = "awaiting_departure_time_for_existing_route";
+      console.log("[CHANGE TIME FLOW DEBUG]", {
+        action: "choose_departure_time",
+        conversationStateBefore,
+        conversationStateAfter: "awaiting_departure_time_for_existing_route",
+        lastRouteContext: session.lastRouteContext,
+        quickReplies: []
+      });
+      return { reply: ts("whatDepartureTime", lang), quickButtons: [], routeResult: null };
+    }
+
+    // "Arrive by a time"
+    if (normalized === normalizeText(ts("arriveByATime", lang))) {
+      session.pendingRoute = { ...pending, mode: "awaiting_arrival_time_for_existing_route" };
+      session.conversationState = "awaiting_arrival_time_for_existing_route";
+      console.log("[CHANGE TIME FLOW DEBUG]", {
+        action: "arrive_by_a_time",
+        conversationStateBefore,
+        conversationStateAfter: "awaiting_arrival_time_for_existing_route",
+        lastRouteContext: session.lastRouteContext,
+        quickReplies: []
+      });
+      return { reply: ts("whatArrivalTime", lang), quickButtons: [], routeResult: null };
+    }
+
+    // "Tomorrow"
+    if (normalized === normalizeText(ts("tomorrow", lang))) {
+      const tomorrowButtons = routeChangeTomorrowButtons(lang);
+      session.pendingRoute = { ...pending, mode: "awaiting_tomorrow_time_for_existing_route" };
+      session.conversationState = "awaiting_tomorrow_time_for_existing_route";
+      console.log("[CHANGE TIME FLOW DEBUG]", {
+        action: "tomorrow",
+        conversationStateBefore,
+        conversationStateAfter: "awaiting_tomorrow_time_for_existing_route",
+        lastRouteContext: session.lastRouteContext,
+        quickReplies: tomorrowButtons
+      });
+      return { reply: ts("whatTimeTomorrow", lang), quickButtons: tomorrowButtons, routeResult: null };
+    }
+
+    // Fallback: try to parse as a direct time expression
+    const parsed = extractTripDetails(message, lang);
+    const routeTimeText = routeTimeTextFromChangeReply(message, lang);
+    if (routeTimeText) {
+      const timeMode = normalizeTimeMode(parsed.timeMode || inferTimeModeFromText(message));
+      const explicitDate = parsed.explicitDate || detectExplicitDate(routeTimeText);
+      console.log("[CHANGE TIME PARSE DEBUG]", {
+        rawText: message,
+        conversationState: mode,
+        parsedDateTime: routeTimeText,
+        explicitDate,
+        timeMode,
+        originText: pending.originText,
+        destinationText: pending.destinationText
+      });
+      return recalculateRouteWithTime({ session, lang, pending, routeTimeText, timeMode, explicitDate });
+    }
+
+    return { reply: ts("changeTimeQuestion", lang), quickButtons: routeChangeTimeButtons(lang), routeResult: null };
+  }
+
+  // ── LEVEL 2a: awaiting_departure_time_for_existing_route ─────────────────
+  if (mode === "awaiting_departure_time_for_existing_route") {
+    const parsed = extractTripDetails(message, lang);
+    const routeTimeText = routeTimeTextFromChangeReply(message, lang) || parsed.requestedDateTime || parsed.time || "";
+
+    console.log("[CHANGE TIME PARSE DEBUG]", {
+      rawText: message,
+      conversationState: mode,
+      parsedDateTime: routeTimeText,
+      explicitDate: parsed.explicitDate || detectExplicitDate(routeTimeText),
+      timeMode: TIME_MODE.DEPART_AT,
+      originText: pending.originText,
+      destinationText: pending.destinationText
+    });
+
+    if (!routeTimeText) {
+      return { reply: ts("whatDepartureTime", lang), quickButtons: [], routeResult: null };
+    }
+
+    // Only override to ARRIVE_BY if user explicitly typed arrive-by phrasing
+    const explicitArriveBy = /\barrive\s+by\b/i.test(message);
+    const timeMode = explicitArriveBy ? TIME_MODE.ARRIVE_BY : TIME_MODE.DEPART_AT;
+    const explicitDate = parsed.explicitDate || detectExplicitDate(routeTimeText);
+    return recalculateRouteWithTime({ session, lang, pending, routeTimeText, timeMode, explicitDate });
+  }
+
+  // ── LEVEL 2b: awaiting_arrival_time_for_existing_route ───────────────────
+  if (mode === "awaiting_arrival_time_for_existing_route") {
+    const parsed = extractTripDetails(message, lang);
+    const routeTimeText = routeTimeTextFromChangeReply(message, lang) || parsed.requestedDateTime || parsed.time || "";
+
+    console.log("[CHANGE TIME PARSE DEBUG]", {
+      rawText: message,
+      conversationState: mode,
+      parsedDateTime: routeTimeText,
+      explicitDate: parsed.explicitDate || detectExplicitDate(routeTimeText),
+      timeMode: TIME_MODE.ARRIVE_BY,
+      originText: pending.originText,
+      destinationText: pending.destinationText
+    });
+
+    if (!routeTimeText) {
+      return { reply: ts("whatArrivalTime", lang), quickButtons: [], routeResult: null };
+    }
+
+    // Only override to DEPART_AT if user explicitly typed depart phrasing
+    const explicitDepart = /\b(?:leave|depart|start)\s+at\b/i.test(message);
+    const timeMode = explicitDepart ? TIME_MODE.DEPART_AT : TIME_MODE.ARRIVE_BY;
+    const explicitDate = parsed.explicitDate || detectExplicitDate(routeTimeText);
+    return recalculateRouteWithTime({ session, lang, pending, routeTimeText, timeMode, explicitDate });
+  }
+
+  // ── LEVEL 2c: awaiting_tomorrow_time_for_existing_route ──────────────────
+  if (mode === "awaiting_tomorrow_time_for_existing_route") {
+    // "Type another time" button — ask user to free-type
+    if (normalized === normalizeText(ts("typeAnotherTime", lang))) {
+      console.log("[CHANGE TIME FLOW DEBUG]", {
+        action: "type_another_time",
+        conversationStateBefore,
+        conversationStateAfter: mode,
+        lastRouteContext: session.lastRouteContext,
+        quickReplies: []
+      });
+      return { reply: ts("typeAnotherTimePrompt", lang), quickButtons: [], routeResult: null };
+    }
+
+    // Map named AM buttons to explicit time strings
+    let routeTimeText = "";
+    if (normalized === normalizeText(ts("eightAm", lang)) || /^8:?00\s*(am)?$/i.test(normalized)) {
+      routeTimeText = "tomorrow 8:00 AM";
+    } else if (normalized === normalizeText(ts("nineAm", lang)) || /^9:?00\s*(am)?$/i.test(normalized)) {
+      routeTimeText = "tomorrow 9:00 AM";
+    } else if (normalized === normalizeText(ts("tenAm", lang)) || /^10:?00\s*(am)?$/i.test(normalized)) {
+      routeTimeText = "tomorrow 10:00 AM";
+    } else {
+      // Free-text time input — parse it and prepend "tomorrow" if no date given
+      const parsed = extractTripDetails(message, lang);
+      const rawTime = routeTimeTextFromChangeReply(message, lang) || parsed.requestedDateTime || parsed.time || "";
+      if (rawTime) {
+        const hasDate = !!detectExplicitDate(rawTime);
+        routeTimeText = hasDate ? rawTime : `tomorrow ${rawTime}`;
+      }
+    }
+
+    console.log("[CHANGE TIME PARSE DEBUG]", {
+      rawText: message,
+      conversationState: mode,
+      parsedDateTime: routeTimeText,
+      explicitDate: "tomorrow",
+      timeMode: TIME_MODE.DEPART_AT,
+      originText: pending.originText,
+      destinationText: pending.destinationText
+    });
+
+    if (!routeTimeText) {
+      return { reply: ts("whatTimeTomorrow", lang), quickButtons: routeChangeTomorrowButtons(lang), routeResult: null };
+    }
+
+    return recalculateRouteWithTime({ session, lang, pending, routeTimeText, timeMode: TIME_MODE.DEPART_AT, explicitDate: "tomorrow" });
+  }
+
+  return null;
 }
 
 async function responseAfterSelectedLocation({ session, place, role, message, lang }) {
@@ -7454,12 +8724,13 @@ async function responseAfterSelectedLocation({ session, place, role, message, la
   );
 
   if (routeResult.ok) {
+    setRouteTimeAssumption(routeResult, { rawText: message, route: session.route });
     session.pendingLocation = null;
     session.pendingRoute = null;
     session.ticketFlowStatus = routeResult.walkRecommended ? "none" : "asking_ticket";
     saveLastRouteContext(session, routeResult, lang);
     return {
-      reply: routeReplyForResult(routeResult, message, lang, session.context),
+      reply: routeReplyForResult(routeResult, message, lang, session.context, session.routePreferences),
       quickButtons: routeButtonsForResult(routeResult, lang, session),
       routeResult
     };
@@ -7523,10 +8794,11 @@ async function responseAfterRouteSelection({ session, routeSelection, message, l
   });
 
   if (routeResult.ok) {
+    setRouteTimeAssumption(routeResult, { rawText: message, route: session.route });
     session.ticketFlowStatus = routeResult.walkRecommended ? "none" : "asking_ticket";
     saveLastRouteContext(session, routeResult, lang);
     return {
-      reply: `${usingPrefix}\n\n${routeReplyForResult(routeResult, message, lang, session.context)}`,
+      reply: `${usingPrefix}\n\n${routeReplyForResult(routeResult, message, lang, session.context, session.routePreferences)}`,
       quickButtons: routeButtonsForResult(routeResult, lang, session),
       routeResult
     };
@@ -7562,33 +8834,99 @@ async function responseAfterCurrentLocation({ session, coords, message, lang }) 
   session.route.start = "My current location";
   session.fromCoords = coords;
   session.selectedLocations.start = null;
+  const nearbyStops = await findNearbyStops(coords.lat, coords.lon, 500);
+  const accessPrefs = session.routePreferences || {};
+  if (accessPrefs.accessibilityRequired || accessPrefs.wheelchairRequired) {
+    console.log("[ACCESSIBLE STOP RANKING DEBUG]", {
+      accessibilityRequired: accessPrefs.accessibilityRequired,
+      wheelchairRequired: accessPrefs.wheelchairRequired,
+      lessWalking: accessPrefs.lessWalking,
+      stopsFound: nearbyStops.length,
+      rankedStops: nearbyStops.map(s => ({
+        name: s.name,
+        stopId: s.stopId,
+        distanceMeters: s.distanceMeters,
+        walkingMinutes: s.walkingMinutes
+      })),
+      selectedStop: nearbyStops[0] ? nearbyStops[0].name : null
+    });
+  }
+  const originStop = nearbyStops[0] || null;
+  if (originStop) {
+    session.selectedLocations.start = selectedPlacePayloadFromPlace({
+      ...originStop,
+      stopId: originStop.stopId || originStop.id,
+      type: "stop",
+      source: "nearby_stop"
+    });
+  }
+  if (!session.route.time) {
+    session.route.time = "now";
+  }
+  if (!session.route.timeMode) {
+    session.route.timeMode = TIME_MODE.DEPART_AT;
+  }
 
   if (!session.route.destination || isVagueDestination(session.route.destination)) {
+    session.route.destination = "";
+    session.selectedLocations.destination = null;
+    session.pendingRoute = {
+      mode: "awaiting_destination",
+      originText: "Current location",
+      origin: {
+        label: "Current location",
+        name: "Current location",
+        lat: coords.lat,
+        lon: coords.lon,
+        source: "geolocation",
+        type: "current_location"
+      },
+      originStop: originStop ? {
+        type: "stop",
+        name: originStop.name,
+        stopId: originStop.stopId || originStop.id,
+        lat: originStop.lat,
+        lon: originStop.lon,
+        distanceMeters: originStop.distanceMeters,
+        walkingMinutes: originStop.walkingMinutes
+      } : null,
+      destinationText: null,
+      destination: null,
+      requestedDateTime: session.route.time,
+      explicitDate: session.route.explicitDate || "",
+      timeMode: normalizeTimeMode(session.route.timeMode || TIME_MODE.DEPART_AT),
+      source: "current_location",
+      createdAt: Date.now()
+    };
+    session.conversationState = "awaiting_destination";
+    const stopPrefix = originStop
+      ? (accessPrefs.accessibilityRequired || accessPrefs.wheelchairRequired
+        ? `${ts("nearestSuitableStop", lang)} ${originStop.name}, about ${originStop.walkingMinutes || Math.max(1, Math.round((originStop.distanceMeters || 0) / 80))} minutes away.`
+        : `I found your location. The nearest suitable stop seems to be ${originStop.name}, about ${originStop.walkingMinutes || Math.max(1, Math.round((originStop.distanceMeters || 0) / 80))} minutes away.`)
+      : "";
     return {
-      reply: ts("foundLocAskDest", lang),
-      quickButtons: [],
+      reply: [stopPrefix, ts("foundLocAskDest", lang)].filter(Boolean).join("\n\n"),
+      quickButtons: mergeQuickReplies([], lang, { responseType: "location_found_ask_dest" }),
       routeResult: null
     };
   }
 
-  if (!session.route.time) {
-    session.route.time = "now";
-  }
-
   const arriveBy = arriveByForRoute(session.route, message);
-  const routeResult = await planRoute(
+  const routeOptions = routeOptionsFromSession(session, arriveBy, message);
+  const routeResult = addAccessWalkToRouteResult(await planRoute(
     session.route,
-    session.fromCoords,
-    routeOptionsFromSession(session, arriveBy, message)
-  );
+    originStop ? null : session.fromCoords,
+    routeOptions
+  ), originStop ? coords : null, originStop);
 
   if (routeResult.ok) {
+    setRouteTimeAssumption(routeResult, { rawText: message, route: session.route });
     session.pendingLocation = null;
     session.pendingRoute = null;
     session.ticketFlowStatus = routeResult.walkRecommended ? "none" : "asking_ticket";
     saveLastRouteContext(session, routeResult, lang);
     return {
-      reply: routeReplyForResult(routeResult, message, lang, session.context),
+      reply: routeReplyForResult(routeResult, message, lang, session.context, session.routePreferences),
       quickButtons: routeButtonsForResult(routeResult, lang, session),
       routeResult
     };
@@ -7686,10 +9024,186 @@ async function handleChatRequest(req, res) {
     console.log("[Chat] backend received language:", body.selectedLanguage || body.lang, "normalized:", lang);
     const { id: sessionId, session } = getSession(body.sessionId);
     session.selectedLanguage = lang;
+    syncConversationStateFromBody(session, body);
     syncTicketFlowFromBody(session, body);
 
     if (!message) {
       sendBotJson(400, { error: "empty_message", sessionId });
+      return;
+    }
+
+    const detectedAccessibility = detectAccessibilityIntent(message);
+    if (detectedAccessibility.accessibilityRequired) {
+      if (detectedAccessibility.wheelchairRequired) session.routePreferences.wheelchairRequired = true;
+      if (detectedAccessibility.lessWalking) session.routePreferences.lessWalking = true;
+      if (detectedAccessibility.avoidStairs) session.routePreferences.avoidStairs = true;
+      if (detectedAccessibility.stepFreePreferred) session.routePreferences.stepFreePreferred = true;
+      session.routePreferences.accessibilityRequired = true;
+      console.log("[ACCESSIBILITY INTENT DEBUG]", {
+        rawText: message,
+        detectedAccessibilityIntent: true,
+        wheelchairRequired: session.routePreferences.wheelchairRequired,
+        lessWalking: session.routePreferences.lessWalking,
+        avoidStairs: session.routePreferences.avoidStairs,
+        stepFreePreferred: session.routePreferences.stepFreePreferred
+      });
+    }
+
+    if (body.action === "plan_trip") {
+      const previousConversationState = effectiveConversationState(session);
+      const hasLastRouteContext = Boolean(session.lastRouteContext);
+      startPlanTripFromButton(session);
+      const reply = ts("askRouteOrigin", lang);
+      rememberMessage(session, "user", message);
+      rememberMessage(session, "assistant", reply);
+      console.log("[MAIN ACTION CLICK DEBUG]", {
+        action: "plan_trip",
+        previousConversationState,
+        hasLastRouteContext,
+        nextConversationState: "awaiting_origin"
+      });
+      sendBotJson(200, {
+        sessionId,
+        reply,
+        quickButtons: quickButtonsForMissing("start", lang),
+        routeSummary: "",
+        lastRouteResult: null,
+        memory: memoryPayload(session)
+      });
+      return;
+    }
+
+    if (body.action === "tickets") {
+      const previousConversationState = effectiveConversationState(session);
+      const hasLastRouteContext = Boolean(session.lastRouteContext);
+      console.log("[MAIN ACTION CLICK DEBUG]", {
+        action: "tickets",
+        previousConversationState,
+        hasLastRouteContext,
+        nextConversationState: "ticket_help"
+      });
+      const lastRoute = session.lastRouteContext || null;
+      let reply, quickButtons;
+      if (lastRoute?.originText && lastRoute?.destinationText) {
+        reply = ts("ticketHelpIntro", lang);
+        quickButtons = mergeQuickReplies([
+          { label: ts("useCurrentRoute", lang), value: "has_ticket", action: "ticket_status_response", routeContextId: lastRoute.routeContextId || "" },
+          { label: ts("tellTripDetails", lang), value: ts("tellTripDetails", lang), action: "ticket_need" },
+          { label: ts("officialVbnTicketInfo", lang), value: "https://www.vbn.de/tickets", url: "https://www.vbn.de/tickets", external: true }
+        ], lang, { responseType: "tickets_action" });
+      } else {
+        reply = ts("ticketHelpIntro", lang);
+        quickButtons = mergeQuickReplies([
+          { label: ts("tellTripDetails", lang), value: ts("tellTripDetails", lang), action: "ticket_need" },
+          { label: ts("officialVbnTicketInfo", lang), value: "https://www.vbn.de/tickets", url: "https://www.vbn.de/tickets", external: true }
+        ], lang, { responseType: "tickets_action_no_route" });
+      }
+      rememberMessage(session, "user", message);
+      rememberMessage(session, "assistant", reply);
+      sendBotJson(200, { sessionId, reply, quickButtons, routeSummary: "", lastRouteResult: null, memory: memoryPayload(session) });
+      return;
+    }
+
+    if (body.action === "delay_help") {
+      const previousConversationState = effectiveConversationState(session);
+      const hasLastRouteContext = Boolean(session.lastRouteContext);
+      console.log("[MAIN ACTION CLICK DEBUG]", {
+        action: "delay_help",
+        previousConversationState,
+        hasLastRouteContext,
+        nextConversationState: "delay_help"
+      });
+      const reply = ts("delayHelpIntro", lang);
+      const quickButtons = mergeQuickReplies([], lang, { responseType: "delay_help" });
+      rememberMessage(session, "user", message);
+      rememberMessage(session, "assistant", reply);
+      sendBotJson(200, { sessionId, reply, quickButtons, routeSummary: "", lastRouteResult: null, memory: memoryPayload(session) });
+      return;
+    }
+
+    if (body.action === "accessibility") {
+      const previousConversationState = effectiveConversationState(session);
+      const hasLastRouteContext = Boolean(session.lastRouteContext);
+      session.routePreferences.accessibilityRequired = true;
+      console.log("[MAIN ACTION CLICK DEBUG]", {
+        action: "accessibility",
+        previousConversationState,
+        hasLastRouteContext,
+        nextConversationState: "accessibility_help"
+      });
+      const reply = ts("accessibilityHelpQuestion", lang);
+      rememberMessage(session, "user", message);
+      rememberMessage(session, "assistant", reply);
+      sendBotJson(200, { sessionId, reply, quickButtons: accessibilitySubChoiceButtons(lang), routeSummary: "", lastRouteResult: null, memory: memoryPayload(session) });
+      return;
+    }
+
+    if (body.action === "accessibility_wheelchair") {
+      session.routePreferences.accessibilityRequired = true;
+      session.routePreferences.wheelchairRequired = true;
+      console.log("[ACCESSIBILITY INTENT DEBUG]", { rawText: message, detectedAccessibilityIntent: true, wheelchairRequired: true, lessWalking: false, avoidStairs: false, stepFreePreferred: false });
+      const reply = `${ts("checkingAccessibleRoute", lang)}\n\n${ts("askRouteOrigin", lang)}`;
+      rememberMessage(session, "user", message);
+      rememberMessage(session, "assistant", reply);
+      sendBotJson(200, { sessionId, reply, quickButtons: quickButtonsForMissing("start", lang), routeSummary: "", lastRouteResult: null, memory: memoryPayload(session) });
+      return;
+    }
+
+    if (body.action === "accessibility_less_walking") {
+      session.routePreferences.accessibilityRequired = true;
+      session.routePreferences.lessWalking = true;
+      console.log("[ACCESSIBILITY INTENT DEBUG]", { rawText: message, detectedAccessibilityIntent: true, wheelchairRequired: false, lessWalking: true, avoidStairs: false, stepFreePreferred: false });
+      const reply = `${ts("lessWalkingRouteIntro", lang)}\n\n${ts("askRouteOrigin", lang)}`;
+      rememberMessage(session, "user", message);
+      rememberMessage(session, "assistant", reply);
+      sendBotJson(200, { sessionId, reply, quickButtons: quickButtonsForMissing("start", lang), routeSummary: "", lastRouteResult: null, memory: memoryPayload(session) });
+      return;
+    }
+
+    if (body.action === "accessibility_step_free") {
+      session.routePreferences.accessibilityRequired = true;
+      session.routePreferences.avoidStairs = true;
+      session.routePreferences.stepFreePreferred = true;
+      console.log("[ACCESSIBILITY INTENT DEBUG]", { rawText: message, detectedAccessibilityIntent: true, wheelchairRequired: false, lessWalking: false, avoidStairs: true, stepFreePreferred: true });
+      const reply = `${ts("checkingAccessibleRoute", lang)}\n\n${ts("askRouteOrigin", lang)}`;
+      rememberMessage(session, "user", message);
+      rememberMessage(session, "assistant", reply);
+      sendBotJson(200, { sessionId, reply, quickButtons: quickButtonsForMissing("start", lang), routeSummary: "", lastRouteResult: null, memory: memoryPayload(session) });
+      return;
+    }
+
+    if (body.action === "accessibility_avoid_stairs") {
+      session.routePreferences.accessibilityRequired = true;
+      session.routePreferences.avoidStairs = true;
+      console.log("[ACCESSIBILITY INTENT DEBUG]", { rawText: message, detectedAccessibilityIntent: true, wheelchairRequired: false, lessWalking: false, avoidStairs: true, stepFreePreferred: false });
+      const reply = `${ts("checkingAccessibleRoute", lang)}\n\n${ts("askRouteOrigin", lang)}`;
+      rememberMessage(session, "user", message);
+      rememberMessage(session, "assistant", reply);
+      sendBotJson(200, { sessionId, reply, quickButtons: quickButtonsForMissing("start", lang), routeSummary: "", lastRouteResult: null, memory: memoryPayload(session) });
+      return;
+    }
+
+    if (body.action === "accessibility_stop_help") {
+      session.routePreferences.accessibilityRequired = true;
+      const reply = `${ts("accessibilityHelpQuestion", lang)}\n\n${ts("askRouteOrigin", lang)}`;
+      rememberMessage(session, "user", message);
+      rememberMessage(session, "assistant", reply);
+      sendBotJson(200, { sessionId, reply, quickButtons: quickButtonsForMissing("start", lang), routeSummary: "", lastRouteResult: null, memory: memoryPayload(session) });
+      return;
+    }
+
+    if (body.action === "route_change_time" || normalizeText(message) === normalizeText(ts("changeTime", lang))) {
+      const changeTimeResponse = startRouteTimeChange(session, lang);
+      rememberMessage(session, "user", message);
+      rememberMessage(session, "assistant", changeTimeResponse.reply);
+      sendBotJson(200, {
+        sessionId,
+        reply: changeTimeResponse.reply,
+        quickButtons: changeTimeResponse.quickButtons,
+        routeSummary: "",
+        lastRouteResult: null,
+        memory: memoryPayload(session)
+      });
       return;
     }
 
@@ -7837,6 +9351,37 @@ async function handleChatRequest(req, res) {
       return;
     }
 
+    if (body.action === "geo_location_failed") {
+      const pendingRoute = session.pendingRoute;
+      const nextConversationState = pendingRoute ? "awaiting_manual_origin_after_geo_failure" : "neutral";
+      if (pendingRoute && pendingRoute.mode === "awaiting_origin") {
+        session.pendingRoute = { ...pendingRoute, mode: "awaiting_manual_origin_after_geo_failure" };
+      }
+      console.log("[GEO FALLBACK TO STOP LOOKUP DEBUG]", {
+        geolocationErrorCode: body.geolocationErrorCode,
+        mappedCode: body.mappedCode,
+        permissionState: body.permissionState,
+        pendingRoute: pendingRoute,
+        nextConversationState
+      });
+      rememberMessage(session, "user", message);
+      const geoFailReply = ts("geoFailAskManualOrigin", lang);
+      rememberMessage(session, "assistant", geoFailReply);
+      sendBotJson(200, {
+        sessionId,
+        reply: geoFailReply,
+        quickButtons: mergeQuickReplies([
+          { label: ts("typeNearbyStop", lang), value: "__type_nearby_stop__", action: "type_nearby_stop" },
+          { label: ts("typeLocManually", lang), value: "__type_location_manually__", action: "enter_origin" },
+          { label: ts("useCurrentLoc", lang), value: "__current_location__", action: "use_current_location" }
+        ], lang, { responseType: "geo_fail_fallback" }),
+        routeSummary: "",
+        lastRouteResult: null,
+        memory: memoryPayload(session)
+      });
+      return;
+    }
+
     const currentCoords = body.useCurrentLocation === true ? validCoords(body.fromCoords) : null;
     if (currentCoords) {
       const currentResponse = await responseAfterCurrentLocation({
@@ -7856,6 +9401,48 @@ async function handleChatRequest(req, res) {
         memory: memoryPayload(session)
       });
       return;
+    }
+
+    if (isStopDepartureQuery(message) || session.pendingStopDeparture) {
+      const stopDepartureResponse = await responseForStopDepartureQuery({
+        session,
+        message,
+        lang
+      });
+      if (stopDepartureResponse) {
+        rememberMessage(session, "user", message);
+        rememberMessage(session, "assistant", stopDepartureResponse.reply);
+        sendBotJson(200, {
+          sessionId,
+          reply: stopDepartureResponse.reply,
+          quickButtons: stopDepartureResponse.quickButtons,
+          routeSummary: "",
+          lastRouteResult: null,
+          memory: memoryPayload(session)
+        });
+        return;
+      }
+    }
+
+    if (CHANGE_TIME_MODES.has(session.pendingRoute?.mode)) {
+      const routeTimeChangeResponse = await responseForRouteTimeChange({
+        session,
+        message,
+        lang
+      });
+      if (routeTimeChangeResponse) {
+        rememberMessage(session, "user", message);
+        rememberMessage(session, "assistant", routeTimeChangeResponse.reply);
+        sendBotJson(200, {
+          sessionId,
+          reply: routeTimeChangeResponse.reply,
+          quickButtons: routeTimeChangeResponse.quickButtons,
+          routeSummary: routeTimeChangeResponse.routeResult?.ok ? routeSummaryForDemo(routeTimeChangeResponse.routeResult, lang) : "",
+          lastRouteResult: routeTimeChangeResponse.routeResult?.ok ? routeTimeChangeResponse.routeResult : null,
+          memory: memoryPayload(session)
+        });
+        return;
+      }
     }
 
     if (["awaiting_past_time_choice", "awaiting_different_time"].includes(session.pendingRoute?.mode)) {
@@ -7964,7 +9551,7 @@ async function handleChatRequest(req, res) {
     }
 
     const pendingMessageStartsNewDestination = isDestinationOnlyRoute(deterministicRoute) && messageMentionsRoute(message);
-    if (session.pendingRoute?.mode === "awaiting_origin" && !pendingMessageStartsNewDestination) {
+    if ((session.pendingRoute?.mode === "awaiting_origin" || session.pendingRoute?.mode === "awaiting_manual_origin_after_geo_failure") && !pendingMessageStartsNewDestination) {
       const pendingOriginResponse = await responseForPendingOrigin({
         session,
         message,
@@ -8092,7 +9679,17 @@ async function handleChatRequest(req, res) {
         session.route,
         session.route.start === "My current location" ? session.fromCoords : null,
         routeOptionsFromSession(session, arriveByForRoute(deterministicRoute, message), message)
-      );
+      ).catch(error => ({
+        ok: false,
+        status: 503,
+        error: "vbn_fetch_error",
+        message: error.message,
+        details: { ...session.route }
+      }));
+      setRouteTimeAssumption(routeResult, {
+        rawText: message,
+        route: deterministicRoute
+      });
       let reply = routeErrorMessage(routeResult.error, lang, choicesForRouteResult(routeResult));
       let quickButtons = [];
 
@@ -8101,7 +9698,7 @@ async function handleChatRequest(req, res) {
         session.pendingRoute = null;
         session.ticketFlowStatus = routeResult.walkRecommended ? "none" : "asking_ticket";
         saveLastRouteContext(session, routeResult, lang);
-        reply = routeReplyForResult(routeResult, message, lang, session.context);
+        reply = routeReplyForResult(routeResult, message, lang, session.context, session.routePreferences);
         quickButtons = routeButtonsForResult(routeResult, lang, session);
       } else if (routeResult.error === "past_time") {
         session.pendingLocation = null;
@@ -8259,11 +9856,15 @@ async function handleChatRequest(req, res) {
           session.route.start === "My current location" ? session.fromCoords : null,
           routeOptionsFromSession(session, arriveBy, message)
         );
+        setRouteTimeAssumption(routeResult, {
+          rawText: message,
+          route: session.route
+        });
         if (routeResult.ok) {
           session.pendingLocation = null;
           session.ticketFlowStatus = routeResult.walkRecommended ? "none" : "asking_ticket";
           saveLastRouteContext(session, routeResult, lang);
-          reply = routeReplyForResult(routeResult, message, lang, session.context);
+          reply = routeReplyForResult(routeResult, message, lang, session.context, session.routePreferences);
           quickButtons = routeButtonsForResult(routeResult, lang, session);
         } else if (routeResult.error === "past_time") {
           session.pendingLocation = null;
@@ -8456,6 +10057,9 @@ module.exports = {
   correctPlaceTypos,
   placeQueryResolvesDirectly,
   detectPlaceCorrection,
+  searchStopsByName,
+  findNearbyStops,
+  getStopDepartures,
   planRoute,
   buildWalkingRecommendationRoute,
   shouldPreferTransit,

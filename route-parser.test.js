@@ -24,6 +24,9 @@ const {
   logRouteCoordinateDebug,
   correctPlaceTypos,
   detectPlaceCorrection,
+  searchStopsByName,
+  findNearbyStops,
+  getStopDepartures,
   planRoute,
   buildWalkingRecommendationRoute,
   shouldPreferTransit,
@@ -1308,6 +1311,20 @@ test("index.html chip handling sends route ticket status payloads before generic
   assert.match(html, /routeContextId:\s*storedItem\.routeContextId/);
 });
 
+test("index.html plan trip action sets awaiting origin state and sends memory", () => {
+  const html = fs.readFileSync(path.join(__dirname, "index.html"), "utf8");
+
+  assert.match(html, /function setPlanTripAwaitingOrigin\(\)/);
+  assert.match(html, /conversationState:\s*"awaiting_origin"/);
+  assert.match(html, /sourceFlow:\s*"plan_trip_button"/);
+  assert.match(html, /memory:\s*currentServerMemory/);
+  assert.match(html, /storedItem\.welcomeAction === "plan_trip"/);
+  assert.match(html, /startPlanTripFlow\(storedItem\.label/);
+  assert.match(html, /label:\s*ct\("useCurrentLoc"\), value:\s*"__current_location__", action:\s*"use_current_location"/);
+  assert.match(html, /label:\s*ct\("typeManually"\), value:\s*"__type_location_manually__", action:\s*"enter_origin"/);
+  assert.match(html, /whereStart:\s*\{\s*en:\s*"Where are you starting from\?"/);
+});
+
 // --- End-to-end chat flow -----------------------------------------------
 
 function startTestServer() {
@@ -1472,7 +1489,7 @@ test("end-to-end: ambiguous place start action asks for destination", async () =
       selectedLanguage: "en",
       message: "pferdemarkt"
     });
-    assert.match(routeResponse.reply, /Got it - from Postenweg to Pferdemarkt\. I'll check the route\./i);
+    assert.match(routeResponse.reply, /Got it - from Postenweg to Pferdemarkt\. I'll check the next route from now\./i);
   } finally {
     server.close();
   }
@@ -1596,7 +1613,7 @@ test("end-to-end: complete short route acknowledges origin and destination", asy
       selectedLanguage: "en"
     });
 
-    assert.match(response.reply, /Got it - from Postenweg to Pferdemarkt\. I'll check the route\./i);
+    assert.match(response.reply, /Got it - from Postenweg to Pferdemarkt\. I'll check the next route from now\./i);
     assert.doesNotMatch(response.reply, /Where are you starting from/i);
   } finally {
     server.close();
@@ -1846,6 +1863,333 @@ test("end-to-end: destination-only then geolocation coords plans the route witho
   } finally {
     server.close();
   }
+});
+
+test("end-to-end: current location then single place treats it as destination", async () => {
+  const sessionId = "current-location-then-pferdemarkt";
+  const first = await sendChatMessage({
+    sessionId,
+    selectedLanguage: "en",
+    message: "Use my current location",
+    useCurrentLocation: true,
+    fromCoords: { lat: 53.1466, lon: 8.1918 }
+  });
+
+  assert.equal(first.status, 200);
+  assert.match(first.body.reply, /I found your location\./);
+  assert.match(first.body.reply, /nearest suitable stop seems to be/i);
+  assert.match(first.body.reply, /Where do you want to go\?/);
+  assert.equal(first.body.memory.pendingRoute.mode, "awaiting_destination");
+  assert.equal(first.body.memory.pendingRoute.originText, "Current location");
+  assert.equal(first.body.memory.pendingRoute.originStop.type, "stop");
+
+  const second = await sendChatMessage({
+    sessionId,
+    selectedLanguage: "en",
+    message: "Pferdemarkt"
+  });
+
+  assert.equal(second.status, 200);
+  assert.doesNotMatch(second.body.reply, /Do you want to start from Pferdemarkt or go to Pferdemarkt\?/);
+  assert.equal(second.body.memory.route.start, "My current location");
+  assert.equal(second.body.memory.route.destination, "Pferdemarkt");
+  assert.equal(second.body.memory.pendingAmbiguousPlace, null);
+});
+
+test("stop lookup finds partial stop names and neutral chat asks origin or destination", async () => {
+  const matches = await searchStopsByName("pferde");
+  assert.ok(matches.some(stop => /Pferdemarkt/i.test(stop.name)));
+
+  const response = await sendChatMessage({
+    sessionId: "stop-lookup-postenweg-neutral",
+    selectedLanguage: "en",
+    message: "Postenweg"
+  });
+
+  assert.equal(response.status, 200);
+  assert.equal(response.body.reply, "Do you want to start from Postenweg or go to Postenweg?");
+});
+
+test("stop departure query resolves stop and returns departure section", async () => {
+  const response = await sendChatMessage({
+    sessionId: "next-bus-from-postenweg",
+    selectedLanguage: "en",
+    message: "next bus from Postenweg"
+  });
+
+  assert.equal(response.status, 200);
+  assert.match(response.body.reply, /Next departures from Oldenburg\(Oldb\) Postenweg:/);
+  assert.doesNotMatch(response.body.reply, /Do you want to start from/i);
+});
+
+test("current location near Postenweg stores nearest stop for later routing", async () => {
+  const response = await sendChatMessage({
+    sessionId: "current-location-near-postenweg-stop",
+    selectedLanguage: "en",
+    message: "Use my current location",
+    useCurrentLocation: true,
+    fromCoords: { lat: 53.1409, lon: 8.1716 }
+  });
+
+  assert.equal(response.status, 200);
+  assert.match(response.body.reply, /Postenweg/);
+  assert.equal(response.body.memory.pendingRoute.origin.type, "current_location");
+  assert.match(response.body.memory.pendingRoute.originStop.name, /Postenweg/);
+  assert.equal(response.body.memory.selectedLocations.start.type, "stop");
+});
+
+test("hauptbahnhof stop lookup offers Oldenburg and Bremen clarification options", async () => {
+  const response = await sendChatMessage({
+    sessionId: "hauptbahnhof-stop-clarification",
+    selectedLanguage: "en",
+    message: "Hauptbahnhof"
+  });
+
+  assert.equal(response.status, 200);
+  assert.match(response.body.reply, /Which one do you mean\?/);
+  assert.ok(response.body.quickButtons.some(button => /Oldenburg.*Hauptbahnhof/i.test(button.label)));
+  assert.ok(response.body.quickButtons.some(button => /Bremen Hauptbahnhof/i.test(button.label)));
+});
+
+test("nearby stop lookup expands radius and returns empty safely", async () => {
+  const nearPostenweg = await findNearbyStops(53.1409, 8.1716, 300);
+  assert.ok(nearPostenweg.some(stop => /Postenweg/i.test(stop.name)));
+
+  const nowhere = await findNearbyStops(0, 0, 300);
+  assert.deepEqual(nowhere, []);
+});
+
+test("end-to-end: awaiting origin then single place treats it as origin", async () => {
+  const sessionId = "awaiting-origin-then-postenweg";
+  const first = await sendChatMessage({
+    sessionId,
+    selectedLanguage: "en",
+    message: "I want to go to Pferdemarkt"
+  });
+
+  assert.equal(first.status, 200);
+  assert.equal(first.body.memory.pendingRoute.mode, "awaiting_origin");
+
+  const second = await sendChatMessage({
+    sessionId,
+    selectedLanguage: "en",
+    message: "Postenweg"
+  });
+
+  assert.equal(second.status, 200);
+  assert.doesNotMatch(second.body.reply, /Do you want to start from Postenweg or go to Postenweg\?/);
+  assert.equal(second.body.memory.route.start, "Postenweg");
+  assert.equal(second.body.memory.route.destination, "Pferdemarkt");
+  assert.equal(second.body.memory.pendingAmbiguousPlace, null);
+});
+
+test("end-to-end: plan trip action collects origin then destination without ambiguity", async () => {
+  const sessionId = "plan-trip-origin-destination";
+  const first = await sendChatMessage({
+    sessionId,
+    selectedLanguage: "en",
+    message: "Plan a trip",
+    action: "plan_trip"
+  });
+
+  assert.equal(first.status, 200);
+  assert.equal(first.body.reply, "Where are you starting from?");
+  assert.equal(first.body.memory.conversationState, "awaiting_origin");
+  assert.equal(first.body.memory.pendingRoute.mode, "awaiting_origin");
+  assert.ok(first.body.quickButtons.some(button => button.value === "__current_location__"));
+  assert.ok(first.body.quickButtons.some(button => button.value === "__type_location_manually__"));
+
+  const second = await sendChatMessage({
+    sessionId,
+    selectedLanguage: "en",
+    message: "Postenweg"
+  });
+
+  assert.equal(second.status, 200);
+  assert.equal(second.body.reply, "Got it - you're starting from Postenweg. Where do you want to go?");
+  assert.doesNotMatch(second.body.reply, /Do you want to start from Postenweg or go to Postenweg\?/);
+  assert.equal(second.body.memory.conversationState, "awaiting_destination");
+  assert.equal(second.body.memory.pendingRoute.originText, "Postenweg");
+
+  const third = await sendChatMessage({
+    sessionId,
+    selectedLanguage: "en",
+    message: "Pferdemarkt"
+  });
+
+  assert.equal(third.status, 200);
+  assert.doesNotMatch(third.body.reply, /Do you want to start from Pferdemarkt or go to Pferdemarkt\?/);
+  assert.equal(third.body.memory.route.start.toLowerCase(), "postenweg");
+  assert.equal(third.body.memory.route.destination.toLowerCase(), "pferdemarkt");
+  assert.equal(third.body.memory.pendingAmbiguousPlace, null);
+});
+
+test("end-to-end: client memory awaiting origin treats single place as origin", async () => {
+  const sessionId = "client-memory-awaiting-origin";
+  const response = await sendChatMessage({
+    sessionId,
+    selectedLanguage: "en",
+    message: "Postenweg",
+    memory: {
+      conversationState: "awaiting_origin",
+      pendingRoute: {
+        mode: "awaiting_origin",
+        originText: null,
+        origin: null,
+        destinationText: null,
+        destination: null,
+        requestedDateTime: "now",
+        timeMode: TIME_MODE.DEPART_AT,
+        sourceFlow: "plan_trip_button"
+      }
+    }
+  });
+
+  assert.equal(response.status, 200);
+  assert.equal(response.body.reply, "Got it - you're starting from Postenweg. Where do you want to go?");
+  assert.doesNotMatch(response.body.reply, /Do you want to start from Postenweg or go to Postenweg\?/);
+  assert.equal(response.body.memory.pendingRoute.mode, "awaiting_destination");
+  assert.equal(response.body.memory.pendingRoute.originText, "Postenweg");
+});
+
+test("end-to-end: plan trip accepts a full route while awaiting origin", async () => {
+  const sessionId = "plan-trip-full-route";
+  const first = await sendChatMessage({
+    sessionId,
+    selectedLanguage: "en",
+    message: "Plan a trip",
+    action: "plan_trip"
+  });
+
+  assert.equal(first.body.memory.pendingRoute.mode, "awaiting_origin");
+
+  const second = await sendChatMessage({
+    sessionId,
+    selectedLanguage: "en",
+    message: "Postenweg to Pferdemarkt"
+  });
+
+  assert.equal(second.status, 200);
+  assert.doesNotMatch(second.body.reply, /Do you want to start from/i);
+  assert.equal(second.body.memory.route.start, "Postenweg");
+  assert.equal(second.body.memory.route.destination, "Pferdemarkt");
+  assert.equal(second.body.memory.pendingAmbiguousPlace, null);
+});
+
+test("end-to-end: no-time route assumes now and offers change time", async () => {
+  const sessionId = "route-time-assumption-now";
+  const first = await sendChatMessage({
+    sessionId,
+    selectedLanguage: "en",
+    message: "Postenweg"
+  });
+
+  assert.equal(first.status, 200);
+  assert.equal(first.body.reply, "Do you want to start from Postenweg or go to Postenweg?");
+
+  const second = await sendChatMessage({
+    sessionId,
+    selectedLanguage: "en",
+    message: "Start from Postenweg"
+  });
+
+  assert.equal(second.status, 200);
+  assert.equal(second.body.reply, "Got it - you're starting from Postenweg. Where do you want to go?");
+
+  const third = await sendChatMessage({
+    sessionId,
+    selectedLanguage: "en",
+    message: "Pferdemarkt"
+  });
+
+  assert.equal(third.status, 200);
+  assert.match(third.body.reply, /I'll check the next route from now\./);
+  assert.equal(third.body.memory.route.time, "now");
+  assert.equal(third.body.memory.lastRouteContext.requestedDateTime, "now");
+  assert.ok(third.body.quickButtons.some(button => button.label === "Change time" && button.action === "route_change_time"));
+});
+
+test("end-to-end: change time asks for time and recalculates same route", async () => {
+  const sessionId = "route-change-time-recalculate";
+  const first = await sendChatMessage({
+    sessionId,
+    selectedLanguage: "en",
+    message: "Postenweg to Pferdemarkt"
+  });
+
+  assert.equal(first.status, 200);
+  assert.ok(first.body.quickButtons.some(button => button.label === "Change time"));
+
+  const second = await sendChatMessage({
+    sessionId,
+    selectedLanguage: "en",
+    message: "Change time",
+    action: "route_change_time"
+  });
+
+  assert.equal(second.status, 200);
+  assert.equal(second.body.reply, "When do you want to travel?");
+  assert.equal(second.body.memory.conversationState, "awaiting_route_time_change");
+  assert.ok(second.body.quickButtons.some(button => button.label === "Tomorrow morning"));
+
+  const third = await sendChatMessage({
+    sessionId,
+    selectedLanguage: "en",
+    message: "tomorrow at 8 am"
+  });
+
+  assert.equal(third.status, 200);
+  assert.match(third.body.reply, /Postenweg to Pferdemarkt tomorrow at 8:00 AM/i);
+  assert.equal(third.body.memory.route.start.toLowerCase(), "postenweg");
+  assert.equal(third.body.memory.route.destination.toLowerCase(), "pferdemarkt");
+  assert.equal(third.body.memory.route.time, "tomorrow 8:00 AM");
+  assert.equal(third.body.memory.route.timeMode, TIME_MODE.DEPART_AT);
+});
+
+test("end-to-end: change time supports arrive-by recalculation", async () => {
+  const sessionId = "route-change-time-arrive-by";
+  const first = await sendChatMessage({
+    sessionId,
+    selectedLanguage: "en",
+    message: "Postenweg to Pferdemarkt"
+  });
+
+  const second = await sendChatMessage({
+    sessionId,
+    selectedLanguage: "en",
+    message: "Change time",
+    action: "route_change_time"
+  });
+
+  assert.equal(second.status, 200);
+
+  const third = await sendChatMessage({
+    sessionId,
+    selectedLanguage: "en",
+    message: "arrive by 8 am tomorrow"
+  });
+
+  assert.equal(third.status, 200);
+  assert.equal(third.body.memory.route.start.toLowerCase(), "postenweg");
+  assert.equal(third.body.memory.route.destination.toLowerCase(), "pferdemarkt");
+  assert.equal(third.body.memory.route.time, "tomorrow 8:00 AM");
+  assert.equal(third.body.memory.route.timeMode, TIME_MODE.ARRIVE_BY);
+  assert.equal(third.body.lastRouteResult.query.arriveBy, true);
+});
+
+test("end-to-end: direct route with explicit time does not ask change-time first", async () => {
+  const sessionId = "direct-route-explicit-time";
+  const response = await sendChatMessage({
+    sessionId,
+    selectedLanguage: "en",
+    message: "Postenweg to Pferdemarkt tomorrow at 8 am"
+  });
+
+  assert.equal(response.status, 200);
+  assert.doesNotMatch(response.body.reply, /^When do you want to travel\?/);
+  assert.match(response.body.reply, /Postenweg to Pferdemarkt tomorrow at 8:00 AM/i);
+  assert.equal(response.body.memory.route.time, "tomorrow 8:00 AM");
+  assert.ok(response.body.quickButtons.some(button => button.label === "Change time"));
 });
 
 // --- Walk-leg labeling correctness -----------------------------------------
