@@ -92,7 +92,13 @@ const serverStrings = {
   notSure:           { en: "I am not sure", de: "Ich bin nicht sicher", ar: "لست متأكداً", tr: "Emin değilim", uk: "Я не впевнений", hi: "मुझे यकीन नहीं है" },
   chooseTicketType:  { en: "Choose ticket type", de: "Ticketart auswählen", ar: "اختر نوع التذكرة", tr: "Bilet türü seç", uk: "Вибрати тип квитка", hi: "टिकट प्रकार चुनें" },
   officialVbnTicketInfo: { en: "Open VBN ticket info", de: "VBN-Ticketinfo öffnen", ar: "افتح معلومات تذاكر VBN", tr: "VBN bilet bilgisini aç", uk: "Відкрити інформацію VBN", hi: "VBN टिकट जानकारी खोलें" },
+  openVbnTicketInfo: { en: "Open VBN ticket info", de: "VBN-Ticketinfo öffnen", ar: "افتح معلومات تذاكر VBN", tr: "VBN bilet bilgisini aç", uk: "Відкрити інформацію VBN", hi: "VBN टिकट जानकारी खोलें" },
   continueTicketPage: { en: "Continue to ticket page", de: "Weiter zur Ticketseite", ar: "المتابعة إلى صفحة التذاكر", tr: "Bilet sayfasına devam et", uk: "Перейти на сторінку квитків", hi: "टिकट पेज पर जारी रखें" },
+  ticketTypes: { en: "Ticket types", de: "Ticketarten", ar: "أنواع التذاكر", tr: "Bilet türleri", uk: "Типи квитків", hi: "टिकट प्रकार" },
+  ticketTypesIntro: { en: "Here are common ticket types you can check. Official prices and validity should be confirmed on the VBN page.", de: "Hier sind häufige Ticketarten, die Sie prüfen können. Offizielle Preise und Gültigkeit sollten auf der VBN-Seite bestätigt werden.", ar: "إليك أنواع التذاكر الشائعة التي يمكنك التحقق منها. يجب تأكيد الأسعار الرسمية والصلاحية على صفحة VBN.", tr: "Kontrol edebileceğiniz yaygın bilet türleri burada. Resmi fiyatlar ve geçerlilik VBN sayfasında doğrulanmalıdır.", uk: "Ось поширені типи квитків, які можна перевірити. Офіційні ціни та чинність потрібно підтвердити на сторінці VBN.", hi: "यहाँ आम टिकट प्रकार हैं जिन्हें आप देख सकते हैं। आधिकारिक कीमतों और वैधता की पुष्टि VBN पेज पर करनी चाहिए।" },
+  ticketTripDetailsPrompt: { en: "Sure. Where are you travelling from and to?", de: "Gern. Von wo nach wo fahren Sie?", ar: "أكيد. من أين وإلى أين تسافر؟", tr: "Tabii. Nereden nereye gidiyorsunuz?", uk: "Звісно. Звідки й куди ви їдете?", hi: "ज़रूर। आप कहाँ से कहाँ जा रहे हैं?" },
+  ticketUnsureNoRoutePrompt: { en: "No problem. I'll ask a few simple questions. Where are you travelling from and to?", de: "Kein Problem. Ich stelle ein paar einfache Fragen. Von wo nach wo fahren Sie?", ar: "لا مشكلة. سأطرح بعض الأسئلة البسيطة. من أين وإلى أين تسافر؟", tr: "Sorun değil. Birkaç basit soru soracağım. Nereden nereye gidiyorsunuz?", uk: "Без проблем. Я поставлю кілька простих запитань. Звідки й куди ви їдете?", hi: "कोई बात नहीं। मैं कुछ आसान सवाल पूछूंगा। आप कहाँ से कहाँ जा रहे हैं?" },
+  ticketUnsureCurrentRouteIntro: { en: "No problem. I'll help with the ticket for your current route from {origin} to {destination}.", de: "Kein Problem. Ich helfe mit dem Ticket für Ihre aktuelle Route von {origin} nach {destination}.", ar: "لا مشكلة. سأساعدك في التذكرة لمسارك الحالي من {origin} إلى {destination}.", tr: "Sorun değil. {origin} ile {destination} arasındaki mevcut rotanız için bilet konusunda yardımcı olurum.", uk: "Без проблем. Я допоможу з квитком для вашого поточного маршруту від {origin} до {destination}.", hi: "कोई बात नहीं। मैं {origin} से {destination} तक आपके वर्तमान रूट के टिकट में मदद करूँगा।" },
   openInMaps:        { en: "Open in Maps", de: "In Karten öffnen", ar: "فتح في الخريطة", tr: "Haritada aç", uk: "Відкрити на карті", hi: "मैप में खोलें" },
   noTransferLabel:   { en: "No transfer", de: "Kein Umstieg", ar: "بدون تبديل", tr: "Aktarmasız", uk: "Без пересадки", hi: "कोई बदलाव नहीं" },
   walkRoute:         { en: "Walking route", de: "Fußweg", ar: "طريق مشي", tr: "Yürüme rotası", uk: "Пішохідний маршрут", hi: "पैदल रूट" },
@@ -216,10 +222,23 @@ const serverStrings = {
   useThisStreet:    { en: "Use this street", de: "Diese Straße nutzen", ar: "استخدم هذا الشارع", tr: "Bu sokağı kullan", uk: "Використати цю вулицю", hi: "यह सड़क उपयोग करें" },
   useNearbyStop:    { en: "Use nearby stop", de: "Nahe Haltestelle nutzen", ar: "استخدم محطة قريبة", tr: "Yakındaki durağı kullan", uk: "Використати найближчу зупинку", hi: "पास का स्टॉप उपयोग करें" },
   enterAnotherAddress: { en: "Enter another address", de: "Andere Adresse eingeben", ar: "أدخل عنواناً آخر", tr: "Başka adres gir", uk: "Ввести іншу адресу", hi: "दूसरा पता दर्ज करें" },
-  singleTicketInfo: { en: "Single ticket info", de: "Einzelticket-Info", ar: "معلومات التذكرة المفردة", tr: "Tek bilet bilgisi", uk: "Інформація про разовий квиток", hi: "सिंगल टिकट जानकारी" },
-  dayTicketInfo:    { en: "Day ticket info", de: "Tagesticket-Info", ar: "معلومات تذكرة اليوم", tr: "Günlük bilet bilgisi", uk: "Інформація про денний квиток", hi: "डे टिकट जानकारी" },
-  groupTicketInfo:  { en: "Group ticket info", de: "Gruppenticket-Info", ar: "معلومات تذكرة المجموعة", tr: "Grup bileti bilgisi", uk: "Інформація про груповий квиток", hi: "ग्रुप टिकट जानकारी" },
-  studentTicketInfo:{ en: "Student ticket info", de: "Studierendenticket-Info", ar: "معلومات تذكرة الطالب", tr: "Öğrenci bileti bilgisi", uk: "Інформація про студентський квиток", hi: "छात्र टिकट जानकारी" },
+  ticketsIntroNoRoute: { en: "No problem. I can help you understand which ticket to check.", de: "Kein Problem. Ich helfe Ihnen zu verstehen, welches Ticket Sie prüfen sollten.", ar: "لا مشكلة. يمكنني مساعدتك في معرفة التذكرة التي يجب التحقق منها.", tr: "Sorun değil. Hangi bileti kontrol etmeniz gerektiğini anlamanıza yardımcı olurum.", uk: "Без проблем. Я допоможу зрозуміти, який квиток перевірити.", hi: "कोई बात नहीं। मैं समझने में मदद कर सकता हूँ कि कौन सा टिकट देखना चाहिए।" },
+  ticketsIntroWithRoute: { en: "I can help with tickets for your current route from {origin} to {destination}.", de: "Ich kann mit Tickets für Ihre aktuelle Route von {origin} nach {destination} helfen.", ar: "يمكنني المساعدة في التذاكر لمسارك الحالي من {origin} إلى {destination}.", tr: "{origin} ile {destination} arasındaki mevcut rotanız için bilet konusunda yardımcı olabilirim.", uk: "Я можу допомогти з квитками для вашого поточного маршруту від {origin} до {destination}.", hi: "मैं {origin} से {destination} तक आपके वर्तमान रूट के टिकट में मदद कर सकता हूँ।" },
+  commonTicketOptionsIntro: { en: "Common options are:", de: "Häufige Optionen sind:", ar: "الخيارات الشائعة هي:", tr: "Yaygın seçenekler:", uk: "Поширені варіанти:", hi: "आम विकल्प हैं:" },
+  singleTicketShort: { en: "• Single ticket — for one one-way trip", de: "• Einzelticket - für eine einfache Fahrt", ar: "• تذكرة مفردة - لرحلة واحدة باتجاه واحد", tr: "• Tek bilet - tek yönlü bir yolculuk için", uk: "• Разовий квиток - для однієї поїздки в один бік", hi: "• सिंगल टिकट - एक तरफ की एक यात्रा के लिए" },
+  dayTicketShort: { en: "• Day ticket — useful if you travel more than once in a day", de: "• Tagesticket - sinnvoll, wenn Sie an einem Tag mehr als einmal fahren", ar: "• تذكرة يومية - مفيدة إذا سافرت أكثر من مرة في اليوم", tr: "• Günlük bilet - aynı gün birden fazla yolculuk için yararlı", uk: "• Денний квиток - корисний, якщо їдете більше одного разу за день", hi: "• डे टिकट - अगर आप एक दिन में एक से अधिक बार यात्रा करते हैं" },
+  studentTicketShort: { en: "• Student ticket — check if your semester ticket already covers the trip", de: "• Studierendenticket - prüfen Sie, ob Ihr Semesterticket die Fahrt schon abdeckt", ar: "• تذكرة الطالب - تحقق مما إذا كانت تذكرة الفصل تغطي الرحلة بالفعل", tr: "• Öğrenci bileti - dönem biletinizin yolculuğu kapsayıp kapsamadığını kontrol edin", uk: "• Студентський квиток - перевірте, чи ваш семестровий квиток уже покриває поїздку", hi: "• छात्र टिकट - देखें कि आपका सेमेस्टर टिकट यात्रा को पहले से कवर करता है या नहीं" },
+  groupTicketShort: { en: "• Group ticket — useful for several people travelling together", de: "• Gruppenticket - sinnvoll für mehrere Personen, die zusammen reisen", ar: "• تذكرة جماعية - مفيدة لعدة أشخاص يسافرون معاً", tr: "• Grup bileti - birlikte seyahat eden birkaç kişi için yararlı", uk: "• Груповий квиток - корисний для кількох людей, які їдуть разом", hi: "• ग्रुप टिकट - साथ यात्रा करने वाले कई लोगों के लिए उपयोगी" },
+  specificTripQuestion: { en: "If you are not sure, I can ask a few simple questions and guide you.", de: "Wenn Sie nicht sicher sind, kann ich ein paar einfache Fragen stellen und Sie führen.", ar: "إذا لم تكن متأكداً، يمكنني طرح بعض الأسئلة البسيطة وإرشادك.", tr: "Emin değilseniz, birkaç basit soru sorup size rehberlik edebilirim.", uk: "Якщо ви не впевнені, я можу поставити кілька простих запитань і допомогти.", hi: "यदि आप निश्चित नहीं हैं, तो मैं कुछ आसान सवाल पूछकर मार्गदर्शन कर सकता हूँ।" },
+  ticketOptionPromptWithRoute: { en: "You can check a ticket type directly, or tell me more about your trip.", de: "Sie können direkt eine Ticketart prüfen oder mir mehr über Ihre Fahrt erzählen.", ar: "يمكنك التحقق من نوع تذكرة مباشرة أو إخباري بالمزيد عن رحلتك.", tr: "Doğrudan bir bilet türünü kontrol edebilir veya yolculuğunuz hakkında daha fazla bilgi verebilirsiniz.", uk: "Ви можете одразу перевірити тип квитка або розповісти більше про поїздку.", hi: "आप सीधे टिकट प्रकार देख सकते हैं, या अपनी यात्रा के बारे में और बता सकते हैं।" },
+  singleTicketInfo: { en: "Single ticket", de: "Einzelticket", ar: "تذكرة مفردة", tr: "Tek bilet", uk: "Разовий квиток", hi: "सिंगल टिकट" },
+  dayTicketInfo:    { en: "Day ticket", de: "Tagesticket", ar: "تذكرة يومية", tr: "Günlük bilet", uk: "Денний квиток", hi: "डे टिकट" },
+  groupTicketInfo:  { en: "Group ticket", de: "Gruppenticket", ar: "تذكرة جماعية", tr: "Grup bileti", uk: "Груповий квиток", hi: "ग्रुप टिकट" },
+  studentTicketInfo:{ en: "Student ticket", de: "Studierendenticket", ar: "تذكرة الطالب", tr: "Öğrenci bileti", uk: "Студентський квиток", hi: "छात्र टिकट" },
+  singleTicketExplanation: { en: "A single ticket is usually for one one-way journey. It is useful when you only need one trip. Please check the official VBN page for the exact price and validity.", de: "Ein Einzelticket gilt normalerweise für eine einfache Fahrt. Es ist sinnvoll, wenn Sie nur eine Fahrt brauchen. Bitte prüfen Sie den genauen Preis und die Gültigkeit auf der offiziellen VBN-Seite.", ar: "التذكرة المفردة عادةً لرحلة واحدة باتجاه واحد. تكون مفيدة عندما تحتاج إلى رحلة واحدة فقط. يرجى مراجعة صفحة VBN الرسمية للسعر والصلاحية الدقيقة.", tr: "Tek bilet genellikle tek yönlü bir yolculuk içindir. Yalnızca bir yolculuğa ihtiyacınız olduğunda yararlıdır. Kesin fiyat ve geçerlilik için lütfen resmi VBN sayfasını kontrol edin.", uk: "Разовий квиток зазвичай призначений для однієї поїздки в один бік. Він корисний, якщо вам потрібна лише одна поїздка. Точну ціну та чинність перевірте на офіційній сторінці VBN.", hi: "सिंगल टिकट आम तौर पर एक तरफ की एक यात्रा के लिए होता है। यह तब उपयोगी है जब आपको केवल एक यात्रा चाहिए। सटीक कीमत और वैधता के लिए आधिकारिक VBN पेज देखें।" },
+  dayTicketExplanation: { en: "A day ticket may be useful if you travel more than once on the same day. Compare it with single tickets before buying. Please check the official VBN page for exact rules and prices.", de: "Ein Tagesticket kann sinnvoll sein, wenn Sie am selben Tag mehr als einmal fahren. Vergleichen Sie es vor dem Kauf mit Einzeltickets. Bitte prüfen Sie die genauen Regeln und Preise auf der offiziellen VBN-Seite.", ar: "قد تكون التذكرة اليومية مفيدة إذا سافرت أكثر من مرة في اليوم نفسه. قارنها بالتذاكر المفردة قبل الشراء. يرجى مراجعة صفحة VBN الرسمية للقواعد والأسعار الدقيقة.", tr: "Günlük bilet, aynı gün birden fazla yolculuk yaparsanız yararlı olabilir. Satın almadan önce tek biletlerle karşılaştırın. Kesin kurallar ve fiyatlar için lütfen resmi VBN sayfasını kontrol edin.", uk: "Денний квиток може бути корисним, якщо ви їдете більше одного разу в той самий день. Перед купівлею порівняйте його з разовими квитками. Точні правила та ціни перевірте на офіційній сторінці VBN.", hi: "डे टिकट तब उपयोगी हो सकता है जब आप उसी दिन एक से अधिक बार यात्रा करते हैं। खरीदने से पहले इसकी तुलना सिंगल टिकट से करें। सटीक नियमों और कीमतों के लिए आधिकारिक VBN पेज देखें।" },
+  studentTicketExplanation: { en: "If you are a student, first check whether your semester ticket or Deutschlandsemesterticket already covers this route before buying another ticket.", de: "Wenn Sie studieren, prüfen Sie vor dem Kauf eines weiteren Tickets zuerst, ob Ihr Semesterticket oder Deutschlandsemesterticket diese Route bereits abdeckt.", ar: "إذا كنت طالباً، فتحقق أولاً مما إذا كانت تذكرة الفصل أو Deutschlandsemesterticket تغطي هذا المسار بالفعل قبل شراء تذكرة أخرى.", tr: "Öğrenciyseniz, başka bir bilet almadan önce dönem biletinizin veya Deutschlandsemesterticket'in bu rotayı zaten kapsayıp kapsamadığını kontrol edin.", uk: "Якщо ви студент, перед купівлею іншого квитка спочатку перевірте, чи ваш семестровий квиток або Deutschlandsemesterticket уже покриває цей маршрут.", hi: "यदि आप छात्र हैं, तो दूसरा टिकट खरीदने से पहले देखें कि आपका सेमेस्टर टिकट या Deutschlandsemesterticket इस रूट को पहले से कवर करता है या नहीं।" },
+  groupTicketExplanation: { en: "A group ticket may be useful when several people travel together. Please check the official VBN page for group size, validity, and price.", de: "Ein Gruppenticket kann sinnvoll sein, wenn mehrere Personen zusammen reisen. Bitte prüfen Sie Gruppengröße, Gültigkeit und Preis auf der offiziellen VBN-Seite.", ar: "قد تكون التذكرة الجماعية مفيدة عندما يسافر عدة أشخاص معاً. يرجى مراجعة صفحة VBN الرسمية لمعرفة حجم المجموعة والصلاحية والسعر.", tr: "Grup bileti, birkaç kişi birlikte seyahat ettiğinde yararlı olabilir. Grup büyüklüğü, geçerlilik ve fiyat için lütfen resmi VBN sayfasını kontrol edin.", uk: "Груповий квиток може бути корисним, коли кілька людей їдуть разом. Розмір групи, чинність і ціну перевірте на офіційній сторінці VBN.", hi: "ग्रुप टिकट तब उपयोगी हो सकता है जब कई लोग साथ यात्रा करते हैं। समूह आकार, वैधता और कीमत के लिए आधिकारिक VBN पेज देखें।" },
   weeklyMonthlyTicketInfo: { en: "Weekly/monthly ticket info", de: "Wochen-/Monatsticket-Info", ar: "معلومات التذاكر الأسبوعية/الشهرية", tr: "Haftalık/aylık bilet bilgisi", uk: "Інформація про тижневий/місячний квиток", hi: "साप्ताहिक/मासिक टिकट जानकारी" },
   multiTripTicketInfo: { en: "Multi-trip ticket info", de: "Mehrfahrten-Ticketinfo", ar: "معلومات تذكرة الرحلات المتعددة", tr: "Çoklu yolculuk bileti bilgisi", uk: "Інформація про квиток на кілька поїздок", hi: "मल्टी-ट्रिप टिकट जानकारी" },
   accessibilityHelpQuestion: { en: "What kind of support do you need?", de: "Welche Unterstützung benötigen Sie?", ar: "ما نوع الدعم الذي تحتاجه؟", hi: "आपको किस प्रकार की सहायता चाहिए?", uk: "Яка підтримка вам потрібна?", tr: "Ne tür desteğe ihtiyacınız var?" },
@@ -243,6 +262,7 @@ const serverStrings = {
   ticketHelpIntro:     { en: "No problem. I can help with tickets. Do you already have a route, or do you want to tell me your trip?", de: "Kein Problem. Ich helfe mit Tickets. Haben Sie bereits eine Route oder möchten Sie mir Ihre Fahrt schildern?", ar: "لا مشكلة. يمكنني مساعدتك في التذاكر. هل لديك مسار بالفعل أم تريد إخباري برحلتك؟", tr: "Sorun değil. Bilet konusunda yardımcı olurum. Zaten bir rotanız var mı, yoksa yolculuğunuzu anlatmak mı istiyorsunuz?", uk: "Без проблем. Я допоможу з квитками. У вас уже є маршрут, чи хочете розповісти про поїздку?", hi: "कोई बात नहीं। मैं टिकट में मदद कर सकता हूँ। क्या आपके पास पहले से कोई रूट है, या आप यात्रा बताना चाहते हैं?" },
   useCurrentRoute:     { en: "Use current route", de: "Aktuelle Route nutzen", ar: "استخدام المسار الحالي", tr: "Mevcut rotayı kullan", uk: "Використати поточний маршрут", hi: "वर्तमान रूट उपयोग करें" },
   tellTripDetails:     { en: "Tell trip details", de: "Fahrtdetails nennen", ar: "أخبر عن تفاصيل الرحلة", tr: "Yolculuk ayrıntılarını söyle", uk: "Розповісти про поїздку", hi: "यात्रा विवरण बताएं" },
+  tellDifferentTrip:   { en: "Tell different trip", de: "Andere Fahrt nennen", ar: "أخبر عن رحلة مختلفة", tr: "Farklı yolculuk söyle", uk: "Розповісти про іншу поїздку", hi: "दूसरी यात्रा बताएं" },
   delayHelpIntro:      { en: "I can help with delays. Which route, stop, or line should I check?", de: "Ich helfe bei Verspätungen. Welche Route, Haltestelle oder Linie soll ich prüfen?", ar: "يمكنني مساعدتك في التأخيرات. أي مسار أو محطة أو خط يجب أن أتحقق منه؟", tr: "Gecikmeler konusunda yardımcı olurum. Hangi rotayı, durağı veya hattı kontrol etmemi istersiniz?", uk: "Я допоможу із затримками. Який маршрут, зупинку або лінію перевірити?", hi: "मैं देरी में मदद कर सकता हूँ। कौन सा रूट, स्टॉप या लाइन चेक करना चाहेंगे?" },
 };
 
@@ -5694,13 +5714,13 @@ function pruneSessions() {
   }
 }
 
-function quickButtonsForMissing(missing, lang = "en") {
+function quickButtonsForMissing(missing, lang = "en", options = {}) {
   if (missing !== "start") return [];
   const contextReplies = [
     { label: ts("useCurrentLoc", lang), value: "__current_location__", action: "use_current_location" },
     { label: ts("typeLocManually", lang), value: "__type_location_manually__", action: "enter_origin" }
   ];
-  return mergeQuickReplies(contextReplies, lang, { responseType: "awaiting_origin" });
+  return mergeQuickReplies(contextReplies, lang, { responseType: "awaiting_origin", ...options });
 }
 
 function createPlanTripPendingRoute() {
@@ -5808,6 +5828,7 @@ function ambiguousSinglePlaceText(message, route = {}) {
 
 function effectiveConversationState(session) {
   if (session?.pendingRoute?.mode) return session.pendingRoute.mode;
+  if (session?.conversationState === "awaiting_ticket_origin_destination") return session.conversationState;
   if (isAwaitingTicketDetails(session)) return "awaiting_ticket_missing_fields";
   if (session?.conversationState) return session.conversationState;
   return "neutral";
@@ -5971,6 +5992,91 @@ function ticketQuickButtons(lang) {
   return mergeQuickReplies(contextReplies, lang, { responseType: "ticket_quick" });
 }
 
+function ticketCategoryButtons(lang, excludedTypes = []) {
+  const excluded = new Set(excludedTypes);
+  return [
+    { type: "single", label: ts("singleTicketInfo", lang), value: "single", action: "ticket_option" },
+    { type: "day", label: ts("dayTicketInfo", lang), value: "day", action: "ticket_option" },
+    { type: "student", label: ts("studentTicketInfo", lang), value: "student", action: "ticket_option" },
+    { type: "group", label: ts("groupTicketInfo", lang), value: "group", action: "ticket_option" }
+  ].filter(button => !excluded.has(button.type)).map(({ type, ...button }) => button);
+}
+
+function vbnTicketInfoButton(lang) {
+  return {
+    label: ts("openVbnTicketInfo", lang),
+    value: "https://www.vbn.de/tickets",
+    url: "https://www.vbn.de/tickets",
+    external: true
+  };
+}
+
+function ticketsNoRouteReply(lang) {
+  return [
+    ts("ticketsIntroNoRoute", lang),
+    "",
+    ts("commonTicketOptionsIntro", lang),
+    ts("singleTicketShort", lang),
+    ts("dayTicketShort", lang),
+    ts("groupTicketShort", lang),
+    ts("studentTicketShort", lang),
+    "",
+    ts("specificTripQuestion", lang)
+  ].join("\n");
+}
+
+function ticketsWithRouteReply(lastRoute, lang) {
+  return [
+    ts("ticketsIntroWithRoute", lang, {
+      origin: displayPlace(lastRoute.originText),
+      destination: displayPlace(lastRoute.destinationText)
+    }),
+    "",
+    ts("ticketOptionPromptWithRoute", lang)
+  ].join("\n");
+}
+
+function ticketOptionExplanation(ticketType, lang) {
+  if (ticketType === "day") return ts("dayTicketExplanation", lang);
+  if (ticketType === "student") return ts("studentTicketExplanation", lang);
+  if (ticketType === "group") return ts("groupTicketExplanation", lang);
+  return ts("singleTicketExplanation", lang);
+}
+
+function normalizeTicketOptionType(value) {
+  const normalized = normalizeText(value);
+  if (["single", normalizeText(ts("singleTicketInfo", "en"))].includes(normalized)) return "single";
+  if (["day", normalizeText(ts("dayTicketInfo", "en"))].includes(normalized)) return "day";
+  if (["student", normalizeText(ts("studentTicketInfo", "en"))].includes(normalized)) return "student";
+  if (["group", normalizeText(ts("groupTicketInfo", "en"))].includes(normalized)) return "group";
+  return "";
+}
+
+function ticketOptionResponseButtons(lang, selectedTicketType = "") {
+  const contextReplies = [
+    { label: ts("continueTicketPage", lang), value: selectedTicketType || "selected", action: "ticket_continue" },
+    { label: ts("ticketTypes", lang), value: ts("ticketTypes", lang), action: "ticket_types" },
+    { label: ts("notSure", lang), value: "not_sure", action: "ticket_need" },
+    vbnTicketInfoButton(lang)
+  ];
+  return mergeQuickReplies(contextReplies, lang, {
+    responseType: "ticket_option",
+    excludeActions: ["tickets"]
+  });
+}
+
+function ticketTypesMenuButtons(lang) {
+  const contextReplies = [
+    ...ticketCategoryButtons(lang),
+    { label: ts("notSure", lang), value: "not_sure", action: "ticket_need" },
+    vbnTicketInfoButton(lang)
+  ];
+  return mergeQuickReplies(contextReplies, lang, {
+    responseType: "ticket_types",
+    excludeActions: ["tickets"]
+  });
+}
+
 function ticketGuidanceButtons(lang, recommendation = {}, options = {}) {
   const recommendedButtons = (recommendation.recommendedOptions || []).map(option => {
     if (option === "single") return { label: ts("singleTicketInfo", lang), value: "single", action: "ticket_option" };
@@ -6041,15 +6147,18 @@ function dedupeRepliesByActionAndLabel(replies) {
 
 function mergeQuickReplies(contextReplies, lang, options = {}) {
   const includeMainActions = options.includeMainActions !== false;
-  const mainReplies = includeMainActions ? getMainActionReplies(lang) : [];
-  const merged = [...contextReplies, ...mainReplies];
+  const excludeActions = new Set(options.excludeActions || []);
+  const filterExcluded = reply => !reply.action || !excludeActions.has(reply.action);
+  const mainReplies = includeMainActions ? getMainActionReplies(lang).filter(filterExcluded) : [];
+  const merged = [...contextReplies.filter(filterExcluded), ...mainReplies];
   const finalReplies = dedupeRepliesByActionAndLabel(merged);
   console.log("[QUICK REPLY MERGE DEBUG]", {
     responseType: options.responseType || "unknown",
     contextReplies,
     mainReplies,
     finalReplies,
-    includeMainActions
+    includeMainActions,
+    excludeActions: [...excludeActions]
   });
   return finalReplies;
 }
@@ -9342,6 +9451,12 @@ async function handleChatRequest(req, res) {
       const hasLastRouteContext = Boolean(session.lastRouteContext);
       startPlanTripFromButton(session);
       const reply = ts("askRouteOrigin", lang);
+      const quickButtons = quickButtonsForMissing("start", lang, { excludeActions: ["plan_trip"] });
+      console.log("[POST TICKET OPTION ACTION DEBUG]", {
+        selectedAction: "plan_trip",
+        previousConversationState,
+        nextConversationState: effectiveConversationState(session)
+      });
       rememberMessage(session, "user", message);
       rememberMessage(session, "assistant", reply);
       console.log("[MAIN ACTION CLICK DEBUG]", {
@@ -9353,7 +9468,7 @@ async function handleChatRequest(req, res) {
       sendBotJson(200, {
         sessionId,
         reply,
-        quickButtons: quickButtonsForMissing("start", lang),
+        quickButtons,
         routeSummary: "",
         lastRouteResult: null,
         memory: memoryPayload(session)
@@ -9370,25 +9485,125 @@ async function handleChatRequest(req, res) {
         hasLastRouteContext,
         nextConversationState: "ticket_help"
       });
-      const lastRoute = session.lastRouteContext || null;
-      let reply, quickButtons;
-      if (lastRoute?.originText && lastRoute?.destinationText) {
-        reply = ts("ticketHelpIntro", lang);
-        quickButtons = mergeQuickReplies([
-          { label: ts("useCurrentRoute", lang), value: "has_ticket", action: "ticket_status_response", routeContextId: lastRoute.routeContextId || "" },
-          { label: ts("tellTripDetails", lang), value: ts("tellTripDetails", lang), action: "ticket_need" },
-          { label: ts("officialVbnTicketInfo", lang), value: "https://www.vbn.de/tickets", url: "https://www.vbn.de/tickets", external: true }
-        ], lang, { responseType: "tickets_action" });
-      } else {
-        reply = ts("ticketHelpIntro", lang);
-        quickButtons = mergeQuickReplies([
-          { label: ts("tellTripDetails", lang), value: ts("tellTripDetails", lang), action: "ticket_need" },
-          { label: ts("officialVbnTicketInfo", lang), value: "https://www.vbn.de/tickets", url: "https://www.vbn.de/tickets", external: true }
-        ], lang, { responseType: "tickets_action_no_route" });
-      }
+      const reply = ticketsNoRouteReply(lang);
+      const contextReplies = [
+        ...ticketCategoryButtons(lang),
+        { label: ts("notSure", lang), value: "not_sure", action: "ticket_need" },
+        vbnTicketInfoButton(lang)
+      ];
+      const quickButtons = mergeQuickReplies(contextReplies, lang, {
+        responseType: hasLastRouteContext ? "tickets_action" : "tickets_action_no_route",
+        excludeActions: ["tickets"]
+      });
+      console.log("[TICKET MENU QUICK REPLIES DEBUG]", {
+        finalQuickReplies: quickButtons,
+        removedTellTripDetails: true
+      });
+      console.log("[TICKETS MAIN FLOW DEBUG]", {
+        hasLastRouteContext,
+        responseText: reply,
+        contextReplies,
+        finalQuickReplies: quickButtons
+      });
       rememberMessage(session, "user", message);
       rememberMessage(session, "assistant", reply);
       sendBotJson(200, { sessionId, reply, quickButtons, routeSummary: "", lastRouteResult: null, memory: memoryPayload(session) });
+      return;
+    }
+
+    if (body.action === "ticket_option") {
+      const selectedTicketType = normalizeTicketOptionType(body.value || body.ticketType || message) || "single";
+      const hasLastRouteContext = Boolean(session.lastRouteContext);
+      console.log("[TICKET OPTION CLICK DEBUG]", {
+        selectedTicketType,
+        hasLastRouteContext
+      });
+      session.ticketFlowStatus = session.ticketFlowStatus || "selecting_ticket";
+      session.selectedTicket = selectedTicketType;
+      session.context.needsTicketHelp = true;
+      const reply = ticketOptionExplanation(selectedTicketType, lang);
+      const quickButtons = ticketOptionResponseButtons(lang, selectedTicketType);
+      console.log("[TICKET TYPE RESPONSE QUICK REPLIES DEBUG]", {
+        selectedTicketType,
+        responseText: reply,
+        finalQuickReplies: quickButtons
+      });
+      rememberMessage(session, "user", message);
+      rememberMessage(session, "assistant", reply);
+      sendBotJson(200, { sessionId, reply, quickButtons, routeSummary: "", lastRouteResult: null, memory: memoryPayload(session) });
+      return;
+    }
+
+    if (body.action === "ticket_types") {
+      const previousConversationState = effectiveConversationState(session);
+      const reply = ts("ticketTypesIntro", lang);
+      const quickButtons = ticketTypesMenuButtons(lang);
+      console.log("[TICKET MENU QUICK REPLIES DEBUG]", {
+        finalQuickReplies: quickButtons,
+        removedTellTripDetails: true
+      });
+      console.log("[POST TICKET OPTION ACTION DEBUG]", {
+        selectedAction: "ticket_types",
+        previousConversationState,
+        nextConversationState: effectiveConversationState(session)
+      });
+      rememberMessage(session, "user", message);
+      rememberMessage(session, "assistant", reply);
+      sendBotJson(200, { sessionId, reply, quickButtons, routeSummary: "", lastRouteResult: null, memory: memoryPayload(session) });
+      return;
+    }
+
+    if (body.action === "ticket_need") {
+      const previousConversationState = effectiveConversationState(session);
+      const lastRoute = recentLastRouteContext(session, String(body.routeContextId || ""));
+      if (lastRoute?.originText && lastRoute?.destinationText) {
+        const advice = buildTicketAdviceForExistingRoute(session, lastRoute, "not_sure", lang);
+        const oldIntro = ts("ticketRouteUnsureIntro", lang);
+        const intro = ts("ticketUnsureCurrentRouteIntro", lang, {
+          origin: displayPlace(lastRoute.originText),
+          destination: displayPlace(lastRoute.destinationText)
+        });
+        const adviceText = String(advice.reply || "");
+        const reply = adviceText.startsWith(oldIntro)
+          ? `${intro}${adviceText.slice(oldIntro.length)}`
+          : `${intro}\n\n${adviceText}`;
+        console.log("[TICKET UNSURE FLOW DEBUG]", {
+          hasLastRouteContext: true,
+          conversationStateBefore: previousConversationState,
+          conversationStateAfter: effectiveConversationState(session),
+          pendingTicketDetails: session.pendingTicketDetails
+        });
+        console.log("[POST TICKET OPTION ACTION DEBUG]", {
+          selectedAction: "ticket_need",
+          previousConversationState,
+          nextConversationState: effectiveConversationState(session)
+        });
+        rememberMessage(session, "user", message);
+        rememberMessage(session, "assistant", reply);
+        sendBotJson(200, { sessionId, reply, quickButtons: advice.quickButtons || [], routeSummary: "", lastRouteResult: null, memory: memoryPayload(session) });
+        return;
+      }
+      session.ticketFlowStatus = "awaiting_ticket_trip_details";
+      session.selectedTicket = "unsure";
+      session.pendingTicketDetails = initialPendingTicketDetails(session);
+      session.pendingTicketDetails.selectedTicketOption = null;
+      session.context.needsTicketHelp = true;
+      session.conversationState = "awaiting_ticket_origin_destination";
+      const reply = ts("ticketUnsureNoRoutePrompt", lang);
+      console.log("[TICKET UNSURE FLOW DEBUG]", {
+        hasLastRouteContext: false,
+        conversationStateBefore: previousConversationState,
+        conversationStateAfter: effectiveConversationState(session),
+        pendingTicketDetails: session.pendingTicketDetails
+      });
+      console.log("[POST TICKET OPTION ACTION DEBUG]", {
+        selectedAction: "ticket_need",
+        previousConversationState,
+        nextConversationState: effectiveConversationState(session)
+      });
+      rememberMessage(session, "user", message);
+      rememberMessage(session, "assistant", reply);
+      sendBotJson(200, { sessionId, reply, quickButtons: [], routeSummary: "", lastRouteResult: null, memory: memoryPayload(session) });
       return;
     }
 
@@ -9402,7 +9617,12 @@ async function handleChatRequest(req, res) {
         nextConversationState: "delay_help"
       });
       const reply = ts("delayHelpIntro", lang);
-      const quickButtons = mergeQuickReplies([], lang, { responseType: "delay_help" });
+      const quickButtons = mergeQuickReplies([], lang, { responseType: "delay_help", excludeActions: ["delay_help"] });
+      console.log("[POST TICKET OPTION ACTION DEBUG]", {
+        selectedAction: "delay_help",
+        previousConversationState,
+        nextConversationState: "delay_help"
+      });
       rememberMessage(session, "user", message);
       rememberMessage(session, "assistant", reply);
       sendBotJson(200, { sessionId, reply, quickButtons, routeSummary: "", lastRouteResult: null, memory: memoryPayload(session) });
@@ -9420,9 +9640,18 @@ async function handleChatRequest(req, res) {
         nextConversationState: "accessibility_help"
       });
       const reply = ts("accessibilityHelpQuestion", lang);
+      const quickButtons = mergeQuickReplies(accessibilitySubChoiceButtons(lang).slice(0, 4), lang, {
+        responseType: "accessibility_help",
+        excludeActions: ["accessibility"]
+      });
+      console.log("[POST TICKET OPTION ACTION DEBUG]", {
+        selectedAction: "accessibility",
+        previousConversationState,
+        nextConversationState: "accessibility_help"
+      });
       rememberMessage(session, "user", message);
       rememberMessage(session, "assistant", reply);
-      sendBotJson(200, { sessionId, reply, quickButtons: accessibilitySubChoiceButtons(lang), routeSummary: "", lastRouteResult: null, memory: memoryPayload(session) });
+      sendBotJson(200, { sessionId, reply, quickButtons, routeSummary: "", lastRouteResult: null, memory: memoryPayload(session) });
       return;
     }
 

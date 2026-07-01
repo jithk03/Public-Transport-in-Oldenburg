@@ -99,9 +99,9 @@ test("ticket support context continues from compact details answer", async () =>
   assert.equal(second.body.memory.pendingTicketDetails.destinationText, "lappan");
   assert.equal(second.body.memory.pendingTicketDetails.passengerCount, 1);
   assert.equal(second.body.memory.pendingTicketDetails.tripCount, 10);
-  assert.ok(second.body.quickButtons.some(button => /Single ticket info/i.test(button.label)));
-  assert.ok(second.body.quickButtons.some(button => /Day ticket info/i.test(button.label)));
-  assert.ok(second.body.quickButtons.some(button => /Student ticket info/i.test(button.label)));
+  assert.ok(second.body.quickButtons.some(button => /^Single ticket$/i.test(button.label)));
+  assert.ok(second.body.quickButtons.some(button => /^Day ticket$/i.test(button.label)));
+  assert.ok(second.body.quickButtons.some(button => /^Student ticket$/i.test(button.label)));
   assert.ok(second.body.quickButtons.some(button => /Open VBN ticket info/i.test(button.label)));
 });
 
@@ -1615,6 +1615,286 @@ test("end-to-end: complete short route acknowledges origin and destination", asy
 
     assert.match(response.reply, /Got it - from Postenweg to Pferdemarkt\. I'll check the next route from now\./i);
     assert.doesNotMatch(response.reply, /Where are you starting from/i);
+  } finally {
+    server.close();
+  }
+});
+
+test("end-to-end: fresh Tickets action explains ticket options and excludes Tickets button", async () => {
+  const server = await startTestServer();
+  const baseUrl = `http://127.0.0.1:${server.address().port}`;
+  try {
+    const response = await postChat(baseUrl, {
+      message: "Tickets",
+      action: "tickets",
+      selectedLanguage: "en"
+    });
+
+    assert.match(response.reply, /No problem\. I can help you understand which ticket to check\./);
+    assert.match(response.reply, /Common options are:/);
+    assert.match(response.reply, /Single ticket — for one one-way trip/);
+    assert.match(response.reply, /Day ticket — useful if you travel more than once in a day/);
+    assert.match(response.reply, /Group ticket — useful for several people travelling together/);
+    assert.match(response.reply, /Student ticket — check if your semester ticket already covers the trip/);
+    assert.match(response.reply, /If you are not sure, I can ask a few simple questions and guide you\./);
+    assert.deepEqual(response.quickButtons.map(button => button.label), [
+      "Single ticket",
+      "Day ticket",
+      "Student ticket",
+      "Group ticket",
+      "I am not sure",
+      "Open VBN ticket info",
+      "Plan a trip",
+      "Accessibility",
+      "Delay help"
+    ]);
+    assert.ok(!response.quickButtons.some(button => button.label === "Tell trip details"));
+    assert.ok(!response.quickButtons.some(button => button.action === "tickets"));
+  } finally {
+    server.close();
+  }
+});
+
+test("end-to-end: Tickets action with route context keeps general ticket menu", async () => {
+  const server = await startTestServer();
+  const baseUrl = `http://127.0.0.1:${server.address().port}`;
+  try {
+    const first = await postChat(baseUrl, {
+      message: "postenweg to pferdemarkt",
+      selectedLanguage: "en"
+    });
+
+    const response = await postChat(baseUrl, {
+      sessionId: first.sessionId,
+      message: "Tickets",
+      action: "tickets",
+      selectedLanguage: "en"
+    });
+
+    assert.match(response.reply, /No problem\. I can help you understand which ticket to check\./);
+    assert.deepEqual(response.quickButtons.map(button => button.label), [
+      "Single ticket",
+      "Day ticket",
+      "Student ticket",
+      "Group ticket",
+      "I am not sure",
+      "Open VBN ticket info",
+      "Plan a trip",
+      "Accessibility",
+      "Delay help"
+    ]);
+    assert.ok(!response.quickButtons.some(button => button.action === "tickets"));
+  } finally {
+    server.close();
+  }
+});
+
+test("end-to-end: ticket option click explains selected ticket and keeps ticket flow buttons", async () => {
+  const server = await startTestServer();
+  const baseUrl = `http://127.0.0.1:${server.address().port}`;
+  try {
+    const response = await postChat(baseUrl, {
+      message: "Single ticket",
+      action: "ticket_option",
+      value: "single",
+      selectedLanguage: "en"
+    });
+
+    assert.match(response.reply, /A single ticket is usually for one one-way journey\./);
+    assert.match(response.reply, /Please check the official VBN page for the exact price and validity\./);
+    assert.deepEqual(response.quickButtons.map(button => button.label), [
+      "Continue to ticket page",
+      "Ticket types",
+      "I am not sure",
+      "Open VBN ticket info",
+      "Plan a trip",
+      "Accessibility",
+      "Delay help"
+    ]);
+    assert.ok(!response.quickButtons.some(button => button.action === "tickets"));
+  } finally {
+    server.close();
+  }
+});
+
+test("end-to-end: day student and group ticket options use explanatory non-price copy and navigation replies", async () => {
+  const server = await startTestServer();
+  const baseUrl = `http://127.0.0.1:${server.address().port}`;
+  try {
+    const cases = [
+      ["day", "Day ticket", /A day ticket may be useful if you travel more than once on the same day\./],
+      ["student", "Student ticket", /first check whether your semester ticket or Deutschlandsemesterticket already covers this route/],
+      ["group", "Group ticket", /A group ticket may be useful when several people travel together\./]
+    ];
+
+    for (const [value, message, expected] of cases) {
+      const response = await postChat(baseUrl, {
+        message,
+        action: "ticket_option",
+        value,
+        selectedLanguage: "en"
+      });
+      assert.match(response.reply, expected);
+      assert.deepEqual(response.quickButtons.map(button => button.label), [
+        "Continue to ticket page",
+        "Ticket types",
+        "I am not sure",
+        "Open VBN ticket info",
+        "Plan a trip",
+        "Accessibility",
+        "Delay help"
+      ]);
+      assert.ok(!response.quickButtons.some(button => button.action === "tickets"));
+    }
+  } finally {
+    server.close();
+  }
+});
+
+test("end-to-end: Ticket types after ticket explanation reopens general ticket categories", async () => {
+  const server = await startTestServer();
+  const baseUrl = `http://127.0.0.1:${server.address().port}`;
+  try {
+    const response = await postChat(baseUrl, {
+      message: "Ticket types",
+      action: "ticket_types",
+      selectedLanguage: "en"
+    });
+
+    assert.match(response.reply, /Here are common ticket types you can check\./);
+    assert.deepEqual(response.quickButtons.map(button => button.label), [
+      "Single ticket",
+      "Day ticket",
+      "Student ticket",
+      "Group ticket",
+      "I am not sure",
+      "Open VBN ticket info",
+      "Plan a trip",
+      "Accessibility",
+      "Delay help"
+    ]);
+    assert.ok(!response.quickButtons.some(button => button.label === "Tell trip details"));
+  } finally {
+    server.close();
+  }
+});
+
+test("end-to-end: I am not sure starts trip-based guidance without route context", async () => {
+  const server = await startTestServer();
+  const baseUrl = `http://127.0.0.1:${server.address().port}`;
+  try {
+    const response = await postChat(baseUrl, {
+      message: "I am not sure",
+      action: "ticket_need",
+      value: "not_sure",
+      selectedLanguage: "en"
+    });
+
+    assert.equal(response.reply, "No problem. I'll ask a few simple questions. Where are you travelling from and to?");
+    assert.equal(response.memory.conversationState, "awaiting_ticket_origin_destination");
+    assert.deepEqual(response.memory.pendingTicketDetails, {
+      sourceFlow: "ticket_support",
+      originText: null,
+      destinationText: null,
+      passengerCount: null,
+      tripCount: null,
+      tripPattern: null,
+      selectedTicketOption: null,
+      userIsUnsure: true,
+      missingFields: ["originText", "destinationText", "passengerCount", "tripPattern"]
+    });
+  } finally {
+    server.close();
+  }
+});
+
+test("end-to-end: I am not sure after a route uses current route for ticket advice", async () => {
+  const server = await startTestServer();
+  const baseUrl = `http://127.0.0.1:${server.address().port}`;
+  try {
+    const first = await postChat(baseUrl, {
+      message: "postenweg to pferdemarkt",
+      selectedLanguage: "en"
+    });
+    await postChat(baseUrl, {
+      sessionId: first.sessionId,
+      message: "Tickets",
+      action: "tickets",
+      selectedLanguage: "en"
+    });
+
+    const response = await postChat(baseUrl, {
+      sessionId: first.sessionId,
+      message: "I am not sure",
+      action: "ticket_need",
+      value: "not_sure",
+      selectedLanguage: "en"
+    });
+
+    assert.match(response.reply, /No problem\. I'll help with the ticket for your current route from Postenweg to Pferdemarkt\./);
+    assert.doesNotMatch(response.reply, /Where are you travelling from and to/i);
+    assert.ok(response.quickButtons.some(button => button.action === "ticket_option" && button.value === "single"));
+    assert.ok(response.quickButtons.some(button => button.action === "ticket_continue"));
+  } finally {
+    server.close();
+  }
+});
+
+test("end-to-end: main actions remain usable after a ticket explanation", async () => {
+  const server = await startTestServer();
+  const baseUrl = `http://127.0.0.1:${server.address().port}`;
+  try {
+    const day = await postChat(baseUrl, {
+      message: "Day ticket",
+      action: "ticket_option",
+      value: "day",
+      selectedLanguage: "en"
+    });
+
+    const plan = await postChat(baseUrl, {
+      sessionId: day.sessionId,
+      message: "Plan a trip",
+      action: "plan_trip",
+      selectedLanguage: "en"
+    });
+    assert.equal(plan.reply, "Where are you starting from?");
+    assert.deepEqual(plan.quickButtons.map(button => button.label), [
+      "Use my current location",
+      "Type starting point",
+      "Tickets",
+      "Accessibility",
+      "Delay help"
+    ]);
+
+    const accessibility = await postChat(baseUrl, {
+      sessionId: day.sessionId,
+      message: "Accessibility",
+      action: "accessibility",
+      selectedLanguage: "en"
+    });
+    assert.equal(accessibility.reply, "What kind of support do you need?");
+    assert.deepEqual(accessibility.quickButtons.map(button => button.label), [
+      "Wheelchair accessible route",
+      "Less walking",
+      "Step-free access",
+      "Avoid stairs",
+      "Plan a trip",
+      "Tickets",
+      "Delay help"
+    ]);
+
+    const delay = await postChat(baseUrl, {
+      sessionId: day.sessionId,
+      message: "Delay help",
+      action: "delay_help",
+      selectedLanguage: "en"
+    });
+    assert.equal(delay.reply, "I can help with delays. Which route, stop, or line should I check?");
+    assert.deepEqual(delay.quickButtons.map(button => button.label), [
+      "Plan a trip",
+      "Tickets",
+      "Accessibility"
+    ]);
   } finally {
     server.close();
   }
